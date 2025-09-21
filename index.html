@@ -136,6 +136,32 @@
       .hero-brand span{font-size:clamp(42px,20vw,96px)}
     }
 
+    #AppGrid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"header" "barra" "formulario" "acciones" "tabla";gap:clamp(1.75rem,4vw,2.75rem);padding-block:clamp(1.25rem,4vw,2.5rem);align-items:start}
+    #AppGrid>*{min-width:0}
+    #Header{grid-area:header;display:flex;flex-direction:column;align-items:center;gap:clamp(.75rem,2.5vw,1.5rem);text-align:center}
+    #Header .pill{margin:0}
+    #BarraServicio{grid-area:barra;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(.75rem,2.5vw,1.25rem);margin:0;padding:clamp(.5rem,2vw,1rem) clamp(.75rem,4vw,1.5rem)}
+    #BarraServicio .label{font-size:clamp(.75rem,1.5vw,.875rem)}
+    #Formulario{grid-area:formulario;display:flex;flex-direction:column;gap:clamp(1rem,2.5vw,1.5rem);padding:clamp(1.75rem,4vw,2.5rem)}
+    #AccionesRapidas{grid-area:acciones;display:flex;flex-direction:column;gap:clamp(1rem,2.5vw,1.5rem);padding:clamp(1.5rem,3.5vw,2.25rem);height:fit-content}
+    #AccionesRapidas h2{font-size:clamp(1.2rem,2.2vw,1.5rem)}
+    #TablaClientes{grid-area:tabla;display:flex;flex-direction:column;gap:clamp(1rem,2.5vw,1.5rem);margin:0}
+    #TablaClientes .table-header{gap:clamp(.5rem,1.5vw,.75rem)}
+    #TablaClientes .table-header h2{font-size:clamp(1.3rem,2.4vw,1.65rem)}
+    #TablaClientes .table-header p{font-size:clamp(.9rem,1.8vw,1rem)}
+
+    @media(min-width:640px){
+      #AppGrid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"header header" "barra barra" "formulario acciones" "tabla tabla"}
+      #BarraServicio{padding-inline:clamp(1rem,3vw,2rem)}
+    }
+    @media(min-width:1024px){
+      #AppGrid{grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);grid-template-areas:"header header" "barra acciones" "formulario acciones" "tabla tabla";column-gap:clamp(1.75rem,4vw,3rem)}
+      #AccionesRapidas{position:sticky;top:clamp(1.5rem,4vw,3rem);align-self:start}
+    }
+    @media(min-width:1440px){
+      #AppGrid{grid-template-columns:minmax(0,2fr) minmax(0,1.1fr) minmax(0,1.8fr);grid-template-areas:"header header header" "barra barra acciones" "formulario formulario acciones" "tabla tabla tabla";column-gap:clamp(2rem,5vw,3.5rem)}
+    }
+
     /* ===== Servicio centrado ===== */
     .center{display:flex;justify-content:center;align-items:center;gap:10px;margin:8px 0 20px}
     .center .label{color:var(--ink-soft)}
@@ -325,21 +351,23 @@
   </aside>
 
   <div class="wrap">
-    <span class="pill">importante</span>
-    <div class="hero-brand" role="heading" aria-level="1">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237dd3fc'/%3E%3Cstop offset='55%25' stop-color='%2316f2a6'/%3E%3Cstop offset='100%25' stop-color='%23f28a2d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M98.7 22.3C70.8 12.7 38.5 18.4 22.9 41.3 7.3 64.1 6.9 96 33 96c23.2 0 46.4-23.4 57.4-48.6 5.5-12.7 7.7-23.5 8.3-25.1Z'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='6' stroke-linecap='round' d='M36 74c16-8 36-28 47-50'/%3E%3C/svg%3E" alt="Hoja Super Zylo" loading="lazy"/>
-      <span>Super Zylo</span>
-    </div>
+    <div id="AppGrid">
+      <header id="Header">
+        <span class="pill">importante</span>
+        <div class="hero-brand" role="heading" aria-level="1">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237dd3fc'/%3E%3Cstop offset='55%25' stop-color='%2316f2a6'/%3E%3Cstop offset='100%25' stop-color='%23f28a2d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M98.7 22.3C70.8 12.7 38.5 18.4 22.9 41.3 7.3 64.1 6.9 96 33 96c23.2 0 46.4-23.4 57.4-48.6 5.5-12.7 7.7-23.5 8.3-25.1Z'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='6' stroke-linecap='round' d='M36 74c16-8 36-28 47-50'/%3E%3C/svg%3E" alt="Hoja Super Zylo" loading="lazy"/>
+          <span>Super Zylo</span>
+        </div>
+      </header>
 
-    <div class="center">
-      <div class="label">Servicio</div>
-      <select id="servicio" style="max-width:260px"></select>
-      <button id="btnAgregarServicio" class="addserv" aria-label="Agregar servicio" title="Agregar servicio">+</button>
-      <button id="btnEliminarServicio" class="addserv remove" aria-label="Eliminar servicio" title="Eliminar servicio">−</button>
-    </div>
+      <div id="BarraServicio" class="center">
+        <div class="label">Servicio</div>
+        <select id="servicio" style="max-width:260px"></select>
+        <button id="btnAgregarServicio" class="addserv" aria-label="Agregar servicio" title="Agregar servicio">+</button>
+        <button id="btnEliminarServicio" class="addserv remove" aria-label="Eliminar servicio" title="Eliminar servicio">−</button>
+      </div>
 
-    <div class="content-grid">
-      <div class="form">
+      <section id="Formulario" class="form">
         <div class="form-grid">
           <div class="row">
             <label for="nombre">Nombre</label>
@@ -382,8 +410,9 @@
             <textarea id="notas" placeholder="Plan, precio, usuario, etc."></textarea>
           </div>
         </div>
-      </div>
-      <aside class="side-card">
+      </section>
+
+      <aside id="AccionesRapidas" class="side-card">
         <h2>Acciones rápidas</h2>
         <p>Guarda el nuevo cliente o limpia el formulario antes de continuar.</p>
         <div class="actions">
@@ -392,26 +421,25 @@
         </div>
         <div class="small" id="msg"></div>
       </aside>
-    </div>
 
-    <!-- tabla -->
-    <section class="table-section">
-      <div class="table-header">
-        <h2>Clientes registrados</h2>
-        <p>Consulta el listado completo y gestiona cada registro.</p>
-      </div>
-      <div class="table-card">
-        <table id="tabla">
-          <thead>
-            <tr>
-              <th>Nombre</th><th>Email</th><th>Servicio</th>
-              <th>Inicio</th><th>Vence</th><th>Estado</th><th>Días</th><th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
+      <section id="TablaClientes" class="table-section">
+        <div class="table-header">
+          <h2>Clientes registrados</h2>
+          <p>Consulta el listado completo y gestiona cada registro.</p>
+        </div>
+        <div class="table-card">
+          <table id="tabla">
+            <thead>
+              <tr>
+                <th>Nombre</th><th>Email</th><th>Servicio</th>
+                <th>Inicio</th><th>Vence</th><th>Estado</th><th>Días</th><th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
   </div>
 
   <!-- ===== Modal Chat Gemini ===== -->
