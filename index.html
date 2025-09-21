@@ -127,7 +127,16 @@
     .linklike:active::after{transform:scaleX(1)}
 
     /* ===== Layout ===== */
-    .wrap{width:min(1200px,92vw);margin:0 auto;padding:36px 18px 80px;position:relative;z-index:0}
+    #Header,#BarraServicio,#AppGrid{width:min(1200px,92vw);margin:0 auto}
+    #Header{padding:36px 18px 0;position:relative;z-index:0}
+    #BarraServicio{padding:0 18px}
+    #AppGrid{padding:0 18px 80px;margin-top:32px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"form" "acciones" "tabla";gap:24px}
+    #Formulario{grid-area:form}
+    #AccionesRapidas{grid-area:acciones}
+    #TablaClientes{grid-area:tabla;margin-top:0}
+    @media(min-width:960px){
+      #AppGrid{grid-template-columns:minmax(0,2fr)minmax(0,1fr);grid-template-areas:"form acciones" "tabla tabla";}
+    }
     .pill{display:block;width:max-content;margin:0 auto 14px;padding:6px 14px;border-radius:999px;background:var(--pill-bg);color:var(--pill-ink);border:1px solid rgba(255,255,255,.24);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
     .hero-brand{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:clamp(12px,3vw,28px);margin:6px 0 24px;text-align:center}
     .hero-brand img{width:clamp(64px,16vw,132px);height:auto;flex-shrink:0;filter:drop-shadow(0 18px 36px rgba(0,0,0,.55));border-radius:24px}
@@ -146,10 +155,6 @@
     .addserv.remove{border-color:rgba(251,113,133,.45);color:#fecdd3;background:rgba(248,113,113,.16)}
 
     /* ===== Form (labels arriba) ===== */
-    .content-grid{display:grid;gap:24px;margin-top:32px}
-    @media(min-width:960px){
-      .content-grid{grid-template-columns:minmax(0,2fr)minmax(0,1fr)}
-    }
     .form{background:rgba(255,255,255,.06);border-radius:20px;border:1px solid var(--border);padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(22px)}
     .form-grid{display:grid;gap:16px}
     @media(min-width:720px){
@@ -324,78 +329,78 @@
     </div>
   </aside>
 
-  <div class="wrap">
+  <header id="Header">
     <span class="pill">importante</span>
     <div class="hero-brand" role="heading" aria-level="1">
       <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237dd3fc'/%3E%3Cstop offset='55%25' stop-color='%2316f2a6'/%3E%3Cstop offset='100%25' stop-color='%23f28a2d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M98.7 22.3C70.8 12.7 38.5 18.4 22.9 41.3 7.3 64.1 6.9 96 33 96c23.2 0 46.4-23.4 57.4-48.6 5.5-12.7 7.7-23.5 8.3-25.1Z'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='6' stroke-linecap='round' d='M36 74c16-8 36-28 47-50'/%3E%3C/svg%3E" alt="Hoja Super Zylo" loading="lazy"/>
       <span>Super Zylo</span>
     </div>
+  </header>
 
-    <div class="center">
-      <div class="label">Servicio</div>
-      <select id="servicio" style="max-width:260px"></select>
-      <button id="btnAgregarServicio" class="addserv" aria-label="Agregar servicio" title="Agregar servicio">+</button>
-      <button id="btnEliminarServicio" class="addserv remove" aria-label="Eliminar servicio" title="Eliminar servicio">−</button>
-    </div>
+  <section id="BarraServicio" class="center">
+    <div class="label">Servicio</div>
+    <select id="servicio" style="max-width:260px"></select>
+    <button id="btnAgregarServicio" class="addserv" aria-label="Agregar servicio" title="Agregar servicio">+</button>
+    <button id="btnEliminarServicio" class="addserv remove" aria-label="Eliminar servicio" title="Eliminar servicio">−</button>
+  </section>
 
-    <div class="content-grid">
-      <div class="form">
-        <div class="form-grid">
-          <div class="row">
-            <label for="nombre">Nombre</label>
-            <input id="nombre" placeholder="Escribe"/>
+  <main id="AppGrid">
+    <section id="Formulario" class="form">
+      <div class="form-grid">
+        <div class="row">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" placeholder="Escribe"/>
+        </div>
+        <div class="row">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="ej: cliente@mail.com"/>
+        </div>
+        <div class="row">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" placeholder="+51 …"/>
+        </div>
+        <div class="row">
+          <label for="inicio">Fecha</label>
+          <input id="inicio" type="date" />
+        </div>
+        <div class="row">
+          <label for="vence">Vence</label>
+          <input id="vence" type="date" />
+        </div>
+        <div class="row">
+          <label for="pin">PIN</label>
+          <div class="pin-wrap">
+            <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" />
+            <button type="button" class="eye" id="togglePin" aria-label="Mostrar/ocultar PIN">👁</button>
           </div>
-          <div class="row">
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="ej: cliente@mail.com"/>
-          </div>
-          <div class="row">
-            <label for="telefono">Teléfono</label>
-            <input id="telefono" placeholder="+51 …"/>
-          </div>
-          <div class="row">
-            <label for="inicio">Fecha</label>
-            <input id="inicio" type="date" />
-          </div>
-          <div class="row">
-            <label for="vence">Vence</label>
-            <input id="vence" type="date" />
-          </div>
-          <div class="row">
-            <label for="pin">PIN</label>
-            <div class="pin-wrap">
-              <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" />
-              <button type="button" class="eye" id="togglePin" aria-label="Mostrar/ocultar PIN">👁</button>
-            </div>
-          </div>
-          <div class="row">
-            <label for="categoria">Categoría</label>
-            <select id="categoria">
-              <option value="">Selecciona una opción</option>
-              <option>Premium</option>
-              <option>Estándar</option>
-              <option>Básico</option>
-            </select>
-          </div>
-          <div class="row span-2">
-            <label for="notas">Notas</label>
-            <textarea id="notas" placeholder="Plan, precio, usuario, etc."></textarea>
-          </div>
+        </div>
+        <div class="row">
+          <label for="categoria">Categoría</label>
+          <select id="categoria">
+            <option value="">Selecciona una opción</option>
+            <option>Premium</option>
+            <option>Estándar</option>
+            <option>Básico</option>
+          </select>
+        </div>
+        <div class="row span-2">
+          <label for="notas">Notas</label>
+          <textarea id="notas" placeholder="Plan, precio, usuario, etc."></textarea>
         </div>
       </div>
-      <aside class="side-card">
-        <h2>Acciones rápidas</h2>
-        <p>Guarda el nuevo cliente o limpia el formulario antes de continuar.</p>
-        <div class="actions">
-          <button class="btn primary" id="btnGuardar">Agregar</button>
-          <button class="btn ghost" id="btnLimpiar">Limpiar</button>
-        </div>
-        <div class="small" id="msg"></div>
-      </aside>
-    </div>
+    </section>
+    <aside id="AccionesRapidas" class="side-card">
+      <h2>Acciones rápidas</h2>
+      <p>Guarda el nuevo cliente o limpia el formulario antes de continuar.</p>
+      <div class="actions">
+        <button class="btn primary" id="btnGuardar">Agregar</button>
+        <button class="btn ghost" id="btnLimpiar">Limpiar</button>
+      </div>
+      <div class="small" id="msg"></div>
+    </aside>
 
     <!-- tabla -->
-    <section class="table-section">
+    <section id="TablaClientes" class="table-section">
       <div class="table-header">
         <h2>Clientes registrados</h2>
         <p>Consulta el listado completo y gestiona cada registro.</p>
@@ -412,7 +417,7 @@
         </table>
       </div>
     </section>
-  </div>
+  </main>
 
   <!-- ===== Modal Chat Gemini ===== -->
   <div id="chatModal" class="modal-backdrop" aria-hidden="true">
