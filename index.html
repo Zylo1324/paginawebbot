@@ -141,6 +141,7 @@
     #Header{grid-area:header;display:flex;flex-direction:column;align-items:center;gap:clamp(.75rem,2.5vw,1.5rem);text-align:center}
     #Header .pill{margin:0}
     #BarraServicio{grid-area:barra;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(.75rem,2.5vw,1.25rem);margin:0;padding:clamp(.5rem,2vw,1rem) clamp(.75rem,4vw,1.5rem)}
+    #BarraServicio select{flex:1 1 auto;width:min(100%,clamp(14rem,60vw,20rem))}
     #BarraServicio .label{font-size:clamp(.75rem,1.5vw,.875rem)}
     #Formulario{grid-area:formulario;display:flex;flex-direction:column;gap:clamp(1rem,2.5vw,1.5rem);padding:clamp(1.75rem,4vw,2.5rem)}
     #AccionesRapidas{grid-area:acciones;display:flex;flex-direction:column;gap:clamp(1rem,2.5vw,1.5rem);padding:clamp(1.5rem,3.5vw,2.25rem);height:fit-content}
@@ -152,14 +153,19 @@
 
     @media(min-width:640px){
       #AppGrid{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"header header" "barra barra" "formulario acciones" "tabla tabla"}
-      #BarraServicio{padding-inline:clamp(1rem,3vw,2rem)}
+      #BarraServicio{justify-content:flex-start;padding-inline:clamp(1rem,3vw,2rem)}
+      #BarraServicio select{width:min(100%,clamp(16rem,48vw,24rem))}
     }
     @media(min-width:1024px){
-      #AppGrid{grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);grid-template-areas:"header header" "barra acciones" "formulario acciones" "tabla tabla";column-gap:clamp(1.75rem,4vw,3rem)}
+      #AppGrid{grid-template-columns:minmax(0,1.85fr) minmax(0,1fr);grid-template-areas:"header header" "barra acciones" "formulario acciones" "tabla tabla";column-gap:clamp(1.75rem,4vw,3rem)}
+      #Header{align-items:flex-start;text-align:left}
+      #BarraServicio{justify-content:flex-start}
       #AccionesRapidas{position:sticky;top:clamp(1.5rem,4vw,3rem);align-self:start}
     }
     @media(min-width:1440px){
-      #AppGrid{grid-template-columns:minmax(0,2fr) minmax(0,1.1fr) minmax(0,1.8fr);grid-template-areas:"header header header" "barra barra acciones" "formulario formulario acciones" "tabla tabla tabla";column-gap:clamp(2rem,5vw,3.5rem)}
+      #AppGrid{grid-template-columns:minmax(0,1.6fr) minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"header header acciones" "barra formulario acciones" "tabla tabla acciones";column-gap:clamp(2rem,5vw,3.5rem)}
+      #Header{padding-inline:clamp(.5rem,2vw,1rem)}
+      #BarraServicio{padding-inline:clamp(1.25rem,2.5vw,2.5rem)}
     }
 
     /* ===== Servicio centrado ===== */
@@ -362,7 +368,7 @@
 
       <div id="BarraServicio" class="center">
         <div class="label">Servicio</div>
-        <select id="servicio" style="max-width:260px"></select>
+        <select id="servicio"></select>
         <button id="btnAgregarServicio" class="addserv" aria-label="Agregar servicio" title="Agregar servicio">+</button>
         <button id="btnEliminarServicio" class="addserv remove" aria-label="Eliminar servicio" title="Eliminar servicio">−</button>
       </div>
