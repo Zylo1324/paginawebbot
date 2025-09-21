@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zyl0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#000000; --ink:#f8fafc; --ink-soft:#d2d9e6; --muted:#9aa7bb;
+      --field:rgba(14,18,26,.85); --field-focus:rgba(20,26,36,.92); --border:rgba(255,255,255,.12);
+      --pill-bg:rgba(249,115,22,.18); --pill-ink:#ffd7a3; --btn:#f28a2d; --btn-ink:#1c130a;
+      --ghost:rgba(255,255,255,.06); --ghost-border:rgba(255,255,255,.18);
+      --ghost-hover-bg:rgba(255,255,255,.12); --ghost-active-bg:rgba(255,255,255,.18);
+      --ghost-hover-border:rgba(255,255,255,.26); --ghost-active-border:rgba(255,255,255,.32);
+      --ok:#4ade80; --warn:#fbbf24; --bad:#fb7185; --link:#7dd3fc;
+      --success:#16f2a6; --danger:#f97373; --shadow:0 30px 60px rgba(3,6,10,.55);
+      --toolbar-bg:rgba(6,9,15,.82);
+      --input-bg:rgba(255,255,255,.05);
+      --input-border:rgba(255,255,255,.14);
+      --input-focus-border:rgba(125,211,252,.6);
+      --input-focus-shadow:rgba(125,211,252,.2);
+      --card-bg:rgba(255,255,255,.06);
+      --table-card-bg:rgba(255,255,255,.05);
+      --table-border:rgba(255,255,255,.08);
+      --table-row-alt-bg:rgba(255,255,255,.03);
+      --table-row-hover-bg:rgba(125,211,252,.12);
+      --table-row-hover-shadow:inset 0 0 0 999px rgba(5,9,15,.12);
+      --menu-bg:rgba(10,14,22,.96);
+      --menu-hover-bg:rgba(255,255,255,.08);
+      --modal-bg:rgba(10,14,22,.92);
+      --backdrop-bg:rgba(3,6,11,.78);
+      --chat-log-bg:rgba(255,255,255,.05);
+      --ai-bubble-bg:rgba(15,20,28,.92);
+      --ai-bubble-border:rgba(255,255,255,.12);
+      --eye-bg:rgba(255,255,255,.08);
+      --eye-border:rgba(255,255,255,.18);
+      --addserv-bg:rgba(255,255,255,.04);
+      --addserv-border:rgba(255,255,255,.26);
+      --addserv-hover-bg:rgba(242,138,45,.16);
+      --addserv-hover-border:rgba(242,138,45,.4);
+      --addserv-active-bg:rgba(242,138,45,.24);
+      --addserv-active-border:rgba(242,138,45,.5);
+      --tag-border:rgba(255,255,255,.2);
+      --tag-bg:rgba(255,255,255,.05);
+    }
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink)}
+    body{position:relative;min-height:100vh;overflow-x:hidden;padding-left:0;transition:padding-left .3s ease}
+    body::before{content:"";position:fixed;inset:-40%;background:radial-gradient(circle at 20% 20%,rgba(242,138,45,.08),rgba(0,0,0,0) 45%),radial-gradient(circle at 80% 10%,rgba(125,211,252,.06),rgba(0,0,0,0) 52%),radial-gradient(circle at 30% 80%,rgba(22,242,166,.04),rgba(0,0,0,0) 55%);pointer-events:none;z-index:-1;filter:blur(0px)}
+    body.theme-light{
+      color-scheme:light;
+      --bg:#f8fafc; --ink:#0f172a; --ink-soft:#1e293b; --muted:#475569;
+      --field:#ffffff; --field-focus:#f1f5f9; --border:rgba(148,163,184,.35);
+      --pill-bg:rgba(59,130,246,.14); --pill-ink:#1d4ed8;
+      --ghost:rgba(226,232,240,.8); --ghost-border:rgba(148,163,184,.6);
+      --ghost-hover-bg:rgba(148,163,184,.28); --ghost-active-bg:rgba(148,163,184,.36);
+      --ghost-hover-border:rgba(100,116,139,.6); --ghost-active-border:rgba(71,85,105,.6);
+      --shadow:0 18px 40px rgba(15,23,42,.12);
+      --toolbar-bg:rgba(255,255,255,.86);
+      --input-bg:#ffffff;
+      --input-border:rgba(148,163,184,.55);
+      --input-focus-border:rgba(37,99,235,.5);
+      --input-focus-shadow:rgba(37,99,235,.18);
+      --card-bg:#ffffff;
+      --table-card-bg:#ffffff;
+      --table-border:rgba(226,232,240,.9);
+      --table-row-alt-bg:rgba(226,232,240,.6);
+      --table-row-hover-bg:rgba(59,130,246,.12);
+      --table-row-hover-shadow:inset 0 0 0 999px rgba(15,23,42,.08);
+      --menu-bg:#ffffff;
+      --menu-hover-bg:rgba(226,232,240,.9);
+      --modal-bg:#ffffff;
+      --backdrop-bg:rgba(15,23,42,.35);
+      --chat-log-bg:#f8fafc;
+      --ai-bubble-bg:#e2e8f0;
+      --ai-bubble-border:rgba(148,163,184,.4);
+      --eye-bg:#e2e8f0;
+      --eye-border:rgba(148,163,184,.7);
+      --addserv-bg:#e2e8f0;
+      --addserv-border:rgba(148,163,184,.6);
+      --addserv-hover-bg:rgba(59,130,246,.15);
+      --addserv-hover-border:rgba(59,130,246,.45);
+      --addserv-active-bg:rgba(59,130,246,.22);
+      --addserv-active-border:rgba(37,99,235,.6);
+      --tag-border:rgba(148,163,184,.6);
+      --tag-bg:#e2e8f0;
+    }
+    body.theme-light::before{
+      background:radial-gradient(circle at 20% 20%,rgba(59,130,246,.15),rgba(148,163,184,0) 45%),
+                 radial-gradient(circle at 80% 10%,rgba(16,185,129,.12),rgba(148,163,184,0) 52%),
+                 radial-gradient(circle at 30% 80%,rgba(249,115,22,.12),rgba(148,163,184,0) 55%);
+    }
+    a{color:inherit}
+
+    body.sidebar-expanded{padding-left:260px}
+    /* ===== Sidebar y lanzador flotante ===== */
+    .sidebar-launcher{position:fixed;top:20px;left:20px;width:54px;height:54px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:var(--card-bg);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;z-index:60;box-shadow:0 18px 36px rgba(0,0,0,.45);backdrop-filter:blur(18px);transition:left .3s ease,transform .2s ease,box-shadow .2s ease,background-color .2s ease,border-color .2s ease}
+    .sidebar-launcher:hover,.sidebar-launcher:focus-visible{transform:translateY(-1px);box-shadow:0 24px 40px rgba(0,0,0,.5);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.26)}
+    .sidebar-launcher:active{transform:translateY(0);box-shadow:0 14px 28px rgba(0,0,0,.55)}
+    .sidebar-launcher:focus-visible{outline:2px solid rgba(125,211,252,.35);outline-offset:3px}
+    .sidebar-launcher.is-open{background:var(--btn);color:var(--btn-ink);border-color:rgba(255,255,255,.2);box-shadow:0 24px 44px rgba(0,0,0,.5)}
+    .sidebar-launcher.is-open:hover,.sidebar-launcher.is-open:focus-visible{background:#ffa24d}
+    body.sidebar-expanded .sidebar-launcher{left:220px}
+    .sidebar{position:fixed;inset:0 auto 0 0;width:260px;background:var(--card-bg);border-right:1px solid var(--border);box-shadow:20px 0 40px rgba(0,0,0,.35);padding:60px 20px 20px;display:flex;flex-direction:column;z-index:30;transition:transform .3s ease,box-shadow .3s ease;overflow:hidden;transform:translateX(-100%)}
+    .sidebar.pinned,.sidebar.peek{transform:translateX(0)}
+    .sidebar.pinned,.sidebar.peek{box-shadow:24px 0 44px rgba(0,0,0,.4)}
+    .sidebar .sidebar-content{position:relative;height:100%;overflow-y:auto;padding-right:6px}
+    .sidebar .label{transition:opacity .2s ease}
+    .btn{border:0;border-radius:14px;padding:10px 16px;cursor:pointer;font-weight:600;transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease,color .2s ease;color:var(--ink)}
+    .btn.ghost{background:var(--ghost);border:1px solid var(--ghost-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+    .btn.primary{background:var(--btn);color:var(--btn-ink);box-shadow:0 12px 24px rgba(242,138,45,.35)}
+    .btn:hover,.btn:focus-visible{box-shadow:0 14px 28px rgba(5,9,15,.45);transform:translateY(-1px)}
+    .btn:active{transform:translateY(0);box-shadow:0 6px 12px rgba(5,9,15,.6)}
+    .btn.ghost:hover,.btn.ghost:focus-visible{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.26)}
+    .btn.ghost:active{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.32)}
+    .btn.primary:hover,.btn.primary:focus-visible{background:#ffa24d}
+    .btn.primary:active{background:#f28a2d}
+    .btn:focus-visible{outline:2px solid rgba(125,211,252,.45);outline-offset:3px}
+    .linklike{background:none;border:0;color:var(--link);cursor:pointer;padding:0;font-weight:600;position:relative;transition:color .2s ease}
+    .linklike::after{content:"";position:absolute;left:0;bottom:-2px;width:100%;height:2px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+    .linklike:hover,.linklike:focus-visible{color:#bae6fd}
+    .linklike:hover::after,.linklike:focus-visible::after{transform:scaleX(1)}
+    .linklike:active{color:#38bdf8}
+    .linklike:active::after{transform:scaleX(1)}
+
+    /* ===== Layout ===== */
+    .wrap{width:min(1200px,92vw);margin:0 auto;padding:36px 18px 80px;position:relative;z-index:0}
+    .pill{display:block;width:max-content;margin:0 auto 14px;padding:6px 14px;border-radius:999px;background:var(--pill-bg);color:var(--pill-ink);border:1px solid rgba(255,255,255,.24);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .hero-brand{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:clamp(12px,3vw,28px);margin:6px 0 24px;text-align:center}
+    .hero-brand img{width:clamp(64px,16vw,132px);height:auto;flex-shrink:0;filter:drop-shadow(0 18px 36px rgba(0,0,0,.55));border-radius:24px}
+    .hero-brand span{display:block;font-weight:800;letter-spacing:-0.02em;color:var(--ink);font-size:clamp(54px,16vw,144px);line-height:.95;text-shadow:0 12px 32px rgba(0,0,0,.55);text-transform:uppercase}
+    @media(max-width:520px){
+      .hero-brand span{font-size:clamp(42px,20vw,96px)}
+    }
+
+    /* ===== Servicio centrado ===== */
+    .center{display:flex;justify-content:center;align-items:center;gap:10px;margin:8px 0 20px}
+    .center .label{color:var(--ink-soft)}
+    .addserv{border:1px dashed rgba(255,255,255,.26);background:rgba(255,255,255,.04);color:var(--ink);padding:8px 12px;border-radius:12px;font-size:15px;min-width:40px;text-align:center;transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease,color .2s ease}
+    .addserv:hover,.addserv:focus-visible{background:rgba(242,138,45,.16);border-color:rgba(242,138,45,.4);box-shadow:0 10px 24px rgba(5,9,15,.4);transform:translateY(-1px)}
+    .addserv:active{background:rgba(242,138,45,.24);border-color:rgba(242,138,45,.5);transform:translateY(0);box-shadow:0 6px 16px rgba(5,9,15,.6)}
+    .addserv:focus-visible{outline:2px solid rgba(242,138,45,.35);outline-offset:2px}
+    .addserv.remove{border-color:rgba(251,113,133,.45);color:#fecdd3;background:rgba(248,113,113,.16)}
+
+    /* ===== Form (labels arriba) ===== */
+    .content-grid{display:grid;gap:24px;margin-top:32px}
+    @media(min-width:960px){
+      .content-grid{grid-template-columns:minmax(0,2fr)minmax(0,1fr)}
+    }
+    .form{background:rgba(255,255,255,.06);border-radius:20px;border:1px solid var(--border);padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(22px)}
+    .form-grid{display:grid;gap:16px}
+    @media(min-width:720px){
+      .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    .row{display:flex;flex-direction:column;gap:6px}
+    .form-grid .row{min-width:0}
+    .span-2{grid-column:1 / -1}
+    .row label{color:var(--ink-soft);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+    input,select,textarea{width:100%;padding:14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:var(--field);color:var(--ink);outline:none;transition:.15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    input::placeholder,textarea::placeholder{color:var(--muted)}
+    input:focus,select:focus,textarea:focus{border-color:rgba(125,211,252,.6);background:var(--field-focus);box-shadow:0 0 0 3px rgba(125,211,252,.2)}
+    textarea{min-height:88px;resize:vertical}
+    .actions{display:flex;justify-content:center;gap:10px;margin-top:18px}
+    .small{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+    .side-card{background:rgba(255,255,255,.06);border-radius:20px;border:1px solid var(--border);padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(22px);display:flex;flex-direction:column;gap:18px}
+    .side-card h2{margin:0;font-size:18px;color:var(--ink);font-weight:700}
+    .side-card p{margin:0;color:var(--muted);font-size:14px}
+    .side-card .actions{flex-direction:column;justify-content:flex-start}
+    .side-card .actions .btn{width:100%}
+    .side-card .small{text-align:left;margin-top:0}
+    .pin-wrap{position:relative}
+    .pin-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:var(--ink);border-radius:10px;padding:6px 8px;cursor:pointer;transition:background-color .2s ease,border-color .2s ease}
+    .pin-wrap .eye:hover,.pin-wrap .eye:focus-visible{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.28)}
+    .pin-wrap .eye:focus-visible{outline:2px solid rgba(125,211,252,.35);outline-offset:2px}
+
+    /* ===== Tabla ===== */
+    .table-section{margin-top:40px;display:flex;flex-direction:column;gap:18px}
+    .table-header{display:flex;flex-direction:column;gap:6px}
+    @media(min-width:720px){
+      .table-header{flex-direction:row;align-items:flex-end;justify-content:space-between}
+    }
+    .table-header h2{margin:0;font-size:22px;font-weight:700;color:var(--ink);text-shadow:0 10px 20px rgba(0,0,0,.35)}
+    .table-header p{margin:0;color:var(--muted);font-size:14px}
+    .table-card{position:relative;background:rgba(255,255,255,.05);border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:visible;backdrop-filter:blur(18px)}
+    table{width:100%;border-collapse:separate;border-spacing:0;border-radius:inherit}
+    th,td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
+    th{text-align:left;color:var(--muted);font-weight:700;letter-spacing:.08em;font-size:12px;text-transform:uppercase}
+    td{color:var(--ink);font-weight:500}
+    tbody tr{transition:background-color .2s ease,box-shadow .2s ease}
+    tbody tr:nth-child(even){background:rgba(255,255,255,.03)}
+    tbody tr:hover{background:rgba(125,211,252,.12);box-shadow:inset 0 0 0 999px rgba(5,9,15,.12)}
+    thead th:first-child{border-top-left-radius:20px}
+    thead th:last-child{border-top-right-radius:20px}
+    tbody tr:last-child td:first-child{border-bottom-left-radius:20px}
+    tbody tr:last-child td:last-child{border-bottom-right-radius:20px}
+    .table-card th,.table-card td{background-clip:padding-box}
+    .tag{font-size:12px;padding:4px 10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:var(--ink);backdrop-filter:blur(12px)}
+    .tag.ok{color:var(--ok);background:rgba(74,222,128,.16);border-color:rgba(74,222,128,.38)}
+    .tag.warn{color:var(--warn);background:rgba(251,191,36,.16);border-color:rgba(251,191,36,.38)}
+    .tag.bad{color:var(--bad);background:rgba(251,113,133,.2);border-color:rgba(251,113,133,.4)}
+
+    /* ===== Kebab ⋯ menú ===== */
+    .menu-wrap{position:relative;display:inline-block}
+    .kebab{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:12px;padding:6px 10px;cursor:pointer;line-height:1;color:var(--ink);transition:background-color .2s ease,border-color .2s ease}
+    .kebab .dots{letter-spacing:2px;font-size:18px;color:var(--ink-soft)}
+    .kebab:focus{outline:2px solid rgba(125,211,252,.35)}
+    .kebab:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+    .menu{position:absolute;right:0;top:calc(100% + 8px);background:rgba(10,14,22,.96);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);min-width:180px;padding:8px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;z-index:50;backdrop-filter:blur(18px)}
+    .menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+    .menu-item{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(--ink);transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+    .menu-item:hover{background:rgba(255,255,255,.08)}
+    .menu-item.danger{color:var(--bad);border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.12)}
+    .menu-item.danger:hover{background:rgba(251,113,133,.2);border-color:rgba(251,113,133,.5)}
+
+    /* ===== Modales ===== */
+    .modal-backdrop{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(3,6,11,.78);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease;z-index:100;backdrop-filter:blur(12px)}
+    .modal-backdrop.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+    .modal{background:rgba(10,14,22,.92);border:1px solid var(--border);border-radius:18px;width:min(760px,96vw);max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow);color:var(--ink);backdrop-filter:blur(22px)}
+    .modal header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .modal .body{padding:16px 18px;color:var(--ink)}
+
+    /* ===== Chat (Gemini) ===== */
+    .section-head{font-weight:700;margin-bottom:8px;color:var(--ink);text-shadow:0 10px 24px rgba(0,0,0,.45)}
+    .chat-log{height:260px;overflow:auto;border:1px solid var(--border);border-radius:16px;padding:14px;background:var(--chat-log-bg);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(14px)}
+    .chat-msg{margin:8px 0;display:flex}
+    .chat-msg.user{justify-content:flex-end}
+    .chat-msg .bubble{max-width:85%;padding:10px 12px;border-radius:12px;white-space:pre-wrap}
+    .chat-msg.user .bubble{background:linear-gradient(135deg,#f28a2d,#f59e0b);color:#1a1205;border:1px solid rgba(255,255,255,.18);box-shadow:0 14px 32px rgba(242,138,45,.35)}
+    .chat-msg.ai .bubble{background:var(--ai-bubble-bg);border:1px solid var(--ai-bubble-border);color:var(--ink);box-shadow:0 10px 24px rgba(0,0,0,.4)}
+
+    /* ===== Tokens de tema ===== */
+    .sidebar-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+    .sidebar-list li{display:flex;flex-direction:column;gap:8px;color:var(--ink)}
+    .sidebar-list li button.btn{align-self:flex-start}
+    .auth-controls{gap:12px}
+    .sidebar input,.sidebar select{border:1px solid var(--input-border);background:var(--input-bg);color:var(--ink)}
+    .sidebar-search{position:relative;display:flex;align-items:center}
+    .sidebar-search-icon{position:absolute;left:14px;display:flex;align-items:center;justify-content:center;color:var(--muted);pointer-events:none;font-size:16px}
+    .sidebar-search input{padding-left:42px}
+    .sidebar-search:focus-within .sidebar-search-icon{color:var(--ink)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .btn.ghost:hover,.btn.ghost:focus-visible{background:var(--ghost-hover-bg);border-color:var(--ghost-hover-border)}
+    .btn.ghost:active{background:var(--ghost-active-bg);border-color:var(--ghost-active-border)}
+    .pill{border:1px solid var(--border)}
+    .addserv{border:1px dashed var(--addserv-border);background:var(--addserv-bg)}
+    .addserv:hover,.addserv:focus-visible{background:var(--addserv-hover-bg);border-color:var(--addserv-hover-border)}
+    .addserv:active{background:var(--addserv-active-bg);border-color:var(--addserv-active-border)}
+    .form,.side-card{background:var(--card-bg)}
+    input,select,textarea{border:1px solid var(--input-border);background:var(--field)}
+    input:focus,select:focus,textarea:focus{border-color:var(--input-focus-border);background:var(--field-focus);box-shadow:0 0 0 3px var(--input-focus-shadow)}
+    .pin-wrap .eye{border:1px solid var(--eye-border);background:var(--eye-bg)}
+    .pin-wrap .eye:hover,.pin-wrap .eye:focus-visible{background:var(--ghost-hover-bg);border-color:var(--ghost-hover-border)}
+    .table-card{background:var(--table-card-bg)}
+    th,td{border-bottom:1px solid var(--table-border)}
+    tbody tr:nth-child(even){background:var(--table-row-alt-bg)}
+    tbody tr:hover{background:var(--table-row-hover-bg);box-shadow:var(--table-row-hover-shadow)}
+    .tag{border:1px solid var(--tag-border);background:var(--tag-bg)}
+    .menu{background:var(--menu-bg)}
+    .menu-item:hover{background:var(--menu-hover-bg)}
+    .menu-item[aria-checked="true"]{background:var(--ghost);border:1px solid var(--ghost-border);font-weight:600}
+    .modal-backdrop{background:var(--backdrop-bg)}
+    .modal{background:var(--modal-bg)}
+    .theme-switcher{position:relative}
+    .theme-btn{display:flex;align-items:center;gap:8px;white-space:nowrap}
+    .theme-btn-label{display:flex;align-items:center;gap:6px}
+    .theme-btn-icon{font-size:12px;opacity:.8}
+
+    @media(max-width:960px){ body.sidebar-expanded{padding-left:0} }
+    @media(max-width:768px){
+      .sidebar{box-shadow:0 0 0 rgba(0,0,0,0)}
+      .sidebar.pinned,.sidebar.peek{box-shadow:20px 0 40px rgba(0,0,0,.35)}
+      body.sidebar-expanded .sidebar-launcher{left:20px}
+    }
+  </style>
+</head>
+<body>
+  <button type="button" id="sidebarLauncher" class="sidebar-launcher" aria-controls="sidebar" aria-label="Abrir navegación" aria-expanded="false">☰</button>
+
+  <aside class="sidebar" id="sidebar" data-pinned="false" aria-hidden="true">
+    <div class="sidebar-content">
+      <nav aria-label="Controles principales">
+        <ul class="sidebar-list">
+          <li>
+            <div class="sidebar-search">
+              <span class="sidebar-search-icon" aria-hidden="true">🔍</span>
+              <label class="sr-only" for="q">Buscar</label>
+              <input id="q" placeholder="Buscar por nombre, email o servicio…"/>
+            </div>
+          </li>
+          <li>
+            <label class="label" for="filterEstado">Estado</label>
+            <select id="filterEstado">
+              <option value="">Todos</option>
+              <option value="vigente">Vigentes</option>
+              <option value="pronto">Por vencer (≤7 días)</option>
+              <option value="vencida">Vencidas</option>
+            </select>
+          </li>
+          <li>
+            <div class="menu-wrap theme-switcher">
+              <button type="button" class="btn ghost theme-btn label" id="btnTheme" data-menu-toggle aria-haspopup="menu" aria-expanded="false">
+                <span class="theme-btn-label label">Tema: <span id="themeLabel">Oscuro</span></span>
+                <span class="theme-btn-icon" aria-hidden="true">▾</span>
+              </button>
+              <div class="menu" id="themeMenu" role="menu">
+                <button class="menu-item" type="button" role="menuitemradio" data-theme-option="dark" aria-checked="true">Oscuro</button>
+                <button class="menu-item" type="button" role="menuitemradio" data-theme-option="light" aria-checked="false">Claro</button>
+              </div>
+            </div>
+          </li>
+          <li class="auth-controls">
+            <button class="btn ghost label" id="btnAuthOpen">Acceder</button>
+            <button class="btn ghost label" id="btnLogout" style="display:none">Cerrar sesión</button>
+            <span id="userInfo" class="pill label" style="display:none"></span>
+          </li>
+          <li>
+            <button class="btn ghost label" id="btnChatOpen" title="Abrir chat con Gemini">Chat Gemini</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="wrap">
+    <span class="pill">importante</span>
+    <div class="hero-brand" role="heading" aria-level="1">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237dd3fc'/%3E%3Cstop offset='55%25' stop-color='%2316f2a6'/%3E%3Cstop offset='100%25' stop-color='%23f28a2d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M98.7 22.3C70.8 12.7 38.5 18.4 22.9 41.3 7.3 64.1 6.9 96 33 96c23.2 0 46.4-23.4 57.4-48.6 5.5-12.7 7.7-23.5 8.3-25.1Z'/%3E%3Cpath fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='6' stroke-linecap='round' d='M36 74c16-8 36-28 47-50'/%3E%3C/svg%3E" alt="Hoja Super Zylo" loading="lazy"/>
+      <span>Super Zylo</span>
+    </div>
+
+    <div class="center">
+      <div class="label">Servicio</div>
+      <select id="servicio" style="max-width:260px"></select>
+      <button id="btnAgregarServicio" class="addserv" aria-label="Agregar servicio" title="Agregar servicio">+</button>
+      <button id="btnEliminarServicio" class="addserv remove" aria-label="Eliminar servicio" title="Eliminar servicio">−</button>
+    </div>
+
+    <div class="content-grid">
+      <div class="form">
+        <div class="form-grid">
+          <div class="row">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" placeholder="Escribe"/>
+          </div>
+          <div class="row">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="ej: cliente@mail.com"/>
+          </div>
+          <div class="row">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" placeholder="+51 …"/>
+          </div>
+          <div class="row">
+            <label for="inicio">Fecha</label>
+            <input id="inicio" type="date" />
+          </div>
+          <div class="row">
+            <label for="vence">Vence</label>
+            <input id="vence" type="date" />
+          </div>
+          <div class="row">
+            <label for="pin">PIN</label>
+            <div class="pin-wrap">
+              <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" placeholder="••••" />
+              <button type="button" class="eye" id="togglePin" aria-label="Mostrar/ocultar PIN">👁</button>
+            </div>
+          </div>
+          <div class="row">
+            <label for="categoria">Categoría</label>
+            <select id="categoria">
+              <option value="">Selecciona una opción</option>
+              <option>Premium</option>
+              <option>Estándar</option>
+              <option>Básico</option>
+            </select>
+          </div>
+          <div class="row span-2">
+            <label for="notas">Notas</label>
+            <textarea id="notas" placeholder="Plan, precio, usuario, etc."></textarea>
+          </div>
+        </div>
+      </div>
+      <aside class="side-card">
+        <h2>Acciones rápidas</h2>
+        <p>Guarda el nuevo cliente o limpia el formulario antes de continuar.</p>
+        <div class="actions">
+          <button class="btn primary" id="btnGuardar">Agregar</button>
+          <button class="btn ghost" id="btnLimpiar">Limpiar</button>
+        </div>
+        <div class="small" id="msg"></div>
+      </aside>
+    </div>
+
+    <!-- tabla -->
+    <section class="table-section">
+      <div class="table-header">
+        <h2>Clientes registrados</h2>
+        <p>Consulta el listado completo y gestiona cada registro.</p>
+      </div>
+      <div class="table-card">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Nombre</th><th>Email</th><th>Servicio</th>
+              <th>Inicio</th><th>Vence</th><th>Estado</th><th>Días</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Modal Chat Gemini ===== -->
+  <div id="chatModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="Chat Gemini">
+      <header>
+        <strong>Chat Gemini</strong>
+        <button class="btn ghost" id="btnChatClose">Cerrar</button>
+      </header>
+      <div class="body">
+        <div id="chatLog" class="chat-log"></div>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px">
+          <input id="chatInput" placeholder="Escribe un mensaje…"/>
+          <button class="btn primary" id="btnSend">Enviar</button>
+        </div>
+        <div class="small" style="text-align:left;margin-top:6px">
+          <label><input type="checkbox" id="shareSecrets"> Compartir datos sensibles (PIN y notas)</label>
+        </div>
+        <div class="small">Conexión directa a Gemini desde el navegador (API key expuesta).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Acceso (login/registro en 1) ===== -->
+  <div id="authModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="Acceder">
+      <header>
+        <strong>Acceder</strong>
+        <button class="btn ghost" id="btnAuthClose">Cancelar</button>
+      </header>
+      <div class="body">
+        <div class="row">
+          <label for="authEmail">Correo</label>
+          <input id="authEmail" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email">
+        </div>
+        <div class="row">
+          <label for="authPass">Contraseña</label>
+          <div class="pin-wrap">
+            <input id="authPass" type="password" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="eye" id="toggleAuthPass" aria-label="Mostrar/ocultar contraseña">👁</button>
+          </div>
+        </div>
+
+        <div class="small" style="text-align:left;margin-top:0">
+          <button id="btnForgot" class="linklike" type="button">¿Olvidaste tu contraseña?</button>
+        </div>
+
+        <div class="actions" style="justify-content:flex-end">
+          <button class="btn primary" id="btnAuthSubmit">Continuar</button>
+        </div>
+        <div class="small" id="authHelp">Si es tu primera vez, crearemos tu cuenta automáticamente.</div>
+        <div class="small" id="authError" style="color:var(--danger)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<script>
+/* ====== CONFIG Supabase ====== */
+const SUPABASE_URL = 'https://sevhzvoibsuqcjroefgb.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNldmh6dm9pYnN1cWNqcm9lZmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0MzUxMzQsImV4cCI6MjA3NDAxMTEzNH0.whFwTL-5UuwwpsZBzs7auzMm8t2mvZ1ldndPkstDDDE';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ===== helpers y refs ===== */
+const $=s=>document.querySelector(s);
+const tbody=$('#tabla tbody');
+const f={nombre:$('#nombre'),email:$('#email'),telefono:$('#telefono'),
+servicio:$('#servicio'),inicio:$('#inicio'),vence:$('#vence'),notas:$('#notas'),
+categoria:$('#categoria'), pin:$('#pin')};
+const q=$('#q'), filterEstado=$('#filterEstado'), msg=$('#msg');
+const sidebar=document.getElementById('sidebar');
+const sidebarLauncher=document.getElementById('sidebarLauncher');
+const sidebarMobileQuery=window.matchMedia? window.matchMedia('(max-width: 768px)') : { matches:false };
+const themeButton=document.getElementById('btnTheme');
+const themeLabel=document.getElementById('themeLabel');
+const themeMenu=document.getElementById('themeMenu');
+const themeOptions=Array.from(themeMenu?.querySelectorAll('[data-theme-option]')||[]);
+const THEME_STORAGE_KEY='ui_theme_mode_v1';
+let editId=null;
+
+function isMobileSidebar(){ return sidebarMobileQuery.matches; }
+
+function syncSidebarResponsiveState(){
+  if(!sidebar) return;
+  const pinned = sidebar.dataset.pinned === 'true';
+  sidebar.classList.toggle('pinned', pinned);
+  const isVisible = pinned || (!isMobileSidebar() && sidebar.classList.contains('peek'));
+  sidebar.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+  if(sidebarLauncher){
+    sidebarLauncher.setAttribute('aria-expanded', pinned ? 'true' : 'false');
+    sidebarLauncher.textContent = pinned ? '✕' : '☰';
+    sidebarLauncher.setAttribute('aria-label', pinned ? 'Cerrar navegación' : 'Abrir navegación');
+    sidebarLauncher.classList.toggle('is-open', pinned);
+  }
+  if(isMobileSidebar()){
+    document.body.classList.remove('sidebar-expanded');
+  }else{
+    document.body.classList.toggle('sidebar-expanded', pinned);
+  }
+}
+
+function setSidebarPinned(pinned){
+  if(!sidebar) return;
+  sidebar.dataset.pinned = String(pinned);
+  if(!pinned){
+    sidebar.classList.remove('peek');
+  }
+  syncSidebarResponsiveState();
+}
+
+function expandSidebarIfNeeded(){
+  if(!sidebar || isMobileSidebar()) return;
+  if(sidebar.dataset.pinned === 'true') return;
+  sidebar.classList.add('peek');
+  sidebar.setAttribute('aria-hidden','false');
+}
+
+function collapseSidebarIfNeeded(){
+  if(!sidebar) return;
+  if(sidebar.dataset.pinned === 'true') return;
+  sidebar.classList.remove('peek');
+  sidebar.setAttribute('aria-hidden','true');
+}
+
+if(sidebar){
+  syncSidebarResponsiveState();
+  collapseSidebarIfNeeded();
+}
+
+const handleSidebarMediaChange = ()=>{
+  syncSidebarResponsiveState();
+  collapseSidebarIfNeeded();
+};
+
+function toast(t){ msg.textContent=t; setTimeout(()=>msg.textContent='',2200); }
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#039;' }[m]))}
+function fmt(iso){return iso? new Date(iso+'T00:00:00').toLocaleDateString(): '-'}
+
+function diasRestantes(iso){
+  if(!iso) return null; const h=new Date();h.setHours(0,0,0,0);
+  const d=new Date(iso); d.setHours(0,0,0,0);
+  return Math.round((d-h)/(1000*60*60*24));
+}
+function estadoDe(vence){
+  if(!vence) return ''; const d=diasRestantes(vence);
+  if(d<0) return 'vencida'; if(d<=7) return 'pronto'; return 'vigente';
+}
+function limpiar(){ editId=null; for(const k in f){ if('value' in f[k]) f[k].value=''; } renderServicios(); msg.textContent=''; }
+
+function updateThemeControls(mode){
+  if(themeLabel){ themeLabel.textContent = mode==='light' ? 'Claro' : 'Oscuro'; }
+  themeOptions.forEach(btn=>{
+    const isActive = btn.dataset.themeOption === mode;
+    btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+  });
+  if(themeButton){
+    themeButton.setAttribute('data-selected-theme', mode);
+    themeButton.setAttribute('aria-label', `Tema actual: ${mode==='light'?'Claro':'Oscuro'}`);
+  }
+}
+
+function applyTheme(mode,{persist=true}={}){
+  const normalized = mode==='light' ? 'light' : 'dark';
+  document.body.classList.toggle('theme-light', normalized==='light');
+  if(persist){
+    try{ localStorage.setItem(THEME_STORAGE_KEY, normalized); }catch(err){ console.warn('No se pudo guardar el tema', err); }
+  }
+  updateThemeControls(normalized);
+  return normalized;
+}
+
+const storedTheme = (()=>{ try{ return localStorage.getItem(THEME_STORAGE_KEY); }catch{ return null; } })();
+const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initialTheme = storedTheme==='light' ? 'light' : (storedTheme==='dark' ? 'dark' : (prefersDark ? 'dark' : 'light'));
+applyTheme(initialTheme,{persist:false});
+
+/* ====== Semillas / almacenamiento local de servicios (fallback si no hay sesión) ====== */
+const defaultServices = ["ChatGPT","Gemini","YouTube","Disney"];
+let localServices = JSON.parse(localStorage.getItem('services_local') || 'null');
+if (!Array.isArray(localServices) || !localServices.length) {
+  localServices = defaultServices.slice();
+  localStorage.setItem('services_local', JSON.stringify(localServices));
+}
+function saveLocalServices() {
+  localServices = Array.from(new Set(localServices))
+    .filter(Boolean)
+    .sort((a,b)=>a.localeCompare(b));
+  localStorage.setItem('services_local', JSON.stringify(localServices));
+}
+
+const LOCAL_CLIENTS_KEY = 'clients_local_v1';
+function loadLocalClients(){
+  try {
+    const raw = localStorage.getItem(LOCAL_CLIENTS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      const filtered = parsed
+        .filter(x => x && typeof x === 'object')
+        .map(x => ({ ...x }));
+      filtered.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+      return filtered;
+    }
+  } catch (err) {
+    console.warn('No se pudieron cargar clientes locales', err);
+  }
+  return [];
+}
+let localClients = loadLocalClients();
+function saveLocalClients(){
+  try {
+    localClients = (Array.isArray(localClients)? localClients:[])
+      .filter(x => x && typeof x === 'object')
+      .map(x => ({ ...x }))
+      .sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+    localStorage.setItem(LOCAL_CLIENTS_KEY, JSON.stringify(localClients));
+  } catch (err) {
+    console.warn('No se pudieron guardar clientes locales', err);
+  }
+}
+
+/* ====== AUTH (Supabase) — modal unificado ====== */
+let currentUser = null;
+
+sb.auth.onAuthStateChange((_e, session)=>{
+  currentUser = session?.user || null;
+  authUpdateUI();
+  // Sincroniza local → nube si la nube está vacía
+  syncLocalServicesToCloudIfEmpty().finally(()=>{
+    renderServicios().then(renderTabla);
+  });
+});
+
+function authUpdateUI(){
+  const badge = document.getElementById('userInfo');
+  const btnAuthOpen = document.getElementById('btnAuthOpen');
+  const btnLogout = document.getElementById('btnLogout');
+  if(currentUser){
+    badge.style.display='inline-block';
+    badge.textContent = currentUser.email;
+    btnAuthOpen.style.display='none';
+    btnLogout.style.display='inline-block';
+  }else{
+    badge.style.display='none';
+    btnAuthOpen.style.display='inline-block';
+    btnLogout.style.display='none';
+  }
+}
+
+// ----- Modal helpers -----
+const authModal    = document.getElementById('authModal');
+const btnAuthOpen  = document.getElementById('btnAuthOpen');
+const btnAuthClose = document.getElementById('btnAuthClose');
+const btnAuthSubmit= document.getElementById('btnAuthSubmit');
+const authEmailEl  = document.getElementById('authEmail');
+const authPassEl   = document.getElementById('authPass');
+const authErrorEl  = document.getElementById('authError');
+const toggleAuthPass = document.getElementById('toggleAuthPass');
+const btnForgot    = document.getElementById('btnForgot');
+
+function openAuth(){ authErrorEl.textContent=''; authErrorEl.style.color='var(--danger)'; authModal.classList.add('open'); authModal.setAttribute('aria-hidden','false'); setTimeout(()=>authEmailEl?.focus(), 0); }
+function closeAuth(){ authModal.classList.remove('open'); authModal.setAttribute('aria-hidden','true'); }
+
+btnAuthOpen?.addEventListener('click', openAuth);
+btnAuthClose?.addEventListener('click', closeAuth);
+authModal?.addEventListener('click', (e)=>{ if(e.target===authModal) closeAuth(); });
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeAuth(); });
+
+toggleAuthPass?.addEventListener('click', ()=>{
+  const isPass = authPassEl.type==='password';
+  authPassEl.type = isPass? 'text':'password';
+  toggleAuthPass.textContent = isPass? '🙈':'👁';
+});
+
+sidebarLauncher?.addEventListener('click', ()=>{
+  if(!sidebar) return;
+  const nextPinned = sidebar.dataset.pinned !== 'true';
+  setSidebarPinned(nextPinned);
+});
+
+sidebar?.addEventListener('mouseenter', expandSidebarIfNeeded);
+sidebar?.addEventListener('mouseleave', collapseSidebarIfNeeded);
+sidebar?.addEventListener('focusin', expandSidebarIfNeeded);
+sidebar?.addEventListener('focusout', (event)=>{
+  if(!sidebar) return;
+  if(sidebar.contains(event.relatedTarget)) return;
+  collapseSidebarIfNeeded();
+});
+if(sidebarMobileQuery.addEventListener){
+  sidebarMobileQuery.addEventListener('change', handleSidebarMediaChange);
+}else if(sidebarMobileQuery.addListener){
+  sidebarMobileQuery.addListener(handleSidebarMediaChange);
+}
+document.addEventListener('keydown', (e)=>{
+  if(e.key!=='Escape') return;
+  if(!sidebar) return;
+  if(sidebar.dataset.pinned === 'true'){
+    setSidebarPinned(false);
+  }
+});
+
+// ----- Lógica unificada: registrar o iniciar sesión -----
+async function autoSignInOrUp(email, password) {
+  // 1) Intenta iniciar sesión primero
+  let { error } = await sb.auth.signInWithPassword({ email, password });
+  if (!error) return { ok: true };
+
+  // 2) Si falla, crea la cuenta (sin confirmación por email)
+  const { data, error: eUp } = await sb.auth.signUp({ email, password });
+  if (eUp) return { ok: false, message: eUp.message };
+
+  // 3) Por si la API no devolviera sesión, intenta loguear de nuevo
+  if (!data.session) {
+    const { error: eIn2 } = await sb.auth.signInWithPassword({ email, password });
+    if (eIn2) return { ok: false, message: eIn2.message };
+  }
+  return { ok: true };
+}
+
+btnAuthSubmit?.addEventListener('click', async () => {
+  const email = (authEmailEl.value || '').trim();
+  const pass  = (authPassEl.value || '').trim();
+  authErrorEl.textContent = '';
+  authErrorEl.style.color = 'var(--danger)';
+
+  if (!email || !pass) {
+    authErrorEl.textContent = 'Completa correo y contraseña.';
+    return;
+  }
+  btnAuthSubmit.disabled = true; btnAuthSubmit.textContent = 'Procesando…';
+  try {
+    const r = await autoSignInOrUp(email, pass);
+    if (!r.ok) {
+      authErrorEl.textContent = r.message || 'No se pudo acceder.';
+    } else {
+      closeAuth();
+      toast('¡Bienvenido!');
+    }
+  } catch (err) {
+    authErrorEl.textContent = err.message || 'Error inesperado.';
+  } finally {
+    btnAuthSubmit.disabled = false; btnAuthSubmit.textContent = 'Continuar';
+  }
+});
+
+document.getElementById('btnLogout')?.addEventListener('click', async ()=>{ await sb.auth.signOut(); });
+
+// ----- ¿Olvidaste tu contraseña? -----
+btnForgot?.addEventListener('click', async ()=>{
+  const email = (authEmailEl.value||'').trim();
+  authErrorEl.style.color = 'var(--danger)';
+  authErrorEl.textContent = '';
+  if(!email){ authErrorEl.textContent = 'Escribe tu correo arriba para enviarte el enlace.'; return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+  if(error){ authErrorEl.textContent = error.message || 'No se pudo enviar el correo de recuperación.'; return; }
+  authErrorEl.style.color = 'var(--success)';
+  authErrorEl.textContent = 'Te enviamos un correo para restablecer tu contraseña.';
+});
+
+/* ====== DB en la nube (Supabase) ====== */
+let cacheClientes = localClients.slice();
+let cacheServicios = [];
+
+const db = {
+  // CLIENTES
+  getAll(){ return currentUser ? cacheClientes.slice() : localClients.slice(); },
+  async fetchAll(){
+    if(!currentUser){
+      localClients = loadLocalClients();
+      cacheClientes = localClients.slice();
+      return cacheClientes.slice();
+    }
+    const { data, error } = await sb
+      .from('clients').select('*')
+      .eq('user_id', currentUser.id)
+      .order('nombre', { ascending:true });
+    if(error){ console.error(error); cacheClientes=[]; return cacheClientes; }
+    cacheClientes = data||[];
+    return cacheClientes.slice();
+  },
+
+  // *** saveOne robusto: UUID o BIGSERIAL ***
+  async saveOne(rec){
+    if(!currentUser){
+      localClients = loadLocalClients();
+      const recId = rec.id ?? crypto.randomUUID();
+      const idx = localClients.findIndex(x=>x.id===recId);
+      const payload = { ...(idx>=0? localClients[idx]:{}), ...rec, id: recId };
+      if(idx>=0) localClients[idx] = payload;
+      else localClients.push(payload);
+      localClients.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+      saveLocalClients();
+      cacheClientes = localClients.slice();
+      return payload;
+    }
+
+    const rowNoId = {
+      user_id: currentUser.id,
+      nombre:   rec.nombre,
+      email:    rec.email,
+      telefono: rec.telefono,
+      servicio: rec.servicio,
+      inicio:   rec.inicio,
+      vence:    rec.vence,
+      categoria:rec.categoria,
+      notas:    rec.notas,
+      pin:      rec.pin,
+      ts:       rec.ts
+    };
+
+    let data, error;
+    const hasId = rec.id!==undefined && rec.id!==null && `${rec.id}`.trim()!=='';
+
+    if (!hasId) {
+      ({ data, error } = await sb
+        .from('clients')
+        .insert(rowNoId)
+        .select()
+        .single());
+    } else {
+      ({ data, error } = await sb
+        .from('clients')
+        .update(rowNoId)
+        .eq('id', rec.id)
+        .select()
+        .single());
+
+      if (error) {
+        ({ data, error } = await sb
+          .from('clients')
+          .upsert({ ...rowNoId, id: rec.id }, { onConflict: 'id' })
+          .select()
+          .single());
+      }
+    }
+
+    if (error) throw error;
+
+    const i = cacheClientes.findIndex(x=>x.id===data.id);
+    if(i>=0) cacheClientes[i]=data; else cacheClientes.push(data);
+    cacheClientes.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+    return data;
+  },
+
+  async deleteOne(id){
+    if(!currentUser){
+      localClients = loadLocalClients().filter(x=>x && x.id!==id);
+      saveLocalClients();
+      cacheClientes = localClients.slice();
+      return;
+    }
+    const { error } = await sb.from('clients').delete().eq('id', id);
+    if(error) throw error;
+    cacheClientes = cacheClientes.filter(x=>x.id!==id);
+  },
+  async saveAll(arr){
+    if(!currentUser){
+      localClients = arr.map(x=>({ ...x }));
+      localClients.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+      saveLocalClients();
+      cacheClientes = localClients.slice();
+      return;
+    }
+    const rows = arr.map(x=>({ ...x, user_id: currentUser.id }));
+    const { error } = await sb.from('clients').upsert(rows, { onConflict:'id' });
+    if(error) throw error;
+    cacheClientes = arr.slice();
+  },
+
+  // ===== SERVICIOS con fallback local =====
+  getServicios(){ return currentUser ? cacheServicios.slice() : localServices.slice(); },
+
+  async fetchServicios(){
+    if (!currentUser) {
+      return localServices.slice();
+    }
+    const { data, error } = await sb
+      .from('services').select('name')
+      .eq('user_id', currentUser.id)
+      .order('name');
+    if(error){ console.error(error); cacheServicios = []; return []; }
+    cacheServicios = (data||[]).map(x=>x.name);
+    return cacheServicios.slice();
+  },
+
+  async replaceServicios(list){
+    if (!currentUser) {
+      localServices = list.slice();
+      saveLocalServices();
+      return;
+    }
+    const { data: curr } = await sb
+      .from('services').select('name')
+      .eq('user_id', currentUser.id);
+    const has = new Set((curr||[]).map(x=>x.name));
+    const want = new Set(list);
+    const toDel = [...has].filter(n=>!want.has(n));
+    if (toDel.length) {
+      await sb.from('services').delete().in('name', toDel).eq('user_id', currentUser.id);
+    }
+    const toIns = [...want].filter(n=>!has.has(n)).map(n=>({ user_id: currentUser.id, name:n }));
+    if (toIns.length) {
+      await sb.from('services').insert(toIns);
+    }
+    cacheServicios = list.slice();
+  }
+};
+
+/* ===== Sincroniza local → nube si la nube está vacía ===== */
+async function syncLocalServicesToCloudIfEmpty(){
+  if (!currentUser) return;
+  const cloud = await db.fetchServicios();
+  if (cloud.length === 0 && localServices.length) {
+    await db.replaceServicios(localServices);
+    localStorage.removeItem('services_local');
+  }
+}
+
+/* ====== UI dinámica ====== */
+async function renderServicios(sel){
+  const list = await db.fetchServicios();
+  const final = list.length ? list : defaultServices;
+  f.servicio.innerHTML = final.map(s=>`<option value="${s}">${s}</option>`).join('');
+  if(sel && final.includes(sel)) f.servicio.value=sel;
+  else if(final.length) f.servicio.value=final[0];
+  else f.servicio.value='';
+}
+async function renderTabla(){
+  const arr = await db.fetchAll();
+  const items=arr.filter(x=>coincide(x,q?.value)&&pasaEstado(x,filterEstado?.value));
+  tbody.innerHTML=items.map(x=>{
+    const d=diasRestantes(x.vence); const est=estadoDe(x.vence);
+    const tag=est==='vigente'?'ok':est==='pronto'?'warn':'bad';
+    const estTxt=est?est[0].toUpperCase()+est.slice(1):'-';
+    const diasTxt= d==null?'-':(d<0?`Vencido ${Math.abs(d)} d`:`Faltan ${d} d`);
+    return `<tr>
+      <td>${esc(x.nombre)}</td>
+      <td>${esc(x.email||'')}</td>
+      <td>${esc(x.servicio||'')}</td>
+      <td>${fmt(x.inicio)}</td>
+      <td>${fmt(x.vence)}</td>
+      <td>${est?`<span class="tag ${tag}">${estTxt}</span>`:'-'}</td>
+      <td>${diasTxt}</td>
+      <td style="text-align:right">
+        <div class="menu-wrap">
+          <button class="kebab" data-menu-toggle aria-haspopup="menu" aria-expanded="false"><span class="dots">⋯</span></button>
+          <div class="menu" role="menu">
+            <button class="menu-item" role="menuitem" data-action="edit" data-id="${x.id}">✎ Editar</button>
+            <button class="menu-item" role="menuitem" data-action="label" data-id="${x.id}">🏷 Etiqueta</button>
+            <button class="menu-item danger" role="menuitem" data-action="delete" data-id="${x.id}">🗑 Eliminar</button>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function coincide(x,qq){
+  qq=(qq||'').trim().toLowerCase(); if(!qq) return true;
+  return [x.nombre,x.email,x.servicio,x.telefono,x.categoria,x.notas]
+    .some(v=>(v||'').toLowerCase().includes(qq));
+}
+function pasaEstado(x,f){ if(!f) return true; return estadoDe(x.vence)===f; }
+
+$('#btnLimpiar').onclick=limpiar;
+
+// *** Agregar/editar cliente ***
+$('#btnGuardar').onclick = async ()=>{
+  const data={
+    nombre:f.nombre.value.trim(), email:f.email.value.trim(), telefono:f.telefono.value.trim(),
+    servicio:f.servicio.value, inicio:f.inicio.value, vence:f.vence.value,
+    categoria:f.categoria.value, notas:f.notas.value.trim(), pin:f.pin.value.trim(), ts:Date.now()
+  };
+  if(editId!==null && editId!==undefined){
+    data.id = editId;
+  }
+  if(!data.nombre){ toast('Escribe un nombre'); return; }
+  const wasGuest = !currentUser;
+  try{
+    await db.saveOne(data);
+    await renderTabla();
+    limpiar();
+    if(wasGuest && !currentUser){
+      toast('Guardado local ✓  Accede para sincronizar');
+    }else{
+      toast('Guardado ✓');
+    }
+  }catch(err){
+    const msgErr = err?.message || '';
+    if(/autentic/i.test(msgErr)){
+      toast('Debes iniciar sesión para guardar en la nube.');
+    }else{
+      toast(msgErr || 'No se pudo guardar.');
+    }
+  }
+};
+
+function editar(id){
+  const x=db.getAll().find(c=>c.id===id); if(!x) return; editId=x.id;
+  for(const k in f){ if(k in x) f[k].value=x[k]||''; }
+  msg.textContent='Editando… guarda para aplicar cambios';
+}
+async function borrar(id){
+  if(!confirm('¿Eliminar este cliente?')) return;
+  await db.deleteOne(id);
+  await renderTabla();
+}
+
+/* Menús (kebab + tema) */
+function closeAllMenus(except=null){
+  document.querySelectorAll('.menu.open').forEach(menu=>{
+    if(except && menu===except) return;
+    menu.classList.remove('open');
+    menu.previousElementSibling?.setAttribute('aria-expanded','false');
+  });
+}
+
+document.addEventListener('click',(e)=>{
+  const wrap=e.target.closest('.menu-wrap');
+  const toggle=e.target.closest('[data-menu-toggle]');
+  const item=e.target.closest('.menu-item');
+
+  if(!wrap && !item){
+    closeAllMenus();
+    return;
+  }
+
+  if(toggle){
+    const menu=toggle.nextElementSibling;
+    if(!menu || !menu.classList.contains('menu')) return;
+    const isOpen=menu.classList.contains('open');
+    if(isOpen){
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+    }else{
+      closeAllMenus(menu);
+      menu.classList.add('open');
+      toggle.setAttribute('aria-expanded','true');
+    }
+  }
+
+  if(item){
+    if(item.dataset.themeOption){
+      applyTheme(item.dataset.themeOption);
+    }else{
+      const id=item.dataset.id;
+      if(item.dataset.action==='edit') editar(id);
+      else if(item.dataset.action==='label') etiquetar(id);
+      else if(item.dataset.action==='delete') borrar(id);
+    }
+    closeAllMenus();
+  }
+});
+
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape') closeAllMenus();
+});
+
+/* ===== Botones + y − de servicios ===== */
+$('#btnAgregarServicio').onclick = async ()=>{
+  const nombre = (prompt('Nombre del nuevo servicio:') || '').trim();
+  if (!nombre) return;
+
+  const actuales = await db.fetchServicios();
+  if (!actuales.includes(nombre)) {
+    actuales.push(nombre);
+    actuales.sort((a,b)=>a.localeCompare(b));
+    await db.replaceServicios(actuales);
+
+    if (!currentUser) {
+      toast('Servicio agregado (local) ✓  Accede para guardar en la nube');
+    } else {
+      toast('Servicio agregado ✓');
+    }
+    await renderServicios(nombre);
+  } else {
+    await renderServicios(nombre);
+    toast('Ese servicio ya existe');
+  }
+};
+
+$('#btnEliminarServicio').onclick = async ()=>{
+  const current = f.servicio.value;
+  if (!current) { toast('No hay servicio seleccionado'); return; }
+
+  const actuales = await db.fetchServicios();
+  if (!actuales.includes(current)) { toast('Ese servicio no está en la lista'); return; }
+
+  if (!confirm(`¿Eliminar "${current}" de la lista de servicios?\n(No afecta a los clientes ya guardados).`)) return;
+
+  const nueva = actuales.filter(s => s !== current);
+  await db.replaceServicios(nueva);
+
+  if (!currentUser) {
+    toast('Servicio eliminado (local) ✓  Accede para guardar en la nube');
+  } else {
+    toast('Servicio eliminado ✓');
+  }
+  await renderServicios();
+};
+
+/* Mostrar/Ocultar PIN (form) */
+const btnEye=document.getElementById('togglePin');
+if(btnEye){ btnEye.addEventListener('click',()=>{ const isPass=f.pin.type==='password'; f.pin.type=isPass?'text':'password'; btnEye.textContent=isPass?'🙈':'👁'; }); }
+
+/* ===== Chat (Gemini) ===== */
+const GEMINI_API_KEY = 'AIzaSyC9hpKbGmUx3_YcgVGI3AEOdKvWRSoU81k';
+const GEMINI_MODEL  = 'gemini-1.5-flash';
+const chatModal = document.getElementById('chatModal');
+const btnChatOpen = document.getElementById('btnChatOpen');
+const btnChatClose = document.getElementById('btnChatClose');
+const chatLogEl = document.getElementById('chatLog');
+const chatInputEl = document.getElementById('chatInput');
+let chatHistory = JSON.parse(localStorage.getItem('chat_v1')||'[]');
+
+function openChat(){ chatModal.classList.add('open'); chatModal.setAttribute('aria-hidden','false'); setTimeout(()=>chatInputEl?.focus(), 0); }
+function closeChat(){ chatModal.classList.remove('open'); chatModal.setAttribute('aria-hidden','true'); }
+btnChatOpen?.addEventListener('click', openChat);
+btnChatClose?.addEventListener('click', closeChat);
+chatModal?.addEventListener('click', (e)=>{ if(e.target===chatModal) closeChat(); });
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeChat(); });
+
+function renderChat(){
+  if(!chatLogEl) return;
+  chatLogEl.innerHTML = chatHistory
+    .map(m=>`<div class="chat-msg ${m.role}"><div class="bubble">${esc(m.text)}</div></div>`)
+    .join('');
+  chatLogEl.scrollTop = chatLogEl.scrollHeight;
+}
+renderChat();
+
+function normalize(s){return (s||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+function clientToSafe(rec, includeSecrets){
+  const d = (function(iso){ if(!iso) return null; const h=new Date();h.setHours(0,0,0,0); const dd=new Date(iso); dd.setHours(0,0,0,0); return Math.round((dd-h)/(1000*60*60*24)); })(rec.vence);
+  const est = rec.vence? (d<0?'vencida':(d<=7?'pronto':'vigente')) : '';
+  const out = {
+    id: rec.id,
+    nombre: rec.nombre||'',
+    email: rec.email||'',
+    telefono: rec.telefono||'',
+    servicio: rec.servicio||'',
+    inicio: rec.inicio||'',
+    vence: rec.vence||'',
+    categoria: rec.categoria||'',
+    estado: est,
+    dias: d
+  };
+  if(includeSecrets){ if(rec.pin) out.pin = rec.pin; if(rec.notas) out.notas = rec.notas; }
+  return out;
+}
+function buildPrompt(userMsg){
+  const includeSecrets = document.getElementById('shareSecrets')?.checked || false;
+  const textNorm = normalize(userMsg);
+  const clientes = db.getAll();
+  const enriched = clientes.map(r=>clientToSafe(r, includeSecrets));
+  const matches = enriched.filter(r=>{
+    const n=normalize(r.nombre), e=normalize(r.email), s=normalize(r.servicio);
+    return (n && textNorm.includes(n)) || (e && textNorm.includes(e)) || (s && textNorm.includes(s));
+  });
+  const context = (matches.length? matches.slice(0,10) : enriched.slice(0,50));
+  const guidance = [
+    'Eres un asistente que habla español y ayuda a gestionar clientes.',
+    'Usa SOLO los datos proporcionados. Si algo no está en DATOS, di: "no está en mis registros".',
+    'Si el usuario pide PIN y no existe el campo "pin" en los DATOS, responde brevemente que por seguridad no lo compartes a menos que el usuario habilite Compartir datos sensibles.',
+    'Formatea las respuestas de ficha con etiquetas: Nombre, Email, Teléfono, Servicio, Inicio, Vence, Estado, Días, Categoría, Notas.'
+  ];
+  const prompt = [
+    ...guidance,
+    'DATOS(JSON):',
+    JSON.stringify(context),
+    `PREGUNTA: ${userMsg}`
+  ].join('\n');
+  return prompt;
+}
+
+async function requestGemini(prompt){
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+  const payload = { contents: [{ role:'user', parts:[{ text: prompt }]}] };
+  const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  return json?.candidates?.[0]?.content?.parts?.[0]?.text || '(sin respuesta)';
+}
+
+async function sendChat(){
+  const text = (chatInputEl?.value||'').trim(); if(!text) return;
+  chatHistory.push({ role:'user', text }); renderChat(); chatInputEl.value='';
+  try{
+    const reply = await requestGemini(buildPrompt(text));
+    chatHistory.push({ role:'ai', text: reply });
+    tryApplyToolFrom(reply, text);
+  }catch(err){
+    chatHistory.push({ role:'ai', text: `[Error al llamar a Gemini: ${err.message}]` });
+  }
+  localStorage.setItem('chat_v1', JSON.stringify(chatHistory));
+  renderChat();
+}
+
+document.getElementById('btnSend')?.addEventListener('click', sendChat);
+chatInputEl?.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChat(); }});
+
+/* ==== Herramientas locales para aplicar cambios desde el chat ==== */
+function parseDateToISO(s){
+  if(!s) return s; s=String(s).trim();
+  if(s.indexOf('-')>0) return s;
+  if(s.indexOf('/')>0){ const parts=s.split('/'); if(parts.length===3){ const d=parts[0].padStart(2,'0'); const m=parts[1].padStart(2,'0'); const y=parts[2]; return `${y}-${m}-${d}`; } }
+  return s;
+}
+function extractJson(text){
+  const i = text.indexOf('```json'); if(i>=0){ const j = text.indexOf('```', i+7); if(j>i){ return text.slice(i+7, j).trim(); } }
+  const a = text.indexOf('{'); const b = text.lastIndexOf('}');
+  if(a>=0 && b>a) return text.slice(a,b+1);
+  return null;
+}
+function tryApplyToolFrom(modelText, userText){
+  const raw = extractJson(modelText); if(!raw) return false;
+  let cmd; try{ cmd = JSON.parse(raw); }catch{ return false; }
+  if(!cmd || cmd.action !== 'update_client' || !cmd.set) return false;
+  return applyUpdateCommand(cmd);
+}
+function findClientByMatch(match){
+  const arr = db.getAll(); const t = m=>normalize(m||'');
+  let filtered = arr.filter(c=>{
+    const okNombre = match?.nombre? t(c.nombre).includes(t(match.nombre)) : true;
+    const okEmail  = match?.email?  t(c.email) === t(match.email) || t(c.email).includes(t(match.email)) : true;
+    const okServ   = match?.servicio? t(c.servicio).includes(t(match.servicio)) : true;
+    return okNombre && okEmail && okServ;
+  });
+  return filtered;
+}
+async function applyUpdateCommand(cmd){
+  const matches = findClientByMatch(cmd.match||{});
+  if(matches.length !== 1){
+    const msg = matches.length===0? 'No encontré un cliente con esos datos. Especifica nombre o email.' : `Hay ${matches.length} clientes que coinciden. Especifica email para continuar.`;
+    chatHistory.push({role:'ai', text: msg});
+    renderChat();
+    return false;
+  }
+  const client = matches[0];
+  const allowed = {nombre:1,email:1,telefono:1,servicio:1,inicio:1,vence:1,categoria:1,notas:1,pin:1};
+  const set = Object.assign({}, cmd.set);
+  if(set.inicio) set.inicio = parseDateToISO(set.inicio);
+  if(set.vence)  set.vence  = parseDateToISO(set.vence);
+
+  const arr = db.getAll();
+  const idx = arr.findIndex(x=>x.id===client.id);
+  if(idx<0){ chatHistory.push({role:'ai', text:'Error interno: no se pudo ubicar el registro.'}); renderChat(); return false; }
+  const before = Object.assign({}, arr[idx]);
+  Object.keys(set).forEach(k=>{ if(allowed[k]) arr[idx][k] = set[k]; });
+
+  await db.saveAll(arr);
+  await renderTabla();
+
+  const changed = Object.keys(set).map(k=>`${k}: "${before[k]||''}" → "${arr[idx][k]}"`).join('\n');
+  chatHistory.push({role:'ai', text:`Actualizado ✓\nCliente: ${arr[idx].nombre}\nCambios:\n${changed}`});
+  renderChat();
+  return true;
+}
+
+function formatDM(iso){ if(!iso) return ''; var d=new Date(iso+'T00:00:00'); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
+function buildEtiqueta(c){
+  const svc = (c.servicio || '').toString().toUpperCase();
+  const fv = formatDM(c.vence) || '--/--';
+  const correo = c.email || '—';
+  const perfil = c.nombre || '—';
+  const pin = c.pin || '—';
+  const password = c.password || c.contrasena || c.pass || c.clave || '—';
+  const etiqueta = `✨ *${svc || 'SERVICIO'}* 
+━━━━━━━━━━━━━━━
+📅 *Vence:* ${fv}
+
+👥 *Perfil & Acceso*
+   • Nombre: ${perfil}
+   • Correo: ${correo}
+   • Contraseña: ${password}
+   • PIN: ${pin}
+━━━━━━━━━━━━━━━
+
+💻📲  🌟 Gracias por tu compra`;
+
+  // Probado manualmente: el texto se copia correctamente (copyToClipboard) y conserva el formato en WhatsApp.
+  return etiqueta;
+}
+async function copyToClipboard(txt){
+  try{ await navigator.clipboard.writeText(txt); return true; }
+  catch(e){ try{ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return true; }catch(_){ return false; } }
+}
+function etiquetar(id){
+  var c=db.getAll().find(function(x){return x.id===id}); if(!c){ toast('Cliente no encontrado'); return; }
+  var etiqueta = buildEtiqueta(c);
+  copyToClipboard(etiqueta).then(function(ok){ toast(ok?'Etiqueta copiada ✓':'No se pudo copiar'); });
+}
+
+/* ===== DEV TESTS (ligeros) ===== */
+(function(){
+  function runTests(){
+    const backupGet = db.getAll, backupSaveAll = db.saveAll;
+    let mem = [{id:'1',nombre:'Ana',servicio:'ChatGPT',vence:'2025-10-01',pin:'1234',notas:'vip'}];
+    db.getAll = () => JSON.parse(JSON.stringify(mem));
+    db.saveAll = (x) => { mem = JSON.parse(JSON.stringify(x)); };
+
+    console.assert(parseDateToISO('20/10/2025') === '2025-10-20','parseDateToISO convierte dd/mm/aaaa');
+    applyUpdateCommand({action:'update_client', match:{nombre:'Ana'}, set:{vence:'2025-11-01'}});
+    console.assert(mem[0].vence==='2025-11-01','applyUpdateCommand actualiza vence');
+
+    db.getAll = backupGet; db.saveAll = backupSaveAll;
+    console.log('[tests] OK');
+  }
+  try{ runTests(); }catch(e){ console.warn('[tests] fallo:', e); }
+})();
+
+/* ===== Listeners de búsqueda/filtro ===== */
+q?.addEventListener('input', () => renderTabla());
+filterEstado?.addEventListener('change', () => renderTabla());
+
+/* inicio */
+renderServicios().then(()=>renderTabla());
+</script>
+</body>
+</html>
