@@ -667,6 +667,14 @@
     /* ===== Chat (Gemini) ===== */
     .section-head{font-weight:700;margin-bottom:8px;color:var(--ink);text-shadow:0 10px 24px rgba(0,0,0,.45)}
     .chat-log{height:260px;overflow:auto;border:1px solid var(--border);border-radius:16px;padding:14px;background:var(--chat-log-bg);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(14px)}
+    .chat-controls{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+    .chat-loading{display:none;align-items:center;gap:10px;margin-top:10px;font-size:.9rem;color:var(--ink-soft);transition:opacity .2s ease}
+    .chat-loading .spinner{width:18px;height:18px;border-radius:999px;border:3px solid transparent;border-top-color:var(--btn-primary-bg-bottom);border-right-color:var(--btn-primary-bg-bottom);animation:chat-spin .8s linear infinite}
+    .modal.is-loading .chat-loading{display:flex}
+    .modal.is-loading .chat-controls{opacity:.6;pointer-events:none}
+    .modal.is-loading .chat-controls input,
+    .modal.is-loading .chat-controls button{pointer-events:none}
+    @keyframes chat-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
     .chat-msg{margin:8px 0;display:flex}
     .chat-msg.user{justify-content:flex-end}
     .chat-msg .bubble{max-width:85%;padding:10px 12px;border-radius:12px;white-space:normal;line-height:1.5}
@@ -868,16 +876,20 @@
 
   <!-- ===== Modal Chat Gemini ===== -->
   <div id="chatModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-label="Chat Gemini">
+    <div class="modal" role="dialog" aria-label="Chat Gemini" aria-busy="false">
       <header>
         <strong>Chat Gemini</strong>
         <button class="btn ghost" id="btnChatClose">Cerrar</button>
       </header>
       <div class="body">
         <div id="chatLog" class="chat-log"></div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px">
+        <div class="chat-controls">
           <input id="chatInput" placeholder="Escribe un mensaje…"/>
           <button class="btn primary" id="btnSend">Enviar</button>
+        </div>
+        <div id="chatLoading" class="chat-loading" role="status" aria-live="polite" aria-hidden="true" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Un momento…</span>
         </div>
         <div class="small" style="text-align:left;margin-top:6px">
           <label><input type="checkbox" id="shareSecrets"> Compartir datos sensibles (PIN y notas)</label>
@@ -1870,11 +1882,15 @@ document.getElementById('togglePin')?.addEventListener('click',()=>{ const el=f.
 const GEMINI_API_KEY = 'AIzaSyC9hpKbGmUx3_YcgVGI3AEOdKvWRSoU81k';
 const GEMINI_MODEL  = 'gemini-1.5-flash';
 const chatModal = document.getElementById('chatModal');
+const chatDialogEl = chatModal?.querySelector('.modal');
 const btnChatOpen = document.getElementById('btnChatOpen');
 const btnChatClose = document.getElementById('btnChatClose');
 const chatLogEl = document.getElementById('chatLog');
 const chatInputEl = document.getElementById('chatInput');
+const btnSend = document.getElementById('btnSend');
+const chatLoadingEl = document.getElementById('chatLoading');
 let chatHistory = JSON.parse(localStorage.getItem('chat_v1')||'[]');
+let isChatLoading = false;
 
 function openChat(){ chatModal.classList.add('open'); chatModal.setAttribute('aria-hidden','false'); setTimeout(()=>chatInputEl?.focus(), 0); }
 function closeChat(){ chatModal.classList.remove('open'); chatModal.setAttribute('aria-hidden','true'); }
@@ -1900,6 +1916,24 @@ function renderChat(){
   chatLogEl.scrollTop = chatLogEl.scrollHeight;
 }
 renderChat();
+
+function setChatLoading(flag){
+  isChatLoading = !!flag;
+  if(chatDialogEl){
+    chatDialogEl.classList.toggle('is-loading', isChatLoading);
+    chatDialogEl.setAttribute('aria-busy', isChatLoading ? 'true' : 'false');
+  }
+  if(chatLoadingEl){
+    chatLoadingEl.hidden = !isChatLoading;
+    chatLoadingEl.setAttribute('aria-hidden', isChatLoading ? 'false' : 'true');
+  }
+  if(btnSend){
+    btnSend.disabled = isChatLoading;
+    btnSend.setAttribute('aria-disabled', isChatLoading ? 'true' : 'false');
+  }
+  if(chatInputEl){ chatInputEl.disabled = isChatLoading; }
+}
+setChatLoading(false);
 
 function clientToSafe(rec, includeSecrets){
   const d = (function(iso){ if(!iso) return null; const h=new Date();h.setHours(0,0,0,0); const dd=new Date(iso); dd.setHours(0,0,0,0); return Math.round((dd-h)/(1000*60*60*24)); })(rec.vence);
@@ -1936,14 +1970,21 @@ async function requestGemini(prompt){
   return json?.candidates?.[0]?.content?.parts?.[0]?.text || '(sin respuesta)';
 }
 async function sendChat(){
+  if(isChatLoading) return;
   const text = (chatInputEl?.value||'').trim(); if(!text) return;
-  chatHistory.push({ role:'user', text }); renderChat(); chatInputEl.value='';
-  try{ const reply = await requestGemini(buildPrompt(text)); chatHistory.push({ role:'ai', text: reply }); tryApplyToolFrom(reply, text); }
+  chatHistory.push({ role:'user', text }); renderChat(); if(chatInputEl) chatInputEl.value='';
+  setChatLoading(true);
+  try{
+    const reply = await requestGemini(buildPrompt(text));
+    chatHistory.push({ role:'ai', text: reply });
+    tryApplyToolFrom(reply, text);
+  }
   catch(err){ chatHistory.push({ role:'ai', text: `[Error al llamar a Gemini: ${err.message}]` }); }
+  finally{ setChatLoading(false); }
   localStorage.setItem('chat_v1', JSON.stringify(chatHistory));
   renderChat();
 }
-document.getElementById('btnSend')?.addEventListener('click', sendChat);
+btnSend?.addEventListener('click', sendChat);
 chatInputEl?.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChat(); }});
 
 /* ==== Herramientas locales desde chat ==== */
