@@ -37,6 +37,7 @@
       --input-focus-glow:rgba(56,189,248,.3);
       --card-bg:rgba(255,255,255,.06);
       --table-card-bg:rgba(255,255,255,.05);
+      --table-header-bg:#111827;
       --table-border:rgba(255,255,255,.08);
       --table-row-alt-bg:rgba(255,255,255,.03);
       --table-row-hover-bg:rgba(125,211,252,.12);
@@ -178,6 +179,7 @@
       --input-focus-glow:rgba(59,130,246,.26);
       --card-bg:#ffffff;
       --table-card-bg:#ffffff;
+      --table-header-bg:#e2e8f0;
       --table-border:rgba(226,232,240,.9);
       --table-row-alt-bg:rgba(226,232,240,.6);
       --table-row-hover-bg:rgba(59,130,246,.12);
@@ -614,7 +616,7 @@
     }
     @media(min-width:640px){
       #tabla{display:table}
-      .table-scroll thead th{position:sticky;top:0;background:var(--table-card-bg);z-index:2;box-shadow:0 1px 0 var(--table-border)}
+      .table-scroll thead th{position:sticky;top:0;background:var(--table-header-bg);z-index:2;box-shadow:0 1px 0 var(--table-border);border-bottom:1px solid var(--table-border)}
       #tabla thead{display:table-header-group}
       #tabla tbody{display:table-row-group}
       #tabla tbody tr{display:table-row}
