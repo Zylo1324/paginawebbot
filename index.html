@@ -137,7 +137,7 @@
     @media(min-width:960px){
       #AppGrid{grid-template-columns:minmax(0,2fr)minmax(0,1fr);grid-template-areas:"form acciones" "tabla tabla";}
     }
-    .pill{display:block;width:max-content;margin:0 auto 14px;padding:6px 14px;border-radius:999px;background:var(--pill-bg);color:var(--pill-ink);border:1px solid rgba(255,255,255,.24);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .pill{display:block;width:max-content;margin:0 auto 14px;padding:6px 14px;border-radius:999px;background:var(--pill-bg);color:var(--pill-ink);border:1px solid var(--border);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
     .hero-brand{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:clamp(12px,3vw,28px);margin:6px 0 24px;text-align:center}
     .hero-brand img{width:clamp(64px,16vw,132px);height:auto;flex-shrink:0;filter:drop-shadow(0 18px 36px rgba(0,0,0,.55));border-radius:24px}
     .hero-brand span{display:block;font-weight:800;letter-spacing:-0.02em;color:var(--ink);font-size:clamp(54px,16vw,144px);line-height:.95;text-shadow:0 12px 32px rgba(0,0,0,.55);text-transform:uppercase}
@@ -164,22 +164,48 @@
     .form-grid .row{min-width:0}
     .span-2{grid-column:1 / -1}
     .row label{color:var(--ink-soft);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
-    input,select,textarea{width:100%;padding:14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:var(--field);color:var(--ink);outline:none;transition:.15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+    input,select,textarea{width:100%;padding:14px;border:1px solid var(--input-border);border-radius:14px;background:var(--field);color:var(--ink);outline:none;transition:.15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
     input::placeholder,textarea::placeholder{color:var(--muted)}
-    input:focus,select:focus,textarea:focus{border-color:rgba(125,211,252,.6);background:var(--field-focus);box-shadow:0 0 0 3px rgba(125,211,252,.2)}
+    input:focus,select:focus,textarea:focus{border-color:var(--input-focus-border);background:var(--field-focus);box-shadow:0 0 0 3px var(--input-focus-shadow)}
     textarea{min-height:88px;resize:vertical}
     .actions{display:flex;justify-content:center;gap:10px;margin-top:18px}
     .small{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
-    .side-card{background:rgba(255,255,255,.06);border-radius:20px;border:1px solid var(--border);padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(22px);display:flex;flex-direction:column;gap:18px}
+    .side-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border);padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(22px);display:flex;flex-direction:column;gap:18px}
     .side-card h2{margin:0;font-size:18px;color:var(--ink);font-weight:700}
     .side-card p{margin:0;color:var(--muted);font-size:14px}
     .side-card .actions{flex-direction:column;justify-content:flex-start}
     .side-card .actions .btn{width:100%}
     .side-card .small{text-align:left;margin-top:0}
     .pin-wrap{position:relative}
-    .pin-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:var(--ink);border-radius:10px;padding:6px 8px;cursor:pointer;transition:background-color .2s ease,border-color .2s ease}
-    .pin-wrap .eye:hover,.pin-wrap .eye:focus-visible{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.28)}
+    .pin-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:1px solid var(--eye-border);background:var(--eye-bg);color:var(--ink);border-radius:10px;padding:6px 8px;cursor:pointer;transition:background-color .2s ease,border-color .2s ease}
+    .pin-wrap .eye:hover,.pin-wrap .eye:focus-visible{background:var(--ghost-hover-bg);border-color:var(--ghost-hover-border)}
     .pin-wrap .eye:focus-visible{outline:2px solid rgba(125,211,252,.35);outline-offset:2px}
+
+    /* email dropdown toggle */
+    .row.suggestion-source{position:relative}
+    .row.suggestion-source input{padding-right:44px}
+    .email-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:1px solid var(--eye-border);background:var(--eye-bg);color:var(--ink);border-radius:10px;padding:6px 8px;cursor:pointer;line-height:1}
+    .email-toggle:hover,.email-toggle:focus-visible{background:var(--ghost-hover-bg);border-color:var(--ghost-hover-border)}
+    .email-toggle:focus-visible{outline:2px solid rgba(125,211,252,.35);outline-offset:2px}
+
+    .linked-email-wrap{display:flex;gap:10px;align-items:center}
+    .btn.icon-only{width:44px;height:44px;padding:0;display:flex;align-items:center;justify-content:center;font-size:24px;line-height:1}
+    .btn.ghost.danger{color:var(--danger);border-color:rgba(249,113,113,.4)}
+    .btn.ghost.danger:hover,.btn.ghost.danger:focus-visible{background:rgba(249,113,113,.18);border-color:rgba(249,113,113,.45)}
+    .btn.ghost.danger:active{background:rgba(249,113,113,.24);border-color:rgba(249,113,113,.5)}
+    .btn.ghost.danger:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
+
+    .row.suggestion-source .suggestion-dropdown,
+    .row.suggestion-source .suggestion-dropdown.open{left:0;right:0}
+
+    .suggestion-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--menu-bg);border:1px solid var(--ghost-border);border-radius:14px;padding:6px 0;box-shadow:var(--shadow);display:none;z-index:40;max-height:260px;overflow:auto}
+    .suggestion-dropdown.open{display:block}
+    .suggestion-item{width:100%;text-align:left;background:none;border:0;color:var(--ink);padding:10px 16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;font-size:14px}
+    .suggestion-item:hover,.suggestion-item:focus-visible{background:var(--menu-hover-bg);outline:none}
+    .suggestion-item.is-active{background:var(--table-row-hover-bg);box-shadow:var(--table-row-hover-shadow)}
+    .suggestion-email{font-weight:600}
+    .suggestion-hint{color:var(--muted);font-size:12px}
+    .suggestion-empty{padding:12px 16px;color:var(--muted);font-size:13px}
 
     /* ===== Tabla ===== */
     .table-section{margin-top:40px;display:flex;flex-direction:column;gap:18px}
@@ -189,19 +215,19 @@
     }
     .table-header h2{margin:0;font-size:22px;font-weight:700;color:var(--ink);text-shadow:0 10px 20px rgba(0,0,0,.35)}
     .table-header p{margin:0;color:var(--muted);font-size:14px}
-    .table-card{position:relative;background:rgba(255,255,255,.05);border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:visible;backdrop-filter:blur(18px)}
+    .table-card{position:relative;background:var(--table-card-bg);border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:visible;backdrop-filter:blur(18px)}
     .table-scroll{position:relative;width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(125,211,252,.6) transparent;scrollbar-gutter:stable both-edges}
     .table-scroll:focus-visible{outline:2px solid rgba(125,211,252,.45);outline-offset:4px}
     .table-scroll::-webkit-scrollbar{height:10px}
     .table-scroll::-webkit-scrollbar-track{background:transparent}
     .table-scroll::-webkit-scrollbar-thumb{background:rgba(125,211,252,.65);border-radius:999px;border:3px solid rgba(0,0,0,0)}
     table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;border-radius:inherit}
-    th,td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px;word-break:break-word;overflow-wrap:anywhere}
+    th,td{padding:14px 16px;border-bottom:1px solid var(--table-border);font-size:14px;word-break:break-word;overflow-wrap:anywhere}
     th{text-align:left;color:var(--muted);font-weight:700;letter-spacing:.08em;font-size:12px;text-transform:uppercase}
     td{color:var(--ink);font-weight:500}
     tbody tr{transition:background-color .2s ease,box-shadow .2s ease}
-    tbody tr:nth-child(even){background:rgba(255,255,255,.03)}
-    tbody tr:hover{background:rgba(125,211,252,.12);box-shadow:inset 0 0 0 999px rgba(5,9,15,.12)}
+    tbody tr:nth-child(even){background:var(--table-row-alt-bg)}
+    tbody tr:hover{background:var(--table-row-hover-bg);box-shadow:var(--table-row-hover-shadow)}
     thead th:first-child{border-top-left-radius:20px}
     thead th:last-child{border-top-right-radius:20px}
     tbody tr:last-child td:first-child{border-bottom-left-radius:20px}
@@ -233,28 +259,26 @@
       #tabla tbody tr td{display:table-cell;padding:14px 16px}
       #tabla tbody tr td::before{display:none}
     }
-    .tag{font-size:12px;padding:4px 10px;border-radius:999px;display:inline-block;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:var(--ink);backdrop-filter:blur(12px)}
+    .tag{font-size:12px;padding:4px 10px;border-radius:999px;display:inline-block;border:1px solid var(--tag-border);background:var(--tag-bg);color:var(--ink);backdrop-filter:blur(12px)}
     .tag.ok{color:var(--ok);background:rgba(74,222,128,.16);border-color:rgba(74,222,128,.38)}
     .tag.warn{color:var(--warn);background:rgba(251,191,36,.16);border-color:rgba(251,191,36,.38)}
     .tag.bad{color:var(--bad);background:rgba(251,113,133,.2);border-color:rgba(251,113,133,.4)}
 
     /* ===== Kebab ⋯ menú ===== */
-    .menu-wrap{position:relative;display:inline-block}
-    .kebab{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:12px;padding:6px 10px;cursor:pointer;line-height:1;color:var(--ink);transition:background-color .2s ease,border-color .2s ease}
-    .kebab .dots{letter-spacing:2px;font-size:18px;color:var(--ink-soft)}
-    .kebab:focus{outline:2px solid rgba(125,211,252,.35)}
-    .kebab:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
-    .menu{position:absolute;right:0;top:calc(100% + 8px);background:rgba(10,14,22,.96);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);min-width:180px;padding:8px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;z-index:50;backdrop-filter:blur(18px)}
+    .menu-wrap{position:relative;display:inline-flex;align-items:center;gap:8px}
+    .row-menu-indicator{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:12px;padding:6px 10px;line-height:1;color:var(--ink-soft);font-size:18px;letter-spacing:2px;transition:background-color .2s ease,border-color .2s ease,color .2s ease;user-select:none}
+    tr[aria-expanded="true"] .row-menu-indicator{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:var(--ink)}
+    .menu{position:absolute;right:0;top:calc(100% + 8px);background:var(--menu-bg);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);min-width:180px;padding:8px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;z-index:50;backdrop-filter:blur(18px)}
     .menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
     .menu-item{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(--ink);transition:background-color .15s ease,border-color .15s ease,color .15s ease}
-    .menu-item:hover{background:rgba(255,255,255,.08)}
+    .menu-item:hover{background:var(--menu-hover-bg)}
     .menu-item.danger{color:var(--bad);border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.12)}
     .menu-item.danger:hover{background:rgba(251,113,133,.2);border-color:rgba(251,113,133,.5)}
 
     /* ===== Modales ===== */
-    .modal-backdrop{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(3,6,11,.78);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease;z-index:100;backdrop-filter:blur(12px)}
+    .modal-backdrop{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--backdrop-bg);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease;z-index:100;backdrop-filter:blur(12px)}
     .modal-backdrop.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
-    .modal{background:rgba(10,14,22,.92);border:1px solid var(--border);border-radius:18px;width:min(760px,96vw);max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow);color:var(--ink);backdrop-filter:blur(22px)}
+    .modal{background:var(--modal-bg);border:1px solid var(--border);border-radius:18px;width:min(760px,96vw);max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow);color:var(--ink);backdrop-filter:blur(22px)}
     .modal header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
     .modal .body{padding:16px 18px;color:var(--ink)}
 
@@ -278,31 +302,7 @@
     .sidebar-search input{padding-left:42px}
     .sidebar-search:focus-within .sidebar-search-icon{color:var(--ink)}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .btn.ghost:hover,.btn.ghost:focus-visible{background:var(--ghost-hover-bg);border-color:var(--ghost-hover-border)}
-    .btn.ghost:active{background:var(--ghost-active-bg);border-color:var(--ghost-active-border)}
-    .pill{border:1px solid var(--border)}
-    .addserv{border:1px dashed var(--addserv-border);background:var(--addserv-bg)}
-    .addserv:hover,.addserv:focus-visible{background:var(--addserv-hover-bg);border-color:var(--addserv-hover-border)}
-    .addserv:active{background:var(--addserv-active-bg);border-color:var(--addserv-active-border)}
-    .form,.side-card{background:var(--card-bg)}
-    input,select,textarea{border:1px solid var(--input-border);background:var(--field)}
-    input:focus,select:focus,textarea:focus{border-color:var(--input-focus-border);background:var(--field-focus);box-shadow:0 0 0 3px var(--input-focus-shadow)}
-    .pin-wrap .eye{border:1px solid var(--eye-border);background:var(--eye-bg)}
-    .pin-wrap .eye:hover,.pin-wrap .eye:focus-visible{background:var(--ghost-hover-bg);border-color:var(--ghost-hover-border)}
-    .table-card{background:var(--table-card-bg)}
-    th,td{border-bottom:1px solid var(--table-border)}
-    tbody tr:nth-child(even){background:var(--table-row-alt-bg)}
-    tbody tr:hover{background:var(--table-row-hover-bg);box-shadow:var(--table-row-hover-shadow)}
-    .tag{border:1px solid var(--tag-border);background:var(--tag-bg)}
-    .menu{background:var(--menu-bg)}
-    .menu-item:hover{background:var(--menu-hover-bg)}
     .menu-item[aria-checked="true"]{background:var(--ghost);border:1px solid var(--ghost-border);font-weight:600}
-    .modal-backdrop{background:var(--backdrop-bg)}
-    .modal{background:var(--modal-bg)}
-    .theme-switcher{position:relative}
-    .theme-btn{display:flex;align-items:center;gap:8px;white-space:nowrap}
-    .theme-btn-label{display:flex;align-items:center;gap:6px}
-    .theme-btn-icon{font-size:12px;opacity:.8}
 
     @media(max-width:960px){ body.sidebar-expanded{padding-left:0} }
     @media(max-width:768px){
@@ -341,7 +341,7 @@
                 <span class="theme-btn-label label">Tema: <span id="themeLabel">Oscuro</span></span>
                 <span class="theme-btn-icon" aria-hidden="true">▾</span>
               </button>
-              <div class="menu" id="themeMenu" role="menu">
+              <div class="menu" id="themeMenu" role="menu" aria-hidden="true">
                 <button class="menu-item" type="button" role="menuitemradio" data-theme-option="dark" aria-checked="true">Oscuro</button>
                 <button class="menu-item" type="button" role="menuitemradio" data-theme-option="light" aria-checked="false">Claro</button>
               </div>
@@ -351,6 +351,9 @@
             <button class="btn ghost label" id="btnAuthOpen">Acceder</button>
             <button class="btn ghost label" id="btnLogout" style="display:none">Cerrar sesión</button>
             <span id="userInfo" class="pill label" style="display:none"></span>
+          </li>
+          <li>
+            <button class="btn ghost label" id="btnLinkedOpen">Correos enlazados</button>
           </li>
           <li>
             <button class="btn ghost label" id="btnChatOpen" title="Abrir chat con Gemini">Chat Gemini</button>
@@ -382,10 +385,15 @@
           <label for="nombre">Nombre</label>
           <input id="nombre" placeholder="Escribe"/>
         </div>
-        <div class="row">
+
+        <!-- EMAIL con dropdown contextual por servicio -->
+        <div class="row suggestion-source">
           <label for="email">Email</label>
-          <input id="email" type="email" placeholder="ej: cliente@mail.com"/>
+          <input id="email" type="email" placeholder="ej: cliente@mail.com" aria-expanded="false" aria-controls="emailSuggestionDropdown" />
+          <button class="email-toggle" id="emailDropdownToggle" type="button" aria-label="Mostrar correos guardados">▾</button>
+          <div id="emailSuggestionDropdown" class="suggestion-dropdown" role="listbox" aria-hidden="true"></div>
         </div>
+
         <div class="row">
           <label for="telefono">Teléfono</label>
           <input id="telefono" placeholder="+51 …"/>
@@ -420,6 +428,7 @@
         </div>
       </div>
     </section>
+
     <aside id="AccionesRapidas" class="side-card">
       <h2>Acciones rápidas</h2>
       <p>Guarda el nuevo cliente o limpia el formulario antes de continuar.</p>
@@ -506,6 +515,40 @@
     </div>
   </div>
 
+  <!-- ===== Modal Correos enlazados ===== -->
+  <div id="linkedModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="Correos enlazados">
+      <header>
+        <strong>Correos enlazados</strong>
+        <button class="btn ghost" id="btnLinkedHeaderClose" type="button">Cancelar</button>
+      </header>
+      <div class="body">
+        <div class="row">
+          <label for="linkedService">Servicio</label>
+          <select id="linkedService"></select>
+        </div>
+        <div class="row suggestion-source">
+          <label for="linkedEmail">Correo</label>
+          <input id="linkedEmail" type="email" placeholder="correo@ejemplo.com" autocomplete="off" aria-expanded="false" aria-controls="linkedEmailDropdown">
+          <button class="email-toggle" id="linkedEmailDropdownToggle" type="button" aria-label="Mostrar correos guardados">▾</button>
+          <div id="linkedEmailDropdown" class="suggestion-dropdown" role="listbox" aria-hidden="true"></div>
+        </div>
+        <div class="row">
+          <label for="linkedPassword">Contraseña</label>
+          <div class="pin-wrap">
+            <input id="linkedPassword" type="password" placeholder="••••••••" autocomplete="off">
+            <button type="button" class="eye" id="toggleLinkedPassword" aria-label="Mostrar/ocultar contraseña">👁</button>
+          </div>
+        </div>
+        <div class="small" id="linkedError" style="color:var(--danger)"></div>
+        <div class="actions" style="justify-content:flex-end">
+          <button class="btn ghost" id="btnLinkedDelete" type="button" aria-label="Eliminar correo enlazado">Eliminar</button>
+          <button class="btn primary" id="btnLinkedSave" type="button">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
@@ -524,72 +567,108 @@ categoria:$('#categoria'), pin:$('#pin')};
 const q=$('#q'), filterEstado=$('#filterEstado'), msg=$('#msg');
 const sidebar=document.getElementById('sidebar');
 const sidebarLauncher=document.getElementById('sidebarLauncher');
-const sidebarMobileQuery=window.matchMedia? window.matchMedia('(max-width: 768px)') : { matches:false };
+
 const themeButton=document.getElementById('btnTheme');
 const themeLabel=document.getElementById('themeLabel');
 const themeMenu=document.getElementById('themeMenu');
 const themeOptions=Array.from(themeMenu?.querySelectorAll('[data-theme-option]')||[]);
 const THEME_STORAGE_KEY='ui_theme_mode_v1';
+
 let editId=null;
 
-function isMobileSidebar(){ return sidebarMobileQuery.matches; }
+/* ===== Dropdown EMAIL (form principal) ===== */
+const emailSuggestionDropdown = document.getElementById('emailSuggestionDropdown');
+const emailDropdownToggle = document.getElementById('emailDropdownToggle');
+let emailSuggestionCache=[];
+let filteredEmailSuggestions=[];
+let activeEmailSuggestionIndex=-1;
+let hideEmailSuggestionTimeout=null;
 
+/* ===== Dropdown EMAIL (modal enlazados) ===== */
+const linkedModal = document.getElementById('linkedModal');
+const btnLinkedOpen = document.getElementById('btnLinkedOpen');
+const btnLinkedHeaderClose = document.getElementById('btnLinkedHeaderClose');
+const btnLinkedSave = document.getElementById('btnLinkedSave');
+const btnLinkedDelete = document.getElementById('btnLinkedDelete');
+const linkedServiceEl = document.getElementById('linkedService');
+const linkedEmailEl = document.getElementById('linkedEmail');
+const linkedPasswordEl = document.getElementById('linkedPassword');
+const toggleLinkedPassword = document.getElementById('toggleLinkedPassword');
+const linkedErrorEl = document.getElementById('linkedError');
+const linkedEmailDropdown = document.getElementById('linkedEmailDropdown');
+const linkedEmailDropdownToggle = document.getElementById('linkedEmailDropdownToggle');
+
+let linkedFilteredSuggestions=[];
+let linkedActiveIndex=-1;
+let linkedHideTimeout=null;
+
+function toast(t){ msg.textContent=t; setTimeout(()=>msg.textContent='',2200); }
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#039;' }[m]))}
+function fmt(iso){return iso? new Date(iso+'T00:00:00').toLocaleDateString(): '-'}
+
+/* ===== Tema ===== */
+function updateThemeControls(mode){
+  if(themeLabel){ themeLabel.textContent = mode==='light' ? 'Claro' : 'Oscuro'; }
+  themeOptions.forEach(btn=>{
+    const isActive = btn.dataset.themeOption === mode;
+    btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+  });
+}
+function applyTheme(mode,{persist=true}={}){
+  const normalized = mode==='light' ? 'light' : 'dark';
+  document.body.classList.toggle('theme-light', normalized==='light');
+  if(persist){ try{ localStorage.setItem(THEME_STORAGE_KEY, normalized); }catch{} }
+  updateThemeControls(normalized);
+  return normalized;
+}
+const storedTheme = (()=>{ try{ return localStorage.getItem(THEME_STORAGE_KEY); }catch{ return null; } })();
+const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+applyTheme(storedTheme==='light'?'light':(storedTheme==='dark'?'dark':(prefersDark?'dark':'light')),{persist:false});
+
+/* ===== sidebar responsive ===== */
+const sidebarMobileQuery=window.matchMedia? window.matchMedia('(max-width: 768px)') : { matches:false };
+function isMobileSidebar(){ return sidebarMobileQuery.matches; }
 function syncSidebarResponsiveState(){
   if(!sidebar) return;
   const pinned = sidebar.dataset.pinned === 'true';
   sidebar.classList.toggle('pinned', pinned);
   const isVisible = pinned || (!isMobileSidebar() && sidebar.classList.contains('peek'));
   sidebar.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
-  if(sidebarLauncher){
-    sidebarLauncher.setAttribute('aria-expanded', pinned ? 'true' : 'false');
-    sidebarLauncher.textContent = pinned ? '✕' : '☰';
-    sidebarLauncher.setAttribute('aria-label', pinned ? 'Cerrar navegación' : 'Abrir navegación');
-    sidebarLauncher.classList.toggle('is-open', pinned);
-  }
+  sidebarLauncher?.setAttribute('aria-expanded', pinned ? 'true' : 'false');
+  sidebarLauncher.textContent = pinned ? '✕' : '☰';
+  sidebarLauncher.setAttribute('aria-label', pinned ? 'Cerrar navegación' : 'Abrir navegación');
+  sidebarLauncher.classList.toggle('is-open', pinned);
   if(isMobileSidebar()){
     document.body.classList.remove('sidebar-expanded');
   }else{
     document.body.classList.toggle('sidebar-expanded', pinned);
   }
 }
-
 function setSidebarPinned(pinned){
   if(!sidebar) return;
   sidebar.dataset.pinned = String(pinned);
-  if(!pinned){
-    sidebar.classList.remove('peek');
-  }
+  if(!pinned){ sidebar.classList.remove('peek'); }
   syncSidebarResponsiveState();
 }
-
 function expandSidebarIfNeeded(){
   if(!sidebar || isMobileSidebar()) return;
   if(sidebar.dataset.pinned === 'true') return;
-  sidebar.classList.add('peek');
-  sidebar.setAttribute('aria-hidden','false');
+  sidebar.classList.add('peek'); sidebar.setAttribute('aria-hidden','false');
 }
-
 function collapseSidebarIfNeeded(){
   if(!sidebar) return;
   if(sidebar.dataset.pinned === 'true') return;
-  sidebar.classList.remove('peek');
-  sidebar.setAttribute('aria-hidden','true');
+  sidebar.classList.remove('peek'); sidebar.setAttribute('aria-hidden','true');
 }
+syncSidebarResponsiveState();
+sidebarLauncher?.addEventListener('click', ()=> setSidebarPinned(sidebar.dataset.pinned !== 'true'));
+sidebar?.addEventListener('mouseenter', expandSidebarIfNeeded);
+sidebar?.addEventListener('mouseleave', collapseSidebarIfNeeded);
+sidebar?.addEventListener('focusin', expandSidebarIfNeeded);
+sidebar?.addEventListener('focusout', (e)=>{ if(!sidebar.contains(e.relatedTarget)) collapseSidebarIfNeeded(); });
+if(sidebarMobileQuery.addEventListener){ sidebarMobileQuery.addEventListener('change', ()=>{ syncSidebarResponsiveState(); collapseSidebarIfNeeded(); }); }
 
-if(sidebar){
-  syncSidebarResponsiveState();
-  collapseSidebarIfNeeded();
-}
-
-const handleSidebarMediaChange = ()=>{
-  syncSidebarResponsiveState();
-  collapseSidebarIfNeeded();
-};
-
-function toast(t){ msg.textContent=t; setTimeout(()=>msg.textContent='',2200); }
-function esc(s){return (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#039;' }[m]))}
-function fmt(iso){return iso? new Date(iso+'T00:00:00').toLocaleDateString(): '-'}
-
+/* ===== fechas & estado ===== */
 function diasRestantes(iso){
   if(!iso) return null; const h=new Date();h.setHours(0,0,0,0);
   const d=new Date(iso); d.setHours(0,0,0,0);
@@ -599,34 +678,78 @@ function estadoDe(vence){
   if(!vence) return ''; const d=diasRestantes(vence);
   if(d<0) return 'vencida'; if(d<=7) return 'pronto'; return 'vigente';
 }
-function limpiar(){ editId=null; for(const k in f){ if('value' in f[k]) f[k].value=''; } renderServicios(); msg.textContent=''; }
-
-function updateThemeControls(mode){
-  if(themeLabel){ themeLabel.textContent = mode==='light' ? 'Claro' : 'Oscuro'; }
-  themeOptions.forEach(btn=>{
-    const isActive = btn.dataset.themeOption === mode;
-    btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+function limpiar(){
+  editId=null;
+  for(const k in f){ if('value' in f[k]) f[k].value=''; }
+  Promise.resolve(renderServicios()).then(()=>{
+    rebuildEmailSuggestions();
+    handleEmailSuggestionSelection();
   });
-  if(themeButton){
-    themeButton.setAttribute('data-selected-theme', mode);
-    themeButton.setAttribute('aria-label', `Tema actual: ${mode==='light'?'Claro':'Oscuro'}`);
-  }
+  msg.textContent='';
 }
 
-function applyTheme(mode,{persist=true}={}){
-  const normalized = mode==='light' ? 'light' : 'dark';
-  document.body.classList.toggle('theme-light', normalized==='light');
-  if(persist){
-    try{ localStorage.setItem(THEME_STORAGE_KEY, normalized); }catch(err){ console.warn('No se pudo guardar el tema', err); }
-  }
-  updateThemeControls(normalized);
-  return normalized;
+/* ===== Linked accounts base ===== */
+function normalize(t){return (t||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+function linkedServiceKey(servicio){ return normalize((servicio||'').toString().trim()); }
+function linkedEmailKey(email){ return (email||'').toString().trim().toLowerCase(); }
+function linkedCompositeKey(servicio,email){
+  const s=linkedServiceKey(servicio), e=linkedEmailKey(email);
+  return s&&e? `${s}::${e}`:'';
 }
+const LINKED_ACCOUNTS_KEY = 'linked_accounts_v1';
+function loadStoredLinkedAccounts(){
+  try{
+    const raw=localStorage.getItem(LINKED_ACCOUNTS_KEY); if(!raw) return [];
+    const arr=JSON.parse(raw)||[];
+    const seen=new Set(); const out=[];
+    arr.forEach(it=>{
+      const rec={ servicio:String(it.servicio||'').trim(), email:String(it.email||'').trim(), password:String(it.password||'') };
+      if(!rec.servicio||!rec.email||!rec.password) return;
+      const key=linkedCompositeKey(rec.servicio,rec.email);
+      if(seen.has(key)) return; seen.add(key); out.push(rec);
+    });
+    out.sort((a,b)=> a.servicio.localeCompare(b.servicio)||a.email.localeCompare(b.email));
+    return out;
+  }catch{ return []; }
+}
+function saveLinkedAccounts(arr){
+  try{
+    const seen=new Set(); const clean=(Array.isArray(arr)?arr:[]).map(it=>({servicio:String(it.servicio||'').trim(),email:String(it.email||'').trim(),password:String(it.password||'')}))
+      .filter(it=>it.servicio&&it.email&&it.password)
+      .filter(it=>{const k=linkedCompositeKey(it.servicio,it.email); if(seen.has(k)) return false; seen.add(k); return true;})
+      .sort((a,b)=> a.servicio.localeCompare(b.servicio)||a.email.localeCompare(b.email));
+    localStorage.setItem(LINKED_ACCOUNTS_KEY, JSON.stringify(clean));
+    return clean.slice();
+  }catch{ return loadStoredLinkedAccounts(); }
+}
+let linkedAccounts = loadStoredLinkedAccounts();
 
-const storedTheme = (()=>{ try{ return localStorage.getItem(THEME_STORAGE_KEY); }catch{ return null; } })();
-const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-const initialTheme = storedTheme==='light' ? 'light' : (storedTheme==='dark' ? 'dark' : (prefersDark ? 'dark' : 'light'));
-applyTheme(initialTheme,{persist:false});
+/* index por servicio/email para consultas rápidas */
+let linkedAccountsIndex = new Map();
+function linkedIndexFrom(records){
+  const idx=new Map();
+  (records||[]).forEach(rec=>{
+    const s=linkedServiceKey(rec.servicio), e=linkedEmailKey(rec.email);
+    if(!s||!e) return;
+    if(!idx.has(s)) idx.set(s,new Map());
+    idx.get(s).set(e,{ ...rec });
+  });
+  return idx;
+}
+function updateLinkedAccountsFrom(records){
+  linkedAccountsIndex = linkedIndexFrom(records);
+  rebuildEmailSuggestions(); // actualiza principal
+}
+updateLinkedAccountsFrom(linkedAccounts);
+
+function getLinkedAccountsByService(servicio){
+  const bucket = linkedAccountsIndex.get(linkedServiceKey(servicio||'')); if(!bucket) return [];
+  return Array.from(bucket.values()).map(v=>({ ...v }));
+}
+function findLinkedAccount(servicio,email){
+  const b=linkedAccountsIndex.get(linkedServiceKey(servicio||'')); if(!b) return null;
+  const v=b.get(linkedEmailKey(email)); return v? { ...v }:null;
+}
 
 /* ====== Semillas / almacenamiento local de servicios (fallback si no hay sesión) ====== */
 const defaultServices = ["ChatGPT","Gemini","YouTube","Disney"];
@@ -636,55 +759,36 @@ if (!Array.isArray(localServices) || !localServices.length) {
   localStorage.setItem('services_local', JSON.stringify(localServices));
 }
 function saveLocalServices() {
-  localServices = Array.from(new Set(localServices))
-    .filter(Boolean)
-    .sort((a,b)=>a.localeCompare(b));
+  localServices = Array.from(new Set(localServices)).filter(Boolean).sort((a,b)=>a.localeCompare(b));
   localStorage.setItem('services_local', JSON.stringify(localServices));
 }
 
+/* ===== clientes locales ===== */
 const LOCAL_CLIENTS_KEY = 'clients_local_v1';
 function loadLocalClients(){
-  try {
-    const raw = localStorage.getItem(LOCAL_CLIENTS_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) {
-      const filtered = parsed
-        .filter(x => x && typeof x === 'object')
-        .map(x => ({ ...x }));
-      filtered.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-      return filtered;
-    }
-  } catch (err) {
-    console.warn('No se pudieron cargar clientes locales', err);
-  }
-  return [];
+  try{
+    const raw=localStorage.getItem(LOCAL_CLIENTS_KEY); if(!raw) return [];
+    const arr=JSON.parse(raw)||[];
+    arr.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
+    return arr;
+  }catch{ return []; }
 }
 let localClients = loadLocalClients();
 function saveLocalClients(){
-  try {
-    localClients = (Array.isArray(localClients)? localClients:[])
-      .filter(x => x && typeof x === 'object')
-      .map(x => ({ ...x }))
-      .sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-    localStorage.setItem(LOCAL_CLIENTS_KEY, JSON.stringify(localClients));
-  } catch (err) {
-    console.warn('No se pudieron guardar clientes locales', err);
-  }
+  try{
+    localStorage.setItem(LOCAL_CLIENTS_KEY, JSON.stringify(localClients.slice().sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''))));
+  }catch{}
 }
 
-/* ====== AUTH (Supabase) — modal unificado ====== */
+/* ====== AUTH (Supabase) ====== */
 let currentUser = null;
-
 sb.auth.onAuthStateChange((_e, session)=>{
   currentUser = session?.user || null;
   authUpdateUI();
-  // Sincroniza local → nube si la nube está vacía
   syncLocalServicesToCloudIfEmpty().finally(()=>{
     renderServicios().then(renderTabla);
   });
 });
-
 function authUpdateUI(){
   const badge = document.getElementById('userInfo');
   const btnAuthOpen = document.getElementById('btnAuthOpen');
@@ -700,8 +804,6 @@ function authUpdateUI(){
     btnLogout.style.display='none';
   }
 }
-
-// ----- Modal helpers -----
 const authModal    = document.getElementById('authModal');
 const btnAuthOpen  = document.getElementById('btnAuthOpen');
 const btnAuthClose = document.getElementById('btnAuthClose');
@@ -714,7 +816,6 @@ const btnForgot    = document.getElementById('btnForgot');
 
 function openAuth(){ authErrorEl.textContent=''; authErrorEl.style.color='var(--danger)'; authModal.classList.add('open'); authModal.setAttribute('aria-hidden','false'); setTimeout(()=>authEmailEl?.focus(), 0); }
 function closeAuth(){ authModal.classList.remove('open'); authModal.setAttribute('aria-hidden','true'); }
-
 btnAuthOpen?.addEventListener('click', openAuth);
 btnAuthClose?.addEventListener('click', closeAuth);
 authModal?.addEventListener('click', (e)=>{ if(e.target===authModal) closeAuth(); });
@@ -726,97 +827,47 @@ toggleAuthPass?.addEventListener('click', ()=>{
   toggleAuthPass.textContent = isPass? '🙈':'👁';
 });
 
-sidebarLauncher?.addEventListener('click', ()=>{
-  if(!sidebar) return;
-  const nextPinned = sidebar.dataset.pinned !== 'true';
-  setSidebarPinned(nextPinned);
-});
-
-sidebar?.addEventListener('mouseenter', expandSidebarIfNeeded);
-sidebar?.addEventListener('mouseleave', collapseSidebarIfNeeded);
-sidebar?.addEventListener('focusin', expandSidebarIfNeeded);
-sidebar?.addEventListener('focusout', (event)=>{
-  if(!sidebar) return;
-  if(sidebar.contains(event.relatedTarget)) return;
-  collapseSidebarIfNeeded();
-});
-if(sidebarMobileQuery.addEventListener){
-  sidebarMobileQuery.addEventListener('change', handleSidebarMediaChange);
-}else if(sidebarMobileQuery.addListener){
-  sidebarMobileQuery.addListener(handleSidebarMediaChange);
-}
-document.addEventListener('keydown', (e)=>{
-  if(e.key!=='Escape') return;
-  if(!sidebar) return;
-  if(sidebar.dataset.pinned === 'true'){
-    setSidebarPinned(false);
-  }
-});
-
-// ----- Lógica unificada: registrar o iniciar sesión -----
+// sign-in/up unificado
 async function autoSignInOrUp(email, password) {
-  // 1) Intenta iniciar sesión primero
   let { error } = await sb.auth.signInWithPassword({ email, password });
   if (!error) return { ok: true };
-
-  // 2) Si falla, crea la cuenta (sin confirmación por email)
   const { data, error: eUp } = await sb.auth.signUp({ email, password });
   if (eUp) return { ok: false, message: eUp.message };
-
-  // 3) Por si la API no devolviera sesión, intenta loguear de nuevo
   if (!data.session) {
     const { error: eIn2 } = await sb.auth.signInWithPassword({ email, password });
     if (eIn2) return { ok: false, message: eIn2.message };
   }
   return { ok: true };
 }
-
 btnAuthSubmit?.addEventListener('click', async () => {
   const email = (authEmailEl.value || '').trim();
   const pass  = (authPassEl.value || '').trim();
-  authErrorEl.textContent = '';
-  authErrorEl.style.color = 'var(--danger)';
-
-  if (!email || !pass) {
-    authErrorEl.textContent = 'Completa correo y contraseña.';
-    return;
-  }
+  authErrorEl.textContent = ''; authErrorEl.style.color = 'var(--danger)';
+  if (!email || !pass) { authErrorEl.textContent = 'Completa correo y contraseña.'; return; }
   btnAuthSubmit.disabled = true; btnAuthSubmit.textContent = 'Procesando…';
-  try {
+  try{
     const r = await autoSignInOrUp(email, pass);
-    if (!r.ok) {
-      authErrorEl.textContent = r.message || 'No se pudo acceder.';
-    } else {
-      closeAuth();
-      toast('¡Bienvenido!');
-    }
-  } catch (err) {
-    authErrorEl.textContent = err.message || 'Error inesperado.';
-  } finally {
-    btnAuthSubmit.disabled = false; btnAuthSubmit.textContent = 'Continuar';
-  }
+    if (!r.ok) authErrorEl.textContent = r.message || 'No se pudo acceder.';
+    else { closeAuth(); toast('¡Bienvenido!'); }
+  }catch(err){ authErrorEl.textContent = err.message || 'Error inesperado.'; }
+  finally{ btnAuthSubmit.disabled = false; btnAuthSubmit.textContent = 'Continuar'; }
 });
-
 document.getElementById('btnLogout')?.addEventListener('click', async ()=>{ await sb.auth.signOut(); });
 
-// ----- ¿Olvidaste tu contraseña? -----
+// reset pass
 btnForgot?.addEventListener('click', async ()=>{
   const email = (authEmailEl.value||'').trim();
-  authErrorEl.style.color = 'var(--danger)';
-  authErrorEl.textContent = '';
+  authErrorEl.style.color = 'var(--danger)'; authErrorEl.textContent = '';
   if(!email){ authErrorEl.textContent = 'Escribe tu correo arriba para enviarte el enlace.'; return; }
   const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
   if(error){ authErrorEl.textContent = error.message || 'No se pudo enviar el correo de recuperación.'; return; }
-  authErrorEl.style.color = 'var(--success)';
-  authErrorEl.textContent = 'Te enviamos un correo para restablecer tu contraseña.';
+  authErrorEl.style.color = 'var(--success)'; authErrorEl.textContent = 'Te enviamos un correo para restablecer tu contraseña.';
 });
 
 /* ====== DB en la nube (Supabase) ====== */
 let cacheClientes = localClients.slice();
 let cacheServicios = [];
-
 const db = {
-  // CLIENTES
   getAll(){ return currentUser ? cacheClientes.slice() : localClients.slice(); },
   async fetchAll(){
     if(!currentUser){
@@ -824,150 +875,71 @@ const db = {
       cacheClientes = localClients.slice();
       return cacheClientes.slice();
     }
-    const { data, error } = await sb
-      .from('clients').select('*')
-      .eq('user_id', currentUser.id)
-      .order('nombre', { ascending:true });
+    const { data, error } = await sb.from('clients').select('*').eq('user_id', currentUser.id).order('nombre', { ascending:true });
     if(error){ console.error(error); cacheClientes=[]; return cacheClientes; }
-    cacheClientes = data||[];
-    return cacheClientes.slice();
+    cacheClientes = data||[]; return cacheClientes.slice();
   },
-
-  // *** saveOne robusto: UUID o BIGSERIAL ***
   async saveOne(rec){
     if(!currentUser){
       localClients = loadLocalClients();
       const recId = rec.id ?? crypto.randomUUID();
       const idx = localClients.findIndex(x=>x.id===recId);
       const payload = { ...(idx>=0? localClients[idx]:{}), ...rec, id: recId };
-      if(idx>=0) localClients[idx] = payload;
-      else localClients.push(payload);
-      localClients.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-      saveLocalClients();
-      cacheClientes = localClients.slice();
-      return payload;
+      if(idx>=0) localClients[idx] = payload; else localClients.push(payload);
+      localClients.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||'')); saveLocalClients();
+      cacheClientes = localClients.slice(); return payload;
     }
-
     const rowNoId = {
       user_id: currentUser.id,
-      nombre:   rec.nombre,
-      email:    rec.email,
-      telefono: rec.telefono,
-      servicio: rec.servicio,
-      inicio:   rec.inicio,
-      vence:    rec.vence,
-      categoria:rec.categoria,
-      notas:    rec.notas,
-      pin:      rec.pin,
-      ts:       rec.ts
+      nombre:rec.nombre, email:rec.email, telefono:rec.telefono, servicio:rec.servicio,
+      inicio:rec.inicio, vence:rec.vence, categoria:rec.categoria, notas:rec.notas, pin:rec.pin, ts:rec.ts
     };
-
-    let data, error;
-    const hasId = rec.id!==undefined && rec.id!==null && `${rec.id}`.trim()!=='';
-
-    if (!hasId) {
-      ({ data, error } = await sb
-        .from('clients')
-        .insert(rowNoId)
-        .select()
-        .single());
-    } else {
-      ({ data, error } = await sb
-        .from('clients')
-        .update(rowNoId)
-        .eq('id', rec.id)
-        .select()
-        .single());
-
-      if (error) {
-        ({ data, error } = await sb
-          .from('clients')
-          .upsert({ ...rowNoId, id: rec.id }, { onConflict: 'id' })
-          .select()
-          .single());
-      }
+    let data, error; const hasId = rec.id!==undefined && rec.id!==null && `${rec.id}`.trim()!=='';
+    if (!hasId) ({ data, error } = await sb.from('clients').insert(rowNoId).select().single());
+    else {
+      ({ data, error } = await sb.from('clients').update(rowNoId).eq('id', rec.id).select().single());
+      if (error) ({ data, error } = await sb.from('clients').upsert({ ...rowNoId, id: rec.id }, { onConflict: 'id' }).select().single());
     }
-
     if (error) throw error;
-
     const i = cacheClientes.findIndex(x=>x.id===data.id);
     if(i>=0) cacheClientes[i]=data; else cacheClientes.push(data);
-    cacheClientes.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-    return data;
+    cacheClientes.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||'')); return data;
   },
-
   async deleteOne(id){
     if(!currentUser){
-      localClients = loadLocalClients().filter(x=>x && x.id!==id);
-      saveLocalClients();
-      cacheClientes = localClients.slice();
-      return;
+      localClients = loadLocalClients().filter(x=>x && x.id!==id); saveLocalClients(); cacheClientes = localClients.slice(); return;
     }
     const { error } = await sb.from('clients').delete().eq('id', id);
-    if(error) throw error;
-    cacheClientes = cacheClientes.filter(x=>x.id!==id);
+    if(error) throw error; cacheClientes = cacheClientes.filter(x=>x.id!==id);
   },
   async saveAll(arr){
     if(!currentUser){
-      localClients = arr.map(x=>({ ...x }));
-      localClients.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||''));
-      saveLocalClients();
-      cacheClientes = localClients.slice();
-      return;
+      localClients = arr.map(x=>({ ...x })); localClients.sort((a,b)=> (a.nombre||'').localeCompare(b.nombre||'')); saveLocalClients(); cacheClientes = localClients.slice(); return;
     }
     const rows = arr.map(x=>({ ...x, user_id: currentUser.id }));
     const { error } = await sb.from('clients').upsert(rows, { onConflict:'id' });
-    if(error) throw error;
-    cacheClientes = arr.slice();
+    if(error) throw error; cacheClientes = arr.slice();
   },
-
-  // ===== SERVICIOS con fallback local =====
   getServicios(){ return currentUser ? cacheServicios.slice() : localServices.slice(); },
-
   async fetchServicios(){
-    if (!currentUser) {
-      return localServices.slice();
-    }
-    const { data, error } = await sb
-      .from('services').select('name')
-      .eq('user_id', currentUser.id)
-      .order('name');
+    if (!currentUser) return localServices.slice();
+    const { data, error } = await sb.from('services').select('name').eq('user_id', currentUser.id).order('name');
     if(error){ console.error(error); cacheServicios = []; return []; }
-    cacheServicios = (data||[]).map(x=>x.name);
-    return cacheServicios.slice();
+    cacheServicios = (data||[]).map(x=>x.name); return cacheServicios.slice();
   },
-
   async replaceServicios(list){
-    if (!currentUser) {
-      localServices = list.slice();
-      saveLocalServices();
-      return;
-    }
-    const { data: curr } = await sb
-      .from('services').select('name')
-      .eq('user_id', currentUser.id);
-    const has = new Set((curr||[]).map(x=>x.name));
-    const want = new Set(list);
-    const toDel = [...has].filter(n=>!want.has(n));
-    if (toDel.length) {
-      await sb.from('services').delete().in('name', toDel).eq('user_id', currentUser.id);
-    }
-    const toIns = [...want].filter(n=>!has.has(n)).map(n=>({ user_id: currentUser.id, name:n }));
-    if (toIns.length) {
-      await sb.from('services').insert(toIns);
-    }
+    if (!currentUser) { localServices = list.slice(); saveLocalServices(); return; }
+    const { data: curr } = await sb.from('services').select('name').eq('user_id', currentUser.id);
+    const has = new Set((curr||[]).map(x=>x.name)); const want = new Set(list);
+    const toDel = [...has].filter(n=>!want.has(n)); if (toDel.length) await sb.from('services').delete().in('name', toDel).eq('user_id', currentUser.id);
+    const toIns = [...want].filter(n=>!has.has(n)).map(n=>({ user_id: currentUser.id, name:n })); if (toIns.length) await sb.from('services').insert(toIns);
     cacheServicios = list.slice();
   }
 };
-
-/* ===== Sincroniza local → nube si la nube está vacía ===== */
 async function syncLocalServicesToCloudIfEmpty(){
   if (!currentUser) return;
   const cloud = await db.fetchServicios();
-  if (cloud.length === 0 && localServices.length) {
-    await db.replaceServicios(localServices);
-    localStorage.removeItem('services_local');
-  }
+  if (cloud.length === 0 && localServices.length) { await db.replaceServicios(localServices); localStorage.removeItem('services_local'); }
 }
 
 /* ====== UI dinámica ====== */
@@ -975,19 +947,20 @@ async function renderServicios(sel){
   const list = await db.fetchServicios();
   const final = list.length ? list : defaultServices;
   f.servicio.innerHTML = final.map(s=>`<option value="${s}">${s}</option>`).join('');
-  if(sel && final.includes(sel)) f.servicio.value=sel;
-  else if(final.length) f.servicio.value=final[0];
-  else f.servicio.value='';
+  if(sel && final.includes(sel)) f.servicio.value=sel; else if(final.length) f.servicio.value=final[0]; else f.servicio.value='';
+  rebuildEmailSuggestions();
+  handleEmailSuggestionSelection();
 }
 async function renderTabla(){
   const arr = await db.fetchAll();
-  const items=arr.filter(x=>coincide(x,q?.value)&&pasaEstado(x,filterEstado?.value));
+  const items=arr.filter(x=>coincide(x,q?.value)&&pasaEstado(x,filterEstado?.value))
+                 .sort((a,b)=> (diasRestantes(a.vence)??1e9) - (diasRestantes(b.vence)??1e9));
   tbody.innerHTML=items.map(x=>{
     const d=diasRestantes(x.vence); const est=estadoDe(x.vence);
     const tag=est==='vigente'?'ok':est==='pronto'?'warn':'bad';
     const estTxt=est?est[0].toUpperCase()+est.slice(1):'-';
     const diasTxt= d==null?'-':(d<0?`Vencido ${Math.abs(d)} d`:`Faltan ${d} d`);
-    return `<tr>
+    return `<tr class="has-row-menu" tabindex="0" aria-haspopup="menu" aria-expanded="false">
       <td data-label="Nombre">${esc(x.nombre)}</td>
       <td data-label="Email">${esc(x.email||'')}</td>
       <td data-label="Servicio">${esc(x.servicio||'')}</td>
@@ -997,8 +970,8 @@ async function renderTabla(){
       <td data-label="Días">${diasTxt}</td>
       <td data-label="Acciones" class="cell-actions">
         <div class="menu-wrap">
-          <button class="kebab" data-menu-toggle aria-haspopup="menu" aria-expanded="false"><span class="dots">⋯</span></button>
-          <div class="menu" role="menu">
+          <div class="row-menu-indicator" aria-hidden="true"><span class="dots">⋯</span></div>
+          <div class="menu" role="menu" aria-hidden="true">
             <button class="menu-item" role="menuitem" data-action="edit" data-id="${x.id}">✎ Editar</button>
             <button class="menu-item" role="menuitem" data-action="label" data-id="${x.id}">🏷 Etiqueta</button>
             <button class="menu-item danger" role="menuitem" data-action="delete" data-id="${x.id}">🗑 Eliminar</button>
@@ -1010,44 +983,285 @@ async function renderTabla(){
 }
 function coincide(x,qq){
   qq=(qq||'').trim().toLowerCase(); if(!qq) return true;
-  return [x.nombre,x.email,x.servicio,x.telefono,x.categoria,x.notas]
-    .some(v=>(v||'').toLowerCase().includes(qq));
+  return [x.nombre,x.email,x.servicio,x.telefono,x.categoria,x.notas].some(v=>(v||'').toLowerCase().includes(qq));
 }
 function pasaEstado(x,f){ if(!f) return true; return estadoDe(x.vence)===f; }
 
 $('#btnLimpiar').onclick=limpiar;
 
-// *** Agregar/editar cliente ***
+/* ===== EMAIL dropdown (principal) ===== */
+function rebuildEmailSuggestions(){
+  emailSuggestionCache = getLinkedAccountsByService(f.servicio?.value||'');
+}
+function isEmailSuggestionDropdownOpen(){ return emailSuggestionDropdown?.classList.contains('open'); }
+function hideEmailSuggestionDropdown(){
+  if(!emailSuggestionDropdown) return;
+  emailSuggestionDropdown.classList.remove('open');
+  emailSuggestionDropdown.setAttribute('aria-hidden','true');
+  f.email?.setAttribute('aria-expanded','false');
+  if(emailDropdownToggle) emailDropdownToggle.setAttribute('aria-expanded','false');
+  emailSuggestionDropdown.innerHTML=''; filteredEmailSuggestions=[]; activeEmailSuggestionIndex=-1;
+  if(hideEmailSuggestionTimeout){ clearTimeout(hideEmailSuggestionTimeout); hideEmailSuggestionTimeout=null; }
+}
+function updateEmailSuggestionDropdown(filterText){
+  if(!emailSuggestionDropdown) return;
+  const term = typeof filterText==='string'? filterText.trim().toLowerCase() : (f.email?.value||'').trim().toLowerCase();
+  filteredEmailSuggestions = (emailSuggestionCache||[]).filter(item=> !term || item.email.toLowerCase().includes(term));
+
+  if(!filteredEmailSuggestions.length){
+    emailSuggestionDropdown.innerHTML=`<div class="suggestion-empty">${esc(term ? 'Sin coincidencias' : 'Sin correos enlazados')}</div>`;
+  }else{
+    emailSuggestionDropdown.innerHTML = filteredEmailSuggestions.map((item,idx)=>{
+      const hint=item.password? '<span class="suggestion-hint">Contraseña guardada</span>':'';
+      return `<button type="button" class="suggestion-item" data-index="${idx}" role="option" id="emailopt-${idx}">
+                <span class="suggestion-email">${esc(item.email)}</span>${hint}
+              </button>`;
+    }).join('');
+    Array.from(emailSuggestionDropdown.querySelectorAll('.suggestion-item')).forEach(btn=>{
+      btn.addEventListener('mousedown',e=>e.preventDefault());
+      btn.addEventListener('click',()=> selectEmailSuggestion(Number(btn.dataset.index)));
+    });
+  }
+  emailSuggestionDropdown.classList.add('open');
+  emailSuggestionDropdown.setAttribute('aria-hidden','false');
+  f.email?.setAttribute('aria-expanded','true');
+  if(emailDropdownToggle) emailDropdownToggle.setAttribute('aria-expanded','true');
+  activeEmailSuggestionIndex=-1;
+}
+function highlightEmailSuggestion(idx){
+  if(!emailSuggestionDropdown) return;
+  const items=Array.from(emailSuggestionDropdown.querySelectorAll('.suggestion-item'));
+  items.forEach((el,i)=>{ el.classList.toggle('is-active', i===idx); if(i===idx){ el.setAttribute('aria-selected','true'); f.email?.setAttribute('aria-activedescendant', el.id); } else { el.removeAttribute('aria-selected'); }});
+  if(idx>=0 && items[idx]) items[idx].scrollIntoView({ block:'nearest' });
+}
+function moveEmailSuggestion(delta){
+  if(!filteredEmailSuggestions.length){ updateEmailSuggestionDropdown(); if(!filteredEmailSuggestions.length) return; }
+  if(!isEmailSuggestionDropdownOpen()) updateEmailSuggestionDropdown();
+  activeEmailSuggestionIndex=(activeEmailSuggestionIndex+delta+filteredEmailSuggestions.length)%filteredEmailSuggestions.length;
+  highlightEmailSuggestion(activeEmailSuggestionIndex);
+}
+function selectEmailSuggestion(idx){
+  const account=filteredEmailSuggestions[idx]; if(!account) return;
+  if(f.email) f.email.value=account.email;
+  applyLinkedAccount(account);
+  handleEmailSuggestionSelection();
+  hideEmailSuggestionDropdown();
+}
+function showEmailSuggestions(){
+  rebuildEmailSuggestions();
+  updateEmailSuggestionDropdown(f.email.value);
+}
+function applyLinkedAccount(account){
+  if(!account) return;
+  if(account.password && f.pin && (!f.pin.value||f.pin.value.trim()==='')) f.pin.value=account.password;
+}
+
+/* eventos principal */
+if(f.servicio){ ['change','input'].forEach(evt=> f.servicio.addEventListener(evt, ()=>{
+  rebuildEmailSuggestions(); handleEmailSuggestionSelection();
+  if(document.activeElement===f.email) showEmailSuggestions(); else hideEmailSuggestionDropdown();
+}));}
+if(f.email){
+  f.email.addEventListener('focus',()=>{ showEmailSuggestions(); });
+  f.email.addEventListener('click',()=>{ showEmailSuggestions(); });
+  f.email.addEventListener('input',()=>{ updateEmailSuggestionDropdown(f.email.value); handleEmailSuggestionSelection(); });
+  f.email.addEventListener('change',()=>{ handleEmailSuggestionSelection(); });
+  f.email.addEventListener('keydown',(e)=>{
+    if(e.key==='ArrowDown'){ e.preventDefault(); moveEmailSuggestion(1); }
+    else if(e.key==='ArrowUp'){ if(isEmailSuggestionDropdownOpen()){ e.preventDefault(); moveEmailSuggestion(-1); } }
+    else if(e.key==='Enter'){ if(isEmailSuggestionDropdownOpen() && activeEmailSuggestionIndex>=0){ e.preventDefault(); selectEmailSuggestion(activeEmailSuggestionIndex); } }
+    else if(e.key==='Escape'){ if(isEmailSuggestionDropdownOpen()){ e.preventDefault(); hideEmailSuggestionDropdown(); } }
+  });
+  f.email.addEventListener('blur',()=>{ hideEmailSuggestionTimeout=setTimeout(()=>hideEmailSuggestionDropdown(),120); });
+}
+emailSuggestionDropdown?.addEventListener('mouseenter',()=>{ if(hideEmailSuggestionTimeout){ clearTimeout(hideEmailSuggestionTimeout); hideEmailSuggestionTimeout=null; }});
+emailSuggestionDropdown?.addEventListener('mouseleave',()=>{ hideEmailSuggestionTimeout=setTimeout(()=>hideEmailSuggestionDropdown(),120); });
+emailDropdownToggle?.addEventListener('click', (e)=>{ e.preventDefault(); if(isEmailSuggestionDropdownOpen()) hideEmailSuggestionDropdown(); else showEmailSuggestions(); });
+
+/* selección contextual */
+function handleEmailSuggestionSelection(){
+  if(!f.email||!f.servicio) return;
+  const servicioActual=f.servicio.value;
+  const emailActual=(f.email.value||'').trim();
+  if(!servicioActual||!emailActual) return;
+  const account=findLinkedAccount(servicioActual,emailActual);
+  if(account) applyLinkedAccount(account);
+}
+
+/* ===== Modal Correos enlazados (dropdown similar) ===== */
+function populateLinkedServices(){
+  if(!linkedServiceEl) return;
+  const previous = linkedServiceEl.value;
+  let servicios = [];
+  return db.fetchServicios().then(list=>{
+    servicios = Array.from(new Set((Array.isArray(list)? list:[]).filter(Boolean).map(String)));
+    linkedServiceEl.innerHTML = '';
+    if(!servicios.length){
+      const option = document.createElement('option'); option.value=''; option.textContent='No hay servicios disponibles'; option.disabled=true; option.selected=true;
+      linkedServiceEl.appendChild(option); linkedServiceEl.disabled=true;
+      linkedEmailEl.value=''; linkedEmailEl.disabled=true; linkedPasswordEl.value=''; linkedPasswordEl.disabled=true;
+      btnLinkedSave.disabled = true; btnLinkedDelete.disabled = true; linkedErrorEl.textContent = 'Agrega servicios para enlazar correos.'; return;
+    }
+    linkedServiceEl.disabled=false; linkedEmailEl.disabled=false; linkedPasswordEl.disabled=false;
+    btnLinkedSave.disabled=false; btnLinkedDelete.disabled=true; linkedErrorEl.textContent='';
+    const placeholder = document.createElement('option'); placeholder.value=''; placeholder.textContent='Selecciona un servicio'; linkedServiceEl.appendChild(placeholder);
+    servicios.forEach(s=>{ const opt=document.createElement('option'); opt.value=s; opt.textContent=s; linkedServiceEl.appendChild(opt); });
+    let next = previous && servicios.includes(previous) ? previous : (linkedAccounts.find(it=>servicios.includes(it.servicio))?.servicio || servicios[0] || '');
+    if(next) linkedServiceEl.value = next;
+    applyLinkedAccountToForm(next);
+    refreshLinkedEmailDropdown();
+  });
+}
+function openLinkedModal(){
+  if(!linkedModal) return;
+  linkedErrorEl.textContent=''; linkedModal.classList.add('open'); linkedModal.setAttribute('aria-hidden','false');
+  populateLinkedServices().finally(()=> setTimeout(()=> linkedServiceEl?.focus(),0));
+}
+function closeLinkedModal(){
+  linkedModal.classList.remove('open'); linkedModal.setAttribute('aria-hidden','true');
+  if(linkedPasswordEl) linkedPasswordEl.type='password';
+}
+btnLinkedOpen?.addEventListener('click', openLinkedModal);
+btnLinkedHeaderClose?.addEventListener('click', closeLinkedModal);
+linkedModal?.addEventListener('click', (e)=>{ if(e.target===linkedModal) closeLinkedModal(); });
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeLinkedModal(); });
+
+function applyLinkedAccountToForm(servicio){
+  linkedEmailEl.value=''; linkedPasswordEl.value=''; linkedPasswordEl.type='password'; btnLinkedDelete.disabled=true; refreshLinkedEmailDropdown();
+}
+function syncLinkedEmailState({resetPassword=true}={}){
+  const servicio=linkedServiceEl?.value||''; const email=(linkedEmailEl?.value||'').trim(); const account=servicio&&email? findLinkedAccount(servicio,email):null;
+  if(linkedPasswordEl){
+    if(account) linkedPasswordEl.value = account.password || ''; else if(resetPassword) linkedPasswordEl.value = '';
+    linkedPasswordEl.type='password';
+  }
+  btnLinkedDelete.disabled = !account;
+  return account;
+}
+toggleLinkedPassword?.addEventListener('click', ()=>{
+  const isPass = linkedPasswordEl.type==='password';
+  linkedPasswordEl.type = isPass? 'text':'password';
+  toggleLinkedPassword.textContent = isPass? '🙈':'👁';
+});
+linkedServiceEl?.addEventListener('change', ()=>{ applyLinkedAccountToForm(linkedServiceEl.value); });
+
+/* dropdown enlazados helpers */
+function isLinkedDropdownOpen(){ return linkedEmailDropdown?.classList.contains('open'); }
+function hideLinkedEmailDropdown(){
+  if(!linkedEmailDropdown) return;
+  linkedEmailDropdown.classList.remove('open');
+  linkedEmailDropdown.setAttribute('aria-hidden','true');
+  linkedEmailEl?.setAttribute('aria-expanded','false');
+  linkedEmailDropdown.innerHTML=''; linkedFilteredSuggestions=[]; linkedActiveIndex=-1;
+  if(linkedHideTimeout){ clearTimeout(linkedHideTimeout); linkedHideTimeout=null; }
+}
+function refreshLinkedEmailDropdown(){
+  const servicioActual = linkedServiceEl?.value || '';
+  const cache = getLinkedAccountsByService(servicioActual);
+  const term = (linkedEmailEl?.value || '').trim().toLowerCase();
+  linkedFilteredSuggestions = cache.filter(item=> !term || item.email.toLowerCase().includes(term));
+  if(!linkedEmailDropdown) return;
+  if(!linkedFilteredSuggestions.length){
+    linkedEmailDropdown.innerHTML=`<div class="suggestion-empty">${esc(term?'Sin coincidencias':'Sin correos enlazados')}</div>`;
+  }else{
+    linkedEmailDropdown.innerHTML = linkedFilteredSuggestions.map((item,idx)=>{
+      const hint=item.password? '<span class="suggestion-hint">Contraseña guardada</span>':'';
+      return `<button type="button" class="suggestion-item" data-index="${idx}" role="option" id="linkedopt-${idx}">
+                <span class="suggestion-email">${esc(item.email)}</span>${hint}
+              </button>`;
+    }).join('');
+    Array.from(linkedEmailDropdown.querySelectorAll('.suggestion-item')).forEach(btn=>{
+      btn.addEventListener('mousedown',e=>e.preventDefault());
+      btn.addEventListener('click',()=> linkedSelectEmailSuggestion(Number(btn.dataset.index)));
+    });
+  }
+}
+function showLinkedEmailDropdown(){
+  refreshLinkedEmailDropdown();
+  linkedEmailDropdown.classList.add('open');
+  linkedEmailDropdown.setAttribute('aria-hidden','false');
+  linkedEmailEl?.setAttribute('aria-expanded','true');
+  linkedActiveIndex=-1;
+}
+function linkedHighlight(idx){
+  const items=Array.from(linkedEmailDropdown.querySelectorAll('.suggestion-item'));
+  items.forEach((el,i)=>{ el.classList.toggle('is-active', i===idx); if(i===idx){ el.setAttribute('aria-selected','true'); linkedEmailEl?.setAttribute('aria-activedescendant', el.id); } else { el.removeAttribute('aria-selected'); } });
+  if(idx>=0 && items[idx]) items[idx].scrollIntoView({ block:'nearest' });
+}
+function linkedMove(delta){
+  if(!linkedFilteredSuggestions.length){ refreshLinkedEmailDropdown(); if(!linkedFilteredSuggestions.length) return; }
+  if(!isLinkedDropdownOpen()) showLinkedEmailDropdown();
+  linkedActiveIndex=(linkedActiveIndex+delta+linkedFilteredSuggestions.length)%linkedFilteredSuggestions.length;
+  linkedHighlight(linkedActiveIndex);
+}
+function linkedSelectEmailSuggestion(idx){
+  const account=linkedFilteredSuggestions[idx]; if(!account) return;
+  linkedEmailEl.value=account.email;
+  const acc = syncLinkedEmailState({ resetPassword:false });
+  if(acc?.password && (!linkedPasswordEl.value || linkedPasswordEl.value.trim()==='')) linkedPasswordEl.value = acc.password;
+  hideLinkedEmailDropdown();
+}
+
+/* eventos modal enlazados */
+linkedEmailEl?.addEventListener('focus', showLinkedEmailDropdown);
+linkedEmailEl?.addEventListener('click', showLinkedEmailDropdown);
+linkedEmailEl?.addEventListener('input', ()=>{ refreshLinkedEmailDropdown(); syncLinkedEmailState({ resetPassword:true }); });
+linkedEmailEl?.addEventListener('change', ()=>{ syncLinkedEmailState({ resetPassword:true }); });
+linkedEmailEl?.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowDown'){ e.preventDefault(); linkedMove(1); }
+  else if(e.key==='ArrowUp'){ if(isLinkedDropdownOpen()){ e.preventDefault(); linkedMove(-1); } }
+  else if(e.key==='Enter'){ if(isLinkedDropdownOpen() && linkedActiveIndex>=0){ e.preventDefault(); linkedSelectEmailSuggestion(linkedActiveIndex); } }
+  else if(e.key==='Escape'){ if(isLinkedDropdownOpen()){ e.preventDefault(); hideLinkedEmailDropdown(); } }
+});
+linkedEmailEl?.addEventListener('blur', ()=>{ linkedHideTimeout=setTimeout(()=>hideLinkedEmailDropdown(),120); });
+linkedEmailDropdown?.addEventListener('mouseenter', ()=>{ if(linkedHideTimeout){ clearTimeout(linkedHideTimeout); linkedHideTimeout=null; }});
+linkedEmailDropdown?.addEventListener('mouseleave', ()=>{ linkedHideTimeout=setTimeout(()=>hideLinkedEmailDropdown(),120); });
+linkedEmailDropdownToggle?.addEventListener('click', (e)=>{ e.preventDefault(); if(isLinkedDropdownOpen()) hideLinkedEmailDropdown(); else showLinkedEmailDropdown(); });
+
+btnLinkedSave?.addEventListener('click', ()=>{
+  const servicio = linkedServiceEl.value;
+  const email = linkedEmailEl.value.trim();
+  const password = linkedPasswordEl.value;
+  linkedErrorEl.textContent='';
+  if(!servicio){ linkedErrorEl.textContent='Selecciona un servicio.'; linkedServiceEl.focus(); return; }
+  if(!email){ linkedErrorEl.textContent='Ingresa un correo válido.'; linkedEmailEl.focus(); return; }
+  if(!password){ linkedErrorEl.textContent='Ingresa una contraseña.'; linkedPasswordEl.focus(); return; }
+  const payload={ servicio, email, password };
+  const idx = linkedAccounts.findIndex(it=>linkedCompositeKey(it.servicio,it.email)===linkedCompositeKey(servicio,email));
+  if(idx>=0) linkedAccounts[idx]=payload; else linkedAccounts.push(payload);
+  linkedAccounts = saveLinkedAccounts(linkedAccounts);
+  updateLinkedAccountsFrom(linkedAccounts); // actualiza índice y principal
+  toast('Correo enlazado guardado ✓'); closeLinkedModal();
+});
+btnLinkedDelete?.addEventListener('click', ()=>{
+  const servicio=linkedServiceEl.value, email=linkedEmailEl.value.trim();
+  linkedErrorEl.textContent=''; if(!servicio||!email){ linkedErrorEl.textContent='Selecciona un servicio y correo guardado.'; return; }
+  const key=linkedCompositeKey(servicio,email);
+  const idx=linkedAccounts.findIndex(it=>linkedCompositeKey(it.servicio,it.email)===key);
+  if(idx<0){ toast('No hay correo enlazado para eliminar.'); return; }
+  linkedAccounts.splice(idx,1);
+  linkedAccounts = saveLinkedAccounts(linkedAccounts);
+  updateLinkedAccountsFrom(linkedAccounts);
+  linkedEmailEl.value=''; linkedPasswordEl.value=''; btnLinkedDelete.disabled=true;
+  refreshLinkedEmailDropdown();
+  toast('Correo enlazado eliminado ✓');
+});
+
+/* ===== Acciones tabla ===== */
 $('#btnGuardar').onclick = async ()=>{
   const data={
     nombre:f.nombre.value.trim(), email:f.email.value.trim(), telefono:f.telefono.value.trim(),
     servicio:f.servicio.value, inicio:f.inicio.value, vence:f.vence.value,
     categoria:f.categoria.value, notas:f.notas.value.trim(), pin:f.pin.value.trim(), ts:Date.now()
   };
-  if(editId!==null && editId!==undefined){
-    data.id = editId;
-  }
+  if(editId!==null && editId!==undefined) data.id = editId;
   if(!data.nombre){ toast('Escribe un nombre'); return; }
   const wasGuest = !currentUser;
   try{
-    await db.saveOne(data);
-    await renderTabla();
-    limpiar();
-    if(wasGuest && !currentUser){
-      toast('Guardado local ✓  Accede para sincronizar');
-    }else{
-      toast('Guardado ✓');
-    }
-  }catch(err){
-    const msgErr = err?.message || '';
-    if(/autentic/i.test(msgErr)){
-      toast('Debes iniciar sesión para guardar en la nube.');
-    }else{
-      toast(msgErr || 'No se pudo guardar.');
-    }
-  }
+    await db.saveOne(data); await renderTabla(); limpiar();
+    toast(wasGuest && !currentUser ? 'Guardado local ✓  Accede para sincronizar' : 'Guardado ✓');
+  }catch(err){ toast(err?.message || 'No se pudo guardar.'); }
 };
-
 function editar(id){
   const x=db.getAll().find(c=>c.id===id); if(!x) return; editId=x.id;
   for(const k in f){ if(k in x) f[k].value=x[k]||''; }
@@ -1055,106 +1269,101 @@ function editar(id){
 }
 async function borrar(id){
   if(!confirm('¿Eliminar este cliente?')) return;
-  await db.deleteOne(id);
-  await renderTabla();
+  await db.deleteOne(id); await renderTabla();
 }
 
-/* Menús (kebab + tema) */
+/* Menús (kebab + tema) + cierre fuera de la fila activa */
+function getMenuController(menu){
+  if(!menu) return null;
+  const wrap=menu.closest('.menu-wrap');
+  if(wrap){ const control=wrap.querySelector('[aria-haspopup="menu"]'); if(control) return control; }
+  return menu.closest('tr.has-row-menu');
+}
+function setMenuState(menu,isOpen){
+  if(!menu) return;
+  if(isOpen){ menu.classList.add('open'); menu.setAttribute('aria-hidden','false'); }
+  else{ menu.classList.remove('open'); menu.setAttribute('aria-hidden','true'); }
+  const controller=getMenuController(menu);
+  if(controller){ controller.setAttribute('aria-expanded',isOpen?'true':'false'); }
+}
 function closeAllMenus(except=null){
   document.querySelectorAll('.menu.open').forEach(menu=>{
-    if(except && menu===except) return;
-    menu.classList.remove('open');
-    menu.previousElementSibling?.setAttribute('aria-expanded','false');
+    if(except && menu===except) return; setMenuState(menu,false);
   });
 }
-
 document.addEventListener('click',(e)=>{
   const wrap=e.target.closest('.menu-wrap');
   const toggle=e.target.closest('[data-menu-toggle]');
   const item=e.target.closest('.menu-item');
-
-  if(!wrap && !item){
-    closeAllMenus();
-    return;
-  }
+  const rowTrigger=e.target.closest('tr.has-row-menu');
 
   if(toggle){
-    const menu=toggle.nextElementSibling;
-    if(!menu || !menu.classList.contains('menu')) return;
+    const menu=toggle.closest('.menu-wrap')?.querySelector('.menu'); if(!menu) return;
     const isOpen=menu.classList.contains('open');
-    if(isOpen){
-      menu.classList.remove('open');
-      toggle.setAttribute('aria-expanded','false');
-    }else{
-      closeAllMenus(menu);
-      menu.classList.add('open');
-      toggle.setAttribute('aria-expanded','true');
-    }
+    if(isOpen) setMenuState(menu,false); else { closeAllMenus(menu); setMenuState(menu,true); }
+    return;
   }
-
   if(item){
-    if(item.dataset.themeOption){
-      applyTheme(item.dataset.themeOption);
-    }else{
+    if(item.dataset.themeOption){ applyTheme(item.dataset.themeOption); }
+    else{
       const id=item.dataset.id;
       if(item.dataset.action==='edit') editar(id);
       else if(item.dataset.action==='label') etiquetar(id);
       else if(item.dataset.action==='delete') borrar(id);
     }
-    closeAllMenus();
+    closeAllMenus(); return;
   }
-});
 
-document.addEventListener('keydown',(e)=>{
-  if(e.key==='Escape') closeAllMenus();
+  // Cierra si haces clic FUERA de la fila activa
+  const openMenu = document.querySelector('.menu.open');
+  if(openMenu){
+    const openRow = openMenu.closest('tr.has-row-menu');
+    if(!rowTrigger || rowTrigger !== openRow){ setMenuState(openMenu,false); }
+  }
+
+  // Si clicas completamente fuera de cualquier fila/menu, cierra todo
+  if(!wrap && !rowTrigger){ closeAllMenus(); }
 });
+if(tbody){
+  tbody.addEventListener('click',(e)=>{
+    const row=e.target.closest('tr.has-row-menu'); if(!row || !tbody.contains(row)) return;
+    if(e.target.closest('.menu')) return;
+    const menu=row.querySelector('.menu'); if(!menu) return;
+    const isOpen=menu.classList.contains('open');
+    if(isOpen) setMenuState(menu,false); else { closeAllMenus(menu); setMenuState(menu,true); }
+  });
+  tbody.addEventListener('keydown',(e)=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const row=e.target.closest('tr.has-row-menu'); if(!row || !tbody.contains(row)) return;
+    const menu=row.querySelector('.menu'); if(!menu) return;
+    e.preventDefault();
+    const isOpen=menu.classList.contains('open');
+    if(isOpen){ setMenuState(menu,false); } else { closeAllMenus(menu); setMenuState(menu,true); const first=menu.querySelector('.menu-item'); first?.focus(); }
+  });
+}
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeAllMenus(); });
 
 /* ===== Botones + y − de servicios ===== */
 $('#btnAgregarServicio').onclick = async ()=>{
   const nombre = (prompt('Nombre del nuevo servicio:') || '').trim();
   if (!nombre) return;
-
   const actuales = await db.fetchServicios();
   if (!actuales.includes(nombre)) {
-    actuales.push(nombre);
-    actuales.sort((a,b)=>a.localeCompare(b));
-    await db.replaceServicios(actuales);
-
-    if (!currentUser) {
-      toast('Servicio agregado (local) ✓  Accede para guardar en la nube');
-    } else {
-      toast('Servicio agregado ✓');
-    }
+    actuales.push(nombre); actuales.sort((a,b)=>a.localeCompare(b)); await db.replaceServicios(actuales);
+    toast(currentUser ? 'Servicio agregado ✓' : 'Servicio agregado (local) ✓  Accede para guardar en la nube');
     await renderServicios(nombre);
-  } else {
-    await renderServicios(nombre);
-    toast('Ese servicio ya existe');
-  }
+  } else { await renderServicios(nombre); toast('Ese servicio ya existe'); }
 };
-
 $('#btnEliminarServicio').onclick = async ()=>{
-  const current = f.servicio.value;
-  if (!current) { toast('No hay servicio seleccionado'); return; }
-
-  const actuales = await db.fetchServicios();
-  if (!actuales.includes(current)) { toast('Ese servicio no está en la lista'); return; }
-
+  const current = f.servicio.value; if (!current) { toast('No hay servicio seleccionado'); return; }
+  const actuales = await db.fetchServicios(); if (!actuales.includes(current)) { toast('Ese servicio no está en la lista'); return; }
   if (!confirm(`¿Eliminar "${current}" de la lista de servicios?\n(No afecta a los clientes ya guardados).`)) return;
-
-  const nueva = actuales.filter(s => s !== current);
-  await db.replaceServicios(nueva);
-
-  if (!currentUser) {
-    toast('Servicio eliminado (local) ✓  Accede para guardar en la nube');
-  } else {
-    toast('Servicio eliminado ✓');
-  }
-  await renderServicios();
+  const nueva = actuales.filter(s => s !== current); await db.replaceServicios(nueva);
+  toast(currentUser ? 'Servicio eliminado ✓' : 'Servicio eliminado (local) ✓  Accede para guardar en la nube'); await renderServicios();
 };
 
 /* Mostrar/Ocultar PIN (form) */
-const btnEye=document.getElementById('togglePin');
-if(btnEye){ btnEye.addEventListener('click',()=>{ const isPass=f.pin.type==='password'; f.pin.type=isPass?'text':'password'; btnEye.textContent=isPass?'🙈':'👁'; }); }
+document.getElementById('togglePin')?.addEventListener('click',()=>{ const el=f.pin; const isPass=el.type==='password'; el.type=isPass?'text':'password'; document.getElementById('togglePin').textContent=isPass?'🙈':'👁'; });
 
 /* ===== Chat (Gemini) ===== */
 const GEMINI_API_KEY = 'AIzaSyC9hpKbGmUx3_YcgVGI3AEOdKvWRSoU81k';
@@ -1175,29 +1384,15 @@ document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeChat(); });
 
 function renderChat(){
   if(!chatLogEl) return;
-  chatLogEl.innerHTML = chatHistory
-    .map(m=>`<div class="chat-msg ${m.role}"><div class="bubble">${esc(m.text)}</div></div>`)
-    .join('');
+  chatLogEl.innerHTML = chatHistory.map(m=>`<div class="chat-msg ${m.role}"><div class="bubble">${esc(m.text)}</div></div>`).join('');
   chatLogEl.scrollTop = chatLogEl.scrollHeight;
 }
 renderChat();
 
-function normalize(s){return (s||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
 function clientToSafe(rec, includeSecrets){
   const d = (function(iso){ if(!iso) return null; const h=new Date();h.setHours(0,0,0,0); const dd=new Date(iso); dd.setHours(0,0,0,0); return Math.round((dd-h)/(1000*60*60*24)); })(rec.vence);
   const est = rec.vence? (d<0?'vencida':(d<=7?'pronto':'vigente')) : '';
-  const out = {
-    id: rec.id,
-    nombre: rec.nombre||'',
-    email: rec.email||'',
-    telefono: rec.telefono||'',
-    servicio: rec.servicio||'',
-    inicio: rec.inicio||'',
-    vence: rec.vence||'',
-    categoria: rec.categoria||'',
-    estado: est,
-    dias: d
-  };
+  const out = { id:rec.id, nombre:rec.nombre||'', email:rec.email||'', telefono:rec.telefono||'', servicio:rec.servicio||'', inicio:rec.inicio||'', vence:rec.vence||'', categoria:rec.categoria||'', estado:est, dias:d };
   if(includeSecrets){ if(rec.pin) out.pin = rec.pin; if(rec.notas) out.notas = rec.notas; }
   return out;
 }
@@ -1217,15 +1412,9 @@ function buildPrompt(userMsg){
     'Si el usuario pide PIN y no existe el campo "pin" en los DATOS, responde brevemente que por seguridad no lo compartes a menos que el usuario habilite Compartir datos sensibles.',
     'Formatea las respuestas de ficha con etiquetas: Nombre, Email, Teléfono, Servicio, Inicio, Vence, Estado, Días, Categoría, Notas.'
   ];
-  const prompt = [
-    ...guidance,
-    'DATOS(JSON):',
-    JSON.stringify(context),
-    `PREGUNTA: ${userMsg}`
-  ].join('\n');
+  const prompt = [...guidance,'DATOS(JSON):',JSON.stringify(context),`PREGUNTA: ${userMsg}`].join('\n');
   return prompt;
 }
-
 async function requestGemini(prompt){
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
   const payload = { contents: [{ role:'user', parts:[{ text: prompt }]}] };
@@ -1234,29 +1423,22 @@ async function requestGemini(prompt){
   const json = await res.json();
   return json?.candidates?.[0]?.content?.parts?.[0]?.text || '(sin respuesta)';
 }
-
 async function sendChat(){
   const text = (chatInputEl?.value||'').trim(); if(!text) return;
   chatHistory.push({ role:'user', text }); renderChat(); chatInputEl.value='';
-  try{
-    const reply = await requestGemini(buildPrompt(text));
-    chatHistory.push({ role:'ai', text: reply });
-    tryApplyToolFrom(reply, text);
-  }catch(err){
-    chatHistory.push({ role:'ai', text: `[Error al llamar a Gemini: ${err.message}]` });
-  }
+  try{ const reply = await requestGemini(buildPrompt(text)); chatHistory.push({ role:'ai', text: reply }); tryApplyToolFrom(reply, text); }
+  catch(err){ chatHistory.push({ role:'ai', text: `[Error al llamar a Gemini: ${err.message}]` }); }
   localStorage.setItem('chat_v1', JSON.stringify(chatHistory));
   renderChat();
 }
-
 document.getElementById('btnSend')?.addEventListener('click', sendChat);
 chatInputEl?.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChat(); }});
 
-/* ==== Herramientas locales para aplicar cambios desde el chat ==== */
+/* ==== Herramientas locales desde chat ==== */
 function parseDateToISO(s){
   if(!s) return s; s=String(s).trim();
   if(s.indexOf('-')>0) return s;
-  if(s.indexOf('/')>0){ const parts=s.split('/'); if(parts.length===3){ const d=parts[0].padStart(2,'0'); const m=parts[1].padStart(2,'0'); const y=parts[2]; return `${y}-${m}-${d}`; } }
+  if(s.indexOf('/')>0){ const p=s.split('/'); if(p.length===3){ const d=p[0].padStart(2,'0'); const m=p[1].padStart(2,'0'); const y=p[2]; return `${y}-${m}-${d}`; } }
   return s;
 }
 function extractJson(text){
@@ -1265,7 +1447,7 @@ function extractJson(text){
   if(a>=0 && b>a) return text.slice(a,b+1);
   return null;
 }
-function tryApplyToolFrom(modelText, userText){
+function tryApplyToolFrom(modelText,_userText){
   const raw = extractJson(modelText); if(!raw) return false;
   let cmd; try{ cmd = JSON.parse(raw); }catch{ return false; }
   if(!cmd || cmd.action !== 'update_client' || !cmd.set) return false;
@@ -1285,9 +1467,7 @@ async function applyUpdateCommand(cmd){
   const matches = findClientByMatch(cmd.match||{});
   if(matches.length !== 1){
     const msg = matches.length===0? 'No encontré un cliente con esos datos. Especifica nombre o email.' : `Hay ${matches.length} clientes que coinciden. Especifica email para continuar.`;
-    chatHistory.push({role:'ai', text: msg});
-    renderChat();
-    return false;
+    chatHistory.push({role:'ai', text: msg}); renderChat(); return false;
   }
   const client = matches[0];
   const allowed = {nombre:1,email:1,telefono:1,servicio:1,inicio:1,vence:1,categoria:1,notas:1,pin:1};
@@ -1300,25 +1480,24 @@ async function applyUpdateCommand(cmd){
   if(idx<0){ chatHistory.push({role:'ai', text:'Error interno: no se pudo ubicar el registro.'}); renderChat(); return false; }
   const before = Object.assign({}, arr[idx]);
   Object.keys(set).forEach(k=>{ if(allowed[k]) arr[idx][k] = set[k]; });
-
-  await db.saveAll(arr);
-  await renderTabla();
+  await db.saveAll(arr); await renderTabla();
 
   const changed = Object.keys(set).map(k=>`${k}: "${before[k]||''}" → "${arr[idx][k]}"`).join('\n');
   chatHistory.push({role:'ai', text:`Actualizado ✓\nCliente: ${arr[idx].nombre}\nCambios:\n${changed}`});
-  renderChat();
-  return true;
+  renderChat(); return true;
 }
 
-function formatDM(iso){ if(!iso) return ''; var d=new Date(iso+'T00:00:00'); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
+/* ===== Etiquetas ===== */
+function formatDM(iso){ if(!iso) return ''; const d=new Date(iso+'T00:00:00'); return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'); }
 function buildEtiqueta(c){
+  const linkedAccount = findLinkedAccount(c.servicio, c.email);
   const svc = (c.servicio || '').toString().toUpperCase();
   const fv = formatDM(c.vence) || '--/--';
   const correo = c.email || '—';
   const perfil = c.nombre || '—';
   const pin = c.pin || '—';
-  const password = c.password || c.contrasena || c.pass || c.clave || '—';
-  const etiqueta = `✨ *${svc || 'SERVICIO'}* 
+  const password = linkedAccount?.password || c.password || c.contrasena || c.pass || c.clave || '—';
+  return `✨ *${svc || 'SERVICIO'}* 
 ━━━━━━━━━━━━━━━
 📅 *Vence:* ${fv}
 
@@ -1330,25 +1509,26 @@ function buildEtiqueta(c){
 ━━━━━━━━━━━━━━━
 
 💻📲  🌟 Gracias por tu compra`;
-
-  // Probado manualmente: el texto se copia correctamente (copyToClipboard) y conserva el formato en WhatsApp.
-  return etiqueta;
 }
 async function copyToClipboard(txt){
   try{ await navigator.clipboard.writeText(txt); return true; }
   catch(e){ try{ var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return true; }catch(_){ return false; } }
 }
 function etiquetar(id){
-  var c=db.getAll().find(function(x){return x.id===id}); if(!c){ toast('Cliente no encontrado'); return; }
+  var c=db.getAll().find(x=>x.id===id); if(!c){ toast('Cliente no encontrado'); return; }
   var etiqueta = buildEtiqueta(c);
-  copyToClipboard(etiqueta).then(function(ok){ toast(ok?'Etiqueta copiada ✓':'No se pudo copiar'); });
+  copyToClipboard(etiqueta).then(ok=> toast(ok?'Etiqueta copiada ✓':'No se pudo copiar'));
 }
+
+/* ===== Búsqueda / filtro ===== */
+q?.addEventListener('input', () => renderTabla());
+filterEstado?.addEventListener('change', () => renderTabla());
 
 /* ===== DEV TESTS (ligeros) ===== */
 (function(){
   function runTests(){
     const backupGet = db.getAll, backupSaveAll = db.saveAll;
-    let mem = [{id:'1',nombre:'Ana',servicio:'ChatGPT',vence:'2025-10-01',pin:'1234',notas:'vip'}];
+    let mem = [{id:'1',nombre:'Ana',servicio:'ChatGPT',vence:'2025-10-01',pin:'1234',notas:'vip',email:'ana@x.com'}];
     db.getAll = () => JSON.parse(JSON.stringify(mem));
     db.saveAll = (x) => { mem = JSON.parse(JSON.stringify(x)); };
 
@@ -1361,10 +1541,6 @@ function etiquetar(id){
   }
   try{ runTests(); }catch(e){ console.warn('[tests] fallo:', e); }
 })();
-
-/* ===== Listeners de búsqueda/filtro ===== */
-q?.addEventListener('input', () => renderTabla());
-filterEstado?.addEventListener('change', () => renderTabla());
 
 /* inicio */
 renderServicios().then(()=>renderTabla());
