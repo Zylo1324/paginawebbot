@@ -667,13 +667,14 @@
     /* ===== Chat (Gemini) ===== */
     .section-head{font-weight:700;margin-bottom:8px;color:var(--ink);text-shadow:0 10px 24px rgba(0,0,0,.45)}
     .chat-log{height:260px;overflow:auto;border:1px solid var(--border);border-radius:16px;padding:14px;background:var(--chat-log-bg);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(14px)}
-    .chat-controls{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
-    .chat-loading{display:none;align-items:center;gap:10px;margin-top:10px;font-size:.9rem;color:var(--ink-soft);transition:opacity .2s ease}
+    .chat-controls{display:grid;gap:8px;margin-top:10px}
+    .chat-field{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .chat-loading{display:none;align-items:center;gap:10px;font-size:.9rem;color:var(--ink-soft);transition:opacity .2s ease;grid-column:1/-1}
     .chat-loading .spinner{width:18px;height:18px;border-radius:999px;border:3px solid transparent;border-top-color:var(--btn-primary-bg-bottom);border-right-color:var(--btn-primary-bg-bottom);animation:chat-spin .8s linear infinite}
     .modal.is-loading .chat-loading{display:flex}
-    .modal.is-loading .chat-controls{opacity:.6;pointer-events:none}
-    .modal.is-loading .chat-controls input,
-    .modal.is-loading .chat-controls button{pointer-events:none}
+    .modal.is-loading .chat-field{opacity:.6;pointer-events:none}
+    .modal.is-loading .chat-field input,
+    .modal.is-loading .chat-field button{pointer-events:none}
     @keyframes chat-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
     .chat-msg{margin:8px 0;display:flex}
     .chat-msg.user{justify-content:flex-end}
@@ -884,12 +885,14 @@
       <div class="body">
         <div id="chatLog" class="chat-log"></div>
         <div class="chat-controls">
-          <input id="chatInput" placeholder="Escribe un mensaje…"/>
-          <button class="btn primary" id="btnSend">Enviar</button>
-        </div>
-        <div id="chatLoading" class="chat-loading" role="status" aria-live="polite" aria-hidden="true" hidden>
-          <span class="spinner" aria-hidden="true"></span>
-          <span>Un momento…</span>
+          <div class="chat-field">
+            <input id="chatInput" placeholder="Escribe un mensaje…"/>
+            <button class="btn primary" id="btnSend">Enviar</button>
+          </div>
+          <div id="chatLoading" class="chat-loading" role="status" aria-live="polite" aria-hidden="true" hidden>
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Un momento…</span>
+          </div>
         </div>
         <div class="small" style="text-align:left;margin-top:6px">
           <label><input type="checkbox" id="shareSecrets"> Compartir datos sensibles (PIN y notas)</label>
@@ -1931,7 +1934,10 @@ function setChatLoading(flag){
     btnSend.disabled = isChatLoading;
     btnSend.setAttribute('aria-disabled', isChatLoading ? 'true' : 'false');
   }
-  if(chatInputEl){ chatInputEl.disabled = isChatLoading; }
+  if(chatInputEl){
+    chatInputEl.disabled = isChatLoading;
+    chatInputEl.setAttribute('aria-disabled', isChatLoading ? 'true' : 'false');
+  }
 }
 setChatLoading(false);
 
