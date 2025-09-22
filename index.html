@@ -698,6 +698,10 @@
     .chat-msg{margin:0;display:flex}
     .chat-msg.user{justify-content:flex-end}
     .chat-msg .bubble{max-width:85%;padding:12px 16px;border-radius:16px;white-space:normal;line-height:1.6;font-size:1rem}
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    .chat-msg.loading .bubble{display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;color:var(--muted)}
+    .chat-spinner{width:20px;height:20px;border-radius:50%;border:3px solid rgba(4,11,28,.12);border-top-color:var(--btn);animation:spin .8s linear infinite}
+    .chat-msg.user .chat-spinner{border-color:rgba(255,255,255,.4);border-top-color:rgba(255,255,255,.95)}
     .chat-msg .bubble p{margin:0}
     .chat-msg .bubble p+p{margin-top:8px}
     .chat-msg .bubble ul,
@@ -1907,7 +1911,15 @@ const btnChatOpen = document.getElementById('btnChatOpen');
 const btnChatClose = document.getElementById('btnChatClose');
 const chatLogEl = document.getElementById('chatLog');
 const chatInputEl = document.getElementById('chatInput');
-let chatHistory = JSON.parse(localStorage.getItem('chat_v1')||'[]');
+let chatHistory;
+try{
+  const stored = JSON.parse(localStorage.getItem('chat_v1')||'[]');
+  const cleaned = Array.isArray(stored)? stored.filter(m=>!m?.pending) : [];
+  if(Array.isArray(stored) && stored.length!==cleaned.length){
+    localStorage.setItem('chat_v1', JSON.stringify(cleaned));
+  }
+  chatHistory = cleaned;
+}catch(_){ chatHistory = []; }
 
 function openChat(){ chatModal.classList.add('open'); chatModal.setAttribute('aria-hidden','false'); setTimeout(()=>chatInputEl?.focus(), 0); }
 function closeChat(){ chatModal.classList.remove('open'); chatModal.setAttribute('aria-hidden','true'); }
@@ -1920,14 +1932,19 @@ function renderChat(){
   if(!chatLogEl) return;
   const html = chatHistory.map(m=>{
     const role = m?.role || 'user';
+    const isKnownRole = role==='user' || role==='ai';
+    const roleClass = role==='user'?'user':'ai';
+    if(m?.pending || !isKnownRole){
+      return `<div class="chat-msg ${roleClass} loading"><div class="bubble"><span class="chat-spinner" aria-hidden="true"></span><span class="sr-only">Generando respuesta…</span></div></div>`;
+    }
     let content;
-    if(role==='ai'){
+    if(roleClass==='ai'){
       const formatted = renderMarkdown(m?.text);
       content = formatted || (m?.text ? `<p>${esc(m?.text)}</p>` : '');
     }else{
       content = esc(m?.text);
     }
-    return `<div class="chat-msg ${role}"><div class="bubble">${content}</div></div>`;
+    return `<div class="chat-msg ${roleClass}"><div class="bubble">${content}</div></div>`;
   }).join('');
   chatLogEl.innerHTML = html;
   chatLogEl.scrollTop = chatLogEl.scrollHeight;
@@ -1970,9 +1987,20 @@ async function requestGemini(prompt){
 }
 async function sendChat(){
   const text = (chatInputEl?.value||'').trim(); if(!text) return;
-  chatHistory.push({ role:'user', text }); renderChat(); chatInputEl.value='';
-  try{ const reply = await requestGemini(buildPrompt(text)); chatHistory.push({ role:'ai', text: reply }); tryApplyToolFrom(reply, text); }
-  catch(err){ chatHistory.push({ role:'ai', text: `[Error al llamar a Gemini: ${err.message}]` }); }
+  chatHistory.push({ role:'user', text });
+  chatInputEl.value='';
+  const pendingIndex = chatHistory.push({ role:'ai', pending:true })-1;
+  renderChat();
+  try{
+    const reply = await requestGemini(buildPrompt(text));
+    chatHistory[pendingIndex] = { role:'ai', text: reply };
+    tryApplyToolFrom(reply, text);
+  }
+  catch(err){
+    const message = err?.message || String(err);
+    chatHistory[pendingIndex] = { role:'ai', text: `[Error al llamar a Gemini: ${message}]` };
+  }
+  chatHistory = chatHistory.filter(m=>!m?.pending);
   localStorage.setItem('chat_v1', JSON.stringify(chatHistory));
   renderChat();
 }
