@@ -744,7 +744,16 @@
     .chat-msg.user .bubble{background:var(--btn);color:var(--btn-ink);border:1px solid rgba(255,255,255,.18);box-shadow:0 18px 34px rgba(242,138,45,.35);white-space:pre-wrap}
     .chat-msg.ai .bubble{background:var(--ai-bubble-bg);border:1px solid var(--ai-bubble-border);color:var(--ink);box-shadow:0 14px 30px rgba(0,0,0,.42)}
     .chat-modal .composer{display:grid;grid-template-columns:1fr auto;gap:12px;padding:20px 22px;border-radius:16px;border:1px solid var(--border);background:var(--field)}
-    .chat-modal .composer input{padding:14px 16px;font-size:1rem;border-radius:12px}
+    .chat-modal .composer textarea{
+      padding:14px 16px;
+      font-size:1rem;
+      border-radius:12px;
+      line-height:1.45;
+      min-height:52px;
+      max-height:220px;
+      resize:none;
+      overflow-y:hidden;
+    }
     .chat-modal .composer button{min-width:120px;font-size:1rem;font-weight:600}
     .chat-modal .body .small{margin:0;text-align:left;color:var(--muted)}
     .chat-modal .chat-share{display:flex;align-items:center;gap:10px;font-size:13px}
@@ -937,7 +946,7 @@
       <div class="body">
         <div id="chatLog" class="chat-log"></div>
         <div class="composer">
-          <input id="chatInput" placeholder="Escribe un mensaje…"/>
+          <textarea id="chatInput" placeholder="Escribe un mensaje…"></textarea>
           <button class="btn primary" id="btnSend">Enviar</button>
         </div>
         <label class="small chat-share"><input type="checkbox" id="shareSecrets"> Compartir datos sensibles (PIN y notas)</label>
@@ -1933,6 +1942,24 @@ const btnChatOpen = document.getElementById('btnChatOpen');
 const btnChatClose = document.getElementById('btnChatClose');
 const chatLogEl = document.getElementById('chatLog');
 const chatInputEl = document.getElementById('chatInput');
+const CHAT_INPUT_MAX_HEIGHT = 220;
+const chatInputMinHeight = chatInputEl ? (()=>{
+  const styles = window.getComputedStyle(chatInputEl);
+  return parseFloat(styles.minHeight) || parseFloat(styles.height) || 0;
+})() : 0;
+
+function adjustChatInputHeight(){
+  if(!chatInputEl) return;
+  chatInputEl.style.height = 'auto';
+  const fullHeight = chatInputEl.scrollHeight;
+  const height = Math.max(Math.min(fullHeight, CHAT_INPUT_MAX_HEIGHT), chatInputMinHeight);
+  chatInputEl.style.height = `${height}px`;
+  chatInputEl.style.overflowY = fullHeight > CHAT_INPUT_MAX_HEIGHT ? 'auto' : 'hidden';
+}
+if(chatInputEl){
+  adjustChatInputHeight();
+  chatInputEl.addEventListener('input', adjustChatInputHeight);
+}
 let chatHistory;
 try{
   const stored = JSON.parse(localStorage.getItem('chat_v1')||'[]');
@@ -1952,7 +1979,11 @@ function clearChatHistory(){
 }
 document.getElementById('btnChatClear')?.addEventListener('click', clearChatHistory);
 
-function openChat(){ chatModal.classList.add('open'); chatModal.setAttribute('aria-hidden','false'); setTimeout(()=>chatInputEl?.focus(), 0); }
+function openChat(){
+  chatModal.classList.add('open');
+  chatModal.setAttribute('aria-hidden','false');
+  setTimeout(()=>{ adjustChatInputHeight(); chatInputEl?.focus(); }, 0);
+}
 function closeChat(){ chatModal.classList.remove('open'); chatModal.setAttribute('aria-hidden','true'); }
 btnChatOpen?.addEventListener('click', openChat);
 btnChatClose?.addEventListener('click', closeChat);
@@ -2033,6 +2064,7 @@ async function sendChat(){
   const text = (chatInputEl?.value||'').trim(); if(!text) return;
   chatHistory.push({ role:'user', text });
   chatInputEl.value='';
+  adjustChatInputHeight();
   const pendingIndex = chatHistory.push({ role:'ai', pending:true })-1;
   renderChat();
   try{
