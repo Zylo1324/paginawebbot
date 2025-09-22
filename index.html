@@ -679,6 +679,17 @@
     .chat-msg .bubble li{margin:4px 0}
     .chat-msg .bubble li>ul,
     .chat-msg .bubble li>ol{margin-top:4px}
+    .chat-msg .bubble table{width:100%;border-collapse:separate;border-spacing:0;margin:10px 0;border-radius:12px;overflow:hidden;background:var(--table-card-bg);border:1px solid var(--table-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+    .chat-msg .bubble table:first-child{margin-top:0}
+    .chat-msg .bubble table:last-child{margin-bottom:0}
+    .chat-msg .bubble thead{background:var(--table-header-bg)}
+    .chat-msg .bubble thead th{padding:10px 12px;font-weight:600;text-align:left;color:var(--ink)}
+    .chat-msg .bubble tbody{background:transparent}
+    .chat-msg .bubble tbody tr:nth-child(even){background:var(--table-row-alt-bg)}
+    .chat-msg .bubble tbody tr:hover{background:var(--table-row-hover-bg);box-shadow:var(--table-row-hover-shadow)}
+    .chat-msg .bubble tbody td{padding:10px 12px;border-top:1px solid var(--table-border)}
+    .chat-msg .bubble th,
+    .chat-msg .bubble td{font-size:.95em;vertical-align:top}
     .chat-msg.user .bubble{background:linear-gradient(135deg,#f28a2d,#f59e0b);color:#1a1205;border:1px solid rgba(255,255,255,.18);box-shadow:0 14px 32px rgba(242,138,45,.35);white-space:pre-wrap}
     .chat-msg.ai .bubble{background:var(--ai-bubble-bg);border:1px solid var(--ai-bubble-border);color:var(--ink);box-shadow:0 10px 24px rgba(0,0,0,.4)}
 
@@ -1008,6 +1019,24 @@ function renderMarkdown(input){
     res = res.replace(/(^|[\s.,;:!?()"'¿¡-])_(.+?)_(?=[\s.,;:!?()"'¿¡-]|$)/g,(match,prefix,content)=>`${prefix}<em>${content}</em>`);
     return res;
   };
+  const parseTableCells = (line,{allowEmpty=false}={})=>{
+    if(!line) return null;
+    const trimmed = line.trim();
+    if(!trimmed.startsWith('|') || !trimmed.endsWith('|')) return null;
+    const parts = trimmed.slice(1,-1).split('|').map(cell=>cell.trim());
+    if(!parts.length) return null;
+    if(!allowEmpty && !parts.some(cell=>cell.length>0)) return null;
+    return parts;
+  };
+  const parseSeparatorLine = (line)=>{
+    const cells = parseTableCells(line,{allowEmpty:true});
+    if(!cells) return null;
+    const isValid = cells.every(cell=>{
+      const normalized = cell.replace(/\s+/g,'');
+      return /^:?-{3,}:?$/.test(normalized);
+    });
+    return isValid ? cells : null;
+  };
   const lines = safe.split(/\r?\n/);
   const blocks = [];
   let paragraphLines=[];
@@ -1025,9 +1054,34 @@ function renderMarkdown(input){
     listType=null;
     listItems=[];
   };
-  for(const rawLine of lines){
+  for(let i=0;i<lines.length;i++){
+    const rawLine = lines[i];
     const trimmed = rawLine.trim();
     if(!trimmed){ flushParagraph(); flushList(); continue; }
+    const headerCells = parseTableCells(trimmed);
+    if(headerCells && !parseSeparatorLine(trimmed)){
+      const separatorLine = lines[i+1]?.trim();
+      const separatorCells = parseSeparatorLine(separatorLine);
+      if(separatorCells && separatorCells.length === headerCells.length){
+        flushParagraph();
+        flushList();
+        const bodyRows=[];
+        let rowIndex=i+2;
+        while(rowIndex<lines.length){
+          const candidate = lines[rowIndex].trim();
+          if(!candidate) break;
+          const rowCells = parseTableCells(candidate,{allowEmpty:true});
+          if(!rowCells || rowCells.length !== headerCells.length) break;
+          bodyRows.push(rowCells);
+          rowIndex++;
+        }
+        const headerHtml = headerCells.map(cell=>`<th>${applyInline(cell)}</th>`).join('');
+        const bodyHtml = bodyRows.map(row=>`<tr>${row.map(cell=>`<td>${applyInline(cell)}</td>`).join('')}</tr>`).join('');
+        blocks.push(`<table><thead><tr>${headerHtml}</tr></thead><tbody>${bodyHtml}</tbody></table>`);
+        i = rowIndex-1;
+        continue;
+      }
+    }
     const unordered = trimmed.match(/^([-*])\s+(.+)/);
     if(unordered){
       flushParagraph();
