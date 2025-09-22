@@ -440,19 +440,62 @@
       text-align:center;
       padding-bottom:0;
     }
-    .hero-section{
-      opacity:calc(var(--hero-opacity)*var(--hero-fade));
-      transform:translateY(24px);
-      filter:blur(8px);
-      transition:opacity .55s ease,transform .55s ease,filter .55s ease;
-    }
-    .hero-section .pill{
-      opacity:calc(var(--hero-opacity)*var(--hero-fade));
-      transform:translateY(18px);
-      filter:blur(6px);
-      transition:opacity .5s ease,transform .5s ease,filter .5s ease;
-      transition-delay:.05s;
-    }
+      .page-section{
+        --page-slide-offset:72px;
+        --page-slide-blur:22px;
+        position:relative;
+      }
+      .fade-scroll-target{
+        opacity:0;
+        transform:translate3d(0,var(--page-slide-offset),0);
+        filter:blur(var(--page-slide-blur));
+        transition:opacity .65s ease,transform .65s ease,filter .65s ease;
+        will-change:opacity,transform,filter;
+        pointer-events:none;
+      }
+      .fade-scroll-target.is-visible{
+        opacity:1;
+        transform:translate3d(0,0,0);
+        filter:none;
+        pointer-events:auto;
+      }
+      .fade-scroll-target.is-hidden{
+        opacity:0;
+        transform:translate3d(0,var(--page-slide-offset),0);
+        filter:blur(var(--page-slide-blur));
+        pointer-events:none;
+      }
+      .hero-section{
+        --page-slide-offset:64px;
+        --page-slide-blur:18px;
+        opacity:calc(var(--hero-opacity)*var(--hero-fade));
+      }
+      .hero-section .pill,
+      .hero-section .hero-brand{
+        opacity:calc(var(--hero-opacity)*var(--hero-fade));
+        transform:translate3d(0,32px,0);
+        filter:blur(12px);
+        transition:opacity .65s ease,transform .65s ease,filter .65s ease;
+      }
+      .hero-section .pill{transition-delay:.05s;}
+      .hero-section .hero-brand{transition-delay:.12s;}
+      .hero-section.is-visible{
+        opacity:calc(var(--hero-opacity)*var(--hero-fade));
+      }
+      .hero-section.is-visible .pill,
+      .hero-section.is-visible .hero-brand{
+        transform:translate3d(0,0,0);
+        filter:none;
+      }
+      .hero-section.is-hidden{
+        opacity:0;
+      }
+      .hero-section.is-hidden .pill,
+      .hero-section.is-hidden .hero-brand{
+        opacity:0;
+        transform:translate3d(0,var(--page-slide-offset),0);
+        filter:blur(var(--page-slide-blur));
+      }
     #Registro{
       align-items:stretch;
     }
@@ -482,12 +525,9 @@
     }
     .pill{display:block;width:max-content;margin:0 auto 14px;padding:6px 14px;border-radius:999px;background:var(--pill-bg);color:var(--pill-ink);border:1px solid var(--border);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
     .hero-brand{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:clamp(12px,3vw,28px);margin:6px 0 24px;text-align:center;opacity:calc(var(--hero-opacity)*var(--hero-fade));transform:translateY(28px);filter:blur(8px);transition:opacity .6s ease,transform .6s ease,filter .6s ease;transition-delay:.12s}
-    body.page-loaded .hero-section,
-    body.page-loaded .hero-section .hero-brand,
-    body.page-loaded .hero-section .pill{opacity:calc(var(--hero-opacity)*var(--hero-fade));transform:none;filter:none}
-    .fade-scroll-target{opacity:1;transform:none;filter:none;transition:opacity .6s ease,transform .6s ease,filter .6s ease;will-change:opacity,transform,filter}
-    .fade-scroll-target.is-hidden{opacity:0;transform:translateY(32px);filter:blur(12px)}
-    .fade-scroll-target.is-visible{opacity:1;transform:none;filter:none}
+      body.page-loaded .hero-section.is-visible,
+      body.page-loaded .hero-section.is-visible .hero-brand,
+      body.page-loaded .hero-section.is-visible .pill{opacity:calc(var(--hero-opacity)*var(--hero-fade));}
     .hero-brand img{width:clamp(64px,16vw,132px);height:auto;flex-shrink:0;filter:drop-shadow(0 18px 36px rgba(0,0,0,.55));border-radius:24px}
     .hero-brand span{display:block;font-weight:800;letter-spacing:-0.02em;color:var(--ink);font-size:clamp(54px,16vw,144px);line-height:.95;text-shadow:0 12px 32px rgba(0,0,0,.55);text-transform:uppercase}
     @media(max-width:520px){
@@ -1103,86 +1143,72 @@ const q=$('#q'), filterEstado=$('#filterEstado'), msg=$('#msg');
 const sidebar=document.getElementById('sidebar');
 const sidebarLauncher=document.getElementById('sidebarLauncher');
 const hero=document.getElementById('Hero');
-const scrollFadeTargets=['Hero','Registro','TablaClientes'].map(id=>document.getElementById(id)).filter(Boolean);
 const docEl=document.documentElement;
 const supportsIntersectionObserver='IntersectionObserver'in window;
-let heroFadeDistance=1;
-let lastHeroFade=null;
-let lastHeroInlineFade=null;
+const slideSections=['Hero','Registro','TablaClientes'].map(id=>document.getElementById(id)).filter(Boolean);
+let activeSlideIndex=-1;
 
-function computeHeroFadeDistance(){
-  if(!hero) return Math.max((window.innerHeight||docEl.clientHeight||1)*.6,160);
-  const rect=hero.getBoundingClientRect();
-  const height=Math.max(rect.height||0,hero.offsetHeight||0,1);
-  return Math.max(height*1.2,180);
+function clampSlideIndex(index){
+  if(!slideSections.length) return -1;
+  if(index<0) return 0;
+  if(index>=slideSections.length) return slideSections.length-1;
+  return index;
 }
-function setSectionVisibility(el,visible){
-  if(!el) return;
-  el.classList.toggle('is-visible',visible);
-  el.classList.toggle('is-hidden',!visible);
-  if(el===hero && !visible){
-    hero.style.opacity='';
-    hero.style.filter='';
-    hero.style.transform='';
-    lastHeroInlineFade=null;
-  }
+
+function computeActiveSlideIndex(){
+  if(!slideSections.length) return -1;
+  const viewportHeight=Math.max(window.innerHeight||docEl.clientHeight||1,1);
+  const scrollTop=window.scrollY!=null?window.scrollY:(window.pageYOffset||0);
+  const ratio=scrollTop/viewportHeight;
+  const rawIndex=Math.round(ratio);
+  return clampSlideIndex(rawIndex);
 }
-let legacyRevealCheck=null;
-if(supportsIntersectionObserver&&typeof IntersectionObserver==='function'){
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=> setSectionVisibility(entry.target,entry.isIntersecting));
-  },{threshold:.2,rootMargin:'0px 0px -10% 0px'});
-  scrollFadeTargets.forEach(el=>observer.observe(el));
-}else if(scrollFadeTargets.length){
-  legacyRevealCheck=()=>{
-    const viewportHeight=window.innerHeight||docEl.clientHeight||0;
-    const upper=viewportHeight*.15;
-    const lower=viewportHeight*.9;
-    scrollFadeTargets.forEach(el=>{
-      const rect=el.getBoundingClientRect();
-      const visible=rect.bottom>upper && rect.top<lower;
-      setSectionVisibility(el,visible);
-    });
-  };
-}
-function applyHeroFade(){
+
+function syncHeroFade(targetIndex){
   if(!hero){
     docEl.style.setProperty('--hero-fade','1');
     return;
   }
-  const distance=heroFadeDistance||1;
-  const scrollTop=window.scrollY!=null?window.scrollY:(window.pageYOffset||0);
-  const fadeValue=Math.max(0,Math.min(1,1-(scrollTop/distance)));
-  const fadeRounded=Math.round(fadeValue*1000)/1000;
-  if(lastHeroFade!==fadeRounded){
-    docEl.style.setProperty('--hero-fade',fadeRounded.toString());
-    lastHeroFade=fadeRounded;
-  }
-  if(!document.body.classList.contains('page-loaded')){
-    lastHeroInlineFade=null;
+  const heroIndex=slideSections.indexOf(hero);
+  if(heroIndex===-1){
+    docEl.style.setProperty('--hero-fade','1');
     return;
   }
-  if(lastHeroInlineFade===fadeRounded) return;
-  hero.style.opacity=fadeRounded.toString();
-  const blur=Math.max(0,(1-fadeRounded)*8);
-  hero.style.filter=fadeRounded>=.999?'none':`blur(${blur.toFixed(2)}px)`;
-  const offset=Math.max(0,(1-fadeRounded)*24);
-  hero.style.transform=fadeRounded>=.999?'none':`translateY(${offset.toFixed(1)}px)`;
-  lastHeroInlineFade=fadeRounded;
+  docEl.style.setProperty('--hero-fade',targetIndex===heroIndex?'1':'0');
 }
+
+function applyActiveSlide(index){
+  if(!slideSections.length){
+    syncHeroFade(-1);
+    return;
+  }
+  const normalized=clampSlideIndex(index);
+  syncHeroFade(normalized);
+  if(activeSlideIndex===normalized) return;
+  slideSections.forEach((el,idx)=>{
+    const isActive=idx===normalized;
+    el.classList.toggle('is-visible',isActive);
+    el.classList.toggle('is-hidden',!isActive);
+  });
+  activeSlideIndex=normalized;
+}
+
 function handleScrollEffects(){
-  applyHeroFade();
-  if(legacyRevealCheck) legacyRevealCheck();
+  const targetIndex=computeActiveSlideIndex();
+  applyActiveSlide(targetIndex);
 }
-function recalcHeroFadeDistance(){
-  heroFadeDistance=computeHeroFadeDistance();
-}
-recalcHeroFadeDistance();
+
 handleScrollEffects();
 window.addEventListener('scroll',handleScrollEffects,{passive:true});
-window.addEventListener('resize',()=>{recalcHeroFadeDistance();handleScrollEffects();});
+window.addEventListener('resize',handleScrollEffects);
+if(supportsIntersectionObserver&&typeof IntersectionObserver==='function'&&slideSections.length){
+  const observer=new IntersectionObserver(()=>handleScrollEffects(),{threshold:[.25,.5,.75]});
+  slideSections.forEach(el=>observer.observe(el));
+}else{
+  // Fallback: reutiliza la misma rutina de selección basada en scroll.
+  handleScrollEffects();
+}
 window.addEventListener('load',()=>{
-  recalcHeroFadeDistance();
   handleScrollEffects();
   if(typeof requestAnimationFrame==='function'){requestAnimationFrame(handleScrollEffects);}else{setTimeout(handleScrollEffects,0);}
 });
