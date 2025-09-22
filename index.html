@@ -673,7 +673,21 @@
       backdrop-filter:none;
       overflow:hidden;
     }
-    .modal.chat-modal header{display:flex;align-items:flex-start;justify-content:space-between;padding:26px 32px 20px;border-bottom:1px solid var(--border);background:var(--field);}
+    .modal.chat-modal header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      padding:26px 32px 20px;
+      border-bottom:1px solid var(--border);
+      background:var(--field);
+    }
+    .modal.chat-modal header .chat-header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
     .modal.chat-modal header strong{
       font-size:1.6rem;
       font-weight:700;
@@ -910,7 +924,10 @@
     <div class="modal chat-modal" role="dialog" aria-label="Chat Gemini">
       <header>
         <strong>Chat Gemini</strong>
-        <button class="btn ghost" id="btnChatClose">Cerrar</button>
+        <div class="chat-header-actions">
+          <button class="btn ghost" id="btnChatClear" type="button">Vaciar chat</button>
+          <button class="btn ghost" id="btnChatClose" type="button">Cerrar</button>
+        </div>
       </header>
       <div class="body">
         <div id="chatLog" class="chat-log"></div>
@@ -1920,6 +1937,15 @@ try{
   }
   chatHistory = cleaned;
 }catch(_){ chatHistory = []; }
+
+function clearChatHistory(){
+  chatHistory = [];
+  localStorage.setItem('chat_v1', '[]');
+  renderChat();
+  toast('Historial del chat vaciado ✓');
+  chatInputEl?.focus();
+}
+document.getElementById('btnChatClear')?.addEventListener('click', clearChatHistory);
 
 function openChat(){ chatModal.classList.add('open'); chatModal.setAttribute('aria-hidden','false'); setTimeout(()=>chatInputEl?.focus(), 0); }
 function closeChat(){ chatModal.classList.remove('open'); chatModal.setAttribute('aria-hidden','true'); }
