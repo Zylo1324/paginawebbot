@@ -36,6 +36,8 @@
       --input-shadow-raised:rgba(3,6,12,.24);
       --input-focus-glow:rgba(56,189,248,.3);
       --card-bg:rgba(255,255,255,.06);
+      --sidebar-overlay-top:rgba(15,23,42,.92);
+      --sidebar-overlay-bottom:rgba(8,12,24,.96);
       --table-card-bg:rgba(255,255,255,.05);
       --table-header-bg:#111827;
       --table-border:rgba(255,255,255,.08);
@@ -178,6 +180,8 @@
       --input-shadow-raised:rgba(148,163,184,.22);
       --input-focus-glow:rgba(59,130,246,.26);
       --card-bg:#ffffff;
+      --sidebar-overlay-top:rgba(241,245,249,.92);
+      --sidebar-overlay-bottom:rgba(226,232,240,.94);
       --table-card-bg:#ffffff;
       --table-header-bg:#e2e8f0;
       --table-border:rgba(226,232,240,.9);
@@ -684,7 +688,10 @@
 
     @media(max-width:960px){ body.sidebar-expanded{padding-left:0} }
     @media(max-width:768px){
-      .sidebar{box-shadow:none}
+      .sidebar{
+        box-shadow:none;
+        background:linear-gradient(160deg,var(--sidebar-overlay-top),var(--sidebar-overlay-bottom));
+      }
       .sidebar.pinned,.sidebar.peek{box-shadow:var(--glass-shadow-soft),var(--glass-shadow-strong),var(--glass-shadow-inset),0 12px 24px rgba(3,6,10,.28)}
       body.sidebar-expanded .sidebar-launcher{left:20px}
     }
