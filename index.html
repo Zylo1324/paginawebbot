@@ -751,39 +751,74 @@
     .chat-msg .bubble td{font-size:.95em;vertical-align:top}
     .chat-msg.user .bubble{background:var(--chat-user-bg);color:var(--chat-text);border:1px solid rgba(236,236,241,.16);box-shadow:none;white-space:pre-wrap;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
     .chat-msg.ai .bubble{background:var(--chat-ai-bg);color:var(--chat-text);border:1px solid var(--chat-border);box-shadow:none;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
-    .chat-modal .composer{display:grid;grid-template-columns:1fr auto;gap:12px;padding:20px 22px;border-radius:16px;border:1px solid var(--chat-border);background:var(--chat-user-bg);color:var(--chat-text)}
-    .chat-modal .composer textarea{
-      padding:14px 16px;
-      font-size:1rem;
+    .chat-modal .composer{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
       border-radius:12px;
+      border:1px solid #dce1f0;
+      background:rgba(15,23,42,.04);
+      color:var(--chat-text);
+    }
+    .chat-modal .composer textarea{
+      flex:1;
+      padding:12px 16px;
+      font-size:1rem;
+      border-radius:10px;
       line-height:1.45;
-      min-height:52px;
+      min-height:48px;
       max-height:220px;
       resize:none;
       overflow-y:hidden;
-      background:var(--chat-surface);
-      border:1px solid var(--chat-border);
-      color:var(--chat-text);
-      background-image:none;
-      box-shadow:none;
-      transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease,color .2s ease;
+      background:#ffffff;
+      border:1px solid #cbd5e1;
+      color:#0f172a;
+      box-shadow:inset 0 1px 2px rgba(15,23,42,.08);
+      transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease;
     }
-    .chat-modal .composer textarea::placeholder{color:rgba(236,236,241,.6)}
+    .chat-modal .composer textarea::placeholder{color:rgba(15,23,42,.45)}
     .chat-modal .composer textarea:focus{
       border-color:var(--chat-accent);
       box-shadow:0 0 0 2px rgba(16,163,127,.35);
-      background:var(--chat-surface);
+      background:#ffffff;
     }
-    .chat-modal .composer button{min-width:120px;font-size:1rem;font-weight:600}
+    .chat-modal .composer button{
+      min-width:110px;
+      padding:12px 20px;
+      font-size:1rem;
+      font-weight:600;
+      border:0;
+      border-radius:10px;
+      color:#ffffff;
+      background:linear-gradient(135deg,#0dac7e,#07966b);
+      box-shadow:0 12px 24px rgba(7,150,107,.25);
+      cursor:pointer;
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+    }
+    .chat-modal .composer button:hover{
+      box-shadow:0 14px 28px rgba(7,150,107,.28);
+      transform:translateY(-1px);
+    }
+    .chat-modal .composer button:active{
+      box-shadow:0 10px 20px rgba(7,150,107,.22);
+      transform:translateY(0);
+      filter:brightness(.96);
+    }
+    .chat-modal .composer button:focus-visible{
+      outline:3px solid rgba(13,172,126,.45);
+      outline-offset:2px;
+    }
     .chat-modal .body .small{margin:0;text-align:left;color:var(--muted)}
     .chat-modal .chat-share{display:flex;align-items:center;gap:10px;font-size:13px}
     .chat-modal .chat-share input{margin:0;width:auto;height:auto;accent-color:var(--chat-accent);cursor:pointer;transition:box-shadow .2s ease}
     .chat-modal .chat-share input:hover{box-shadow:0 0 0 3px rgba(16,163,127,.25);border-radius:4px}
     .chat-modal .chat-share input:focus-visible{outline:2px solid rgba(16,163,127,.6);outline-offset:2px;border-radius:4px}
+    body.theme-light .chat-modal .composer{background:#f8fafc;border-color:#dce1f0}
     body.theme-light .chat-msg.user .bubble{border-color:var(--chat-border)}
     body.theme-light .chat-spinner{border-color:rgba(15,23,42,.18);border-top-color:var(--chat-accent)}
     body.theme-light .chat-msg.user .chat-spinner{border-color:rgba(15,23,42,.24);border-top-color:var(--chat-accent)}
-    body.theme-light .chat-modal .composer textarea::placeholder{color:rgba(15,23,42,.45)}
+    body.theme-light .chat-modal .composer textarea::placeholder{color:rgba(15,23,42,.4)}
     body.theme-light .chat-modal .composer textarea:focus{box-shadow:0 0 0 2px rgba(16,163,127,.25)}
     body.theme-light .chat-log{box-shadow:inset 0 1px 0 rgba(15,23,42,.06)}
     .chat-modal .chat-note{font-size:12px;line-height:1.5}
