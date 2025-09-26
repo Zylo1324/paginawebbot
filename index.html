@@ -1924,12 +1924,15 @@ btnLinkedDelete?.addEventListener('click', ()=>{
 
 /* ===== Acciones tabla ===== */
 $('#btnGuardar').onclick = async ()=>{
+  const isEdit = editId!==null && editId!==undefined;
+  const current = isEdit ? db.getAll().find(c=>c.id===editId) : null;
+  const ts = isEdit ? current?.ts : Date.now();
   const data={
     nombre:f.nombre.value.trim(), email:f.email.value.trim(), telefono:f.telefono.value.trim(),
     servicio:f.servicio.value, inicio:f.inicio.value, vence:f.vence.value,
-    categoria:f.categoria.value, notas:f.notas.value.trim(), pin:f.pin.value.trim(), ts:Date.now()
+    categoria:f.categoria.value, notas:f.notas.value.trim(), pin:f.pin.value.trim(), ts
   };
-  if(editId!==null && editId!==undefined) data.id = editId;
+  if(isEdit) data.id = editId;
   if(!data.nombre){ toast('Escribe un nombre'); return; }
   const wasGuest = !currentUser;
   try{
