@@ -647,7 +647,12 @@
     .menu-wrap{position:relative;display:inline-flex;align-items:center;gap:8px}
     .row-menu-indicator{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:12px;padding:6px 10px;line-height:1;color:var(--ink-soft);font-size:18px;letter-spacing:2px;transition:background-color .2s ease,border-color .2s ease,color .2s ease;user-select:none}
     tr[aria-expanded="true"] .row-menu-indicator{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:var(--ink)}
-    .menu{position:absolute;right:0;top:calc(100% + 8px);background:var(--menu-bg);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);min-width:180px;padding:8px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;z-index:50;backdrop-filter:blur(18px)}
+    .menu{position:absolute;right:0;top:calc(100% + 8px);background:var(--menu-bg);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);min-width:200px;padding:8px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease;z-index:50;backdrop-filter:blur(18px)}
+    .menu-info{padding:8px 10px 12px;border-bottom:1px solid var(--ghost-border);margin-bottom:8px;font-size:12px;color:var(--muted);line-height:1.4}
+    .menu-info-row{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}
+    .menu-info-row:last-child{margin-bottom:0}
+    .menu-info-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+    .menu-info-value{font-size:13px;font-weight:600;color:var(--ink)}
     .menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
     .menu-item{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:14px;color:var(--ink);transition:background-color .15s ease,border-color .15s ease,color .15s ease}
     .menu-item:hover{background:var(--menu-hover-bg)}
@@ -1280,6 +1285,32 @@ function renderMarkdown(input){
   return blocks.join('');
 }
 function fmt(iso){return iso? new Date(iso+'T00:00:00').toLocaleDateString(): '-'}
+function fmtHora(ts){
+  if(ts===undefined || ts===null || ts==='') return '-';
+  let date;
+  if(ts instanceof Date){ date = new Date(ts.getTime()); }
+  else if(typeof ts==='number'){ date = new Date(ts); }
+  else if(typeof ts==='string'){
+    const num = Number(ts);
+    if(!Number.isNaN(num)) date = new Date(num);
+    else date = new Date(ts);
+  }
+  if(!date || Number.isNaN(date.getTime())) return '-';
+  return date.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+function cuentaRegresiva(iso){
+  if(!iso) return 'Sin fecha de vencimiento';
+  const target = new Date(iso);
+  if(Number.isNaN(target.getTime())) return 'Fecha inválida';
+  if(typeof iso==='string' && iso.length<=10){ target.setHours(23,59,59,999); }
+  const diffMs = target.getTime() - Date.now();
+  const absMinutes = Math.floor(Math.abs(diffMs) / 60000);
+  const days = Math.floor(absMinutes / 1440);
+  const hours = Math.floor((absMinutes % 1440) / 60);
+  const minutes = absMinutes % 60;
+  const parts = [`${days} d`, `${hours} h`, `${minutes} min`];
+  return diffMs >= 0 ? `Faltan ${parts.join(' ')}` : `Vencido hace ${parts.join(' ')}`;
+}
 
 /* ===== Tema ===== */
 function updateThemeControls(mode){
@@ -1635,6 +1666,8 @@ async function renderTabla(){
     const tag=est==='vigente'?'ok':est==='pronto'?'warn':'bad';
     const estTxt=est?est[0].toUpperCase()+est.slice(1):'-';
     const diasTxt= d==null?'-':(d<0?`Vencido ${Math.abs(d)} d`:`Faltan ${d} d`);
+    const horaTxt=fmtHora(x.ts);
+    const countdownTxt=cuentaRegresiva(x.vence);
     return `<tr class="has-row-menu" tabindex="0" aria-haspopup="menu" aria-expanded="false">
       <td data-label="Nombre">${esc(x.nombre)}</td>
       <td data-label="Email">${esc(x.email||'')}</td>
@@ -1647,6 +1680,16 @@ async function renderTabla(){
         <div class="menu-wrap">
           <div class="row-menu-indicator" aria-hidden="true"><span class="dots">⋯</span></div>
           <div class="menu" role="menu" aria-hidden="true">
+            <div class="menu-info">
+              <div class="menu-info-row">
+                <span class="menu-info-label">Registrado</span>
+                <span class="menu-info-value">${esc(horaTxt)}</span>
+              </div>
+              <div class="menu-info-row">
+                <span class="menu-info-label">Tiempo restante</span>
+                <span class="menu-info-value">${esc(countdownTxt)}</span>
+              </div>
+            </div>
             <button class="menu-item" role="menuitem" data-action="edit" data-id="${x.id}">✎ Editar</button>
             <button class="menu-item" role="menuitem" data-action="label" data-id="${x.id}">🏷 Etiqueta</button>
             <button class="menu-item danger" role="menuitem" data-action="delete" data-id="${x.id}">🗑 Eliminar</button>
