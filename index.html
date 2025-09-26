@@ -2041,8 +2041,8 @@ $('#btnEliminarServicio').onclick = async ()=>{
 document.getElementById('togglePin')?.addEventListener('click',()=>{ const el=f.pin; const isPass=el.type==='password'; el.type=isPass?'text':'password'; document.getElementById('togglePin').textContent=isPass?'🙈':'👁'; });
 
 /* ===== Chat (Gemini) ===== */
-const GEMINI_API_KEY = 'AIzaSyC9hpKbGmUx3_YcgVGI3AEOdKvWRSoU81k';
-const GEMINI_MODEL  = 'gemini-1.5-flash';
+const CHATGPT_API_KEY = 'sk-TESTKEY1234567890';
+const CHATGPT_MODEL  = 'gpt-4o-mini';
 const chatModal = document.getElementById('chatModal');
 const btnChatOpen = document.getElementById('btnChatOpen');
 const btnChatClose = document.getElementById('btnChatClose');
@@ -2158,13 +2158,21 @@ function buildPrompt(userMsg){
   const prompt = [...guidance,'DATOS(JSON):',JSON.stringify(context),`PREGUNTA: ${userMsg}`].join('\n');
   return prompt;
 }
-async function requestGemini(prompt){
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-  const payload = { contents: [{ role:'user', parts:[{ text: prompt }]}] };
-  const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+async function requestChatGPT(prompt){
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization': `Bearer ${CHATGPT_API_KEY}`
+    },
+    body: JSON.stringify({
+      model: CHATGPT_MODEL,
+      messages: [{ role:'user', content: prompt }]
+    })
+  });
   if(!res.ok) throw new Error(`HTTP ${res.status}`);
   const json = await res.json();
-  return json?.candidates?.[0]?.content?.parts?.[0]?.text || '(sin respuesta)';
+  return json.choices?.[0]?.message?.content || '(sin respuesta)';
 }
 async function sendChat(){
   const text = (chatInputEl?.value||'').trim(); if(!text) return;
@@ -2174,13 +2182,13 @@ async function sendChat(){
   const pendingIndex = chatHistory.push({ role:'ai', pending:true })-1;
   renderChat();
   try{
-    const reply = await requestGemini(buildPrompt(text));
+    const reply = await requestChatGPT(buildPrompt(text));
     chatHistory[pendingIndex] = { role:'ai', text: reply };
     tryApplyToolFrom(reply, text);
   }
   catch(err){
     const message = err?.message || String(err);
-    chatHistory[pendingIndex] = { role:'ai', text: `[Error al llamar a Gemini: ${message}]` };
+    chatHistory[pendingIndex] = { role:'ai', text: `[Error al llamar a ChatGPT: ${message}]` };
   }
   chatHistory = chatHistory.filter(m=>!m?.pending);
   localStorage.setItem('chat_v1', JSON.stringify(chatHistory));
