@@ -12,6 +12,11 @@ categoria:$('#categoria'), pin:$('#pin')};
 const q=$('#q'), filterEstado=$('#filterEstado'), msg=$('#msg');
 const sidebar=document.getElementById('sidebar');
 const sidebarLauncher=document.getElementById('sidebarLauncher');
+const panelClientes=document.getElementById('panelClientes');
+const panelClientesSheet=panelClientes?.querySelector('.panel-clientes__sheet')||null;
+const panelClientesOverlay=panelClientes?.querySelector('.panel-clientes__overlay')||null;
+const btnPanelClientesCerrar=document.getElementById('btnPanelClientesCerrar');
+const btnVerClientes=document.getElementById('btnVerClientes');
 
 const themeButton=document.getElementById('btnTheme');
 const themeLabel=document.getElementById('themeLabel');
@@ -560,6 +565,21 @@ async function renderTabla(){
     </tr>`;
   }).join('');
 }
+function abrirPanelClientes(){
+  if(!panelClientes) return;
+  panelClientes.classList.add('is-open');
+  panelClientes.setAttribute('aria-hidden','false');
+  requestAnimationFrame(()=>{
+    panelClientesSheet?.focus();
+  });
+}
+function cerrarPanelClientes(){
+  if(!panelClientes) return;
+  const wasOpen=panelClientes.classList.contains('is-open');
+  panelClientes.classList.remove('is-open');
+  panelClientes.setAttribute('aria-hidden','true');
+  if(wasOpen) btnVerClientes?.focus();
+}
 function coincide(x,qq){
   qq=(qq||'').trim().toLowerCase(); if(!qq) return true;
   return [x.nombre,x.email,x.servicio,x.telefono,x.categoria,x.notas].some(v=>(v||'').toLowerCase().includes(qq));
@@ -567,6 +587,12 @@ function coincide(x,qq){
 function pasaEstado(x,f){ if(!f) return true; return estadoDe(x.vence)===f; }
 
 $('#btnLimpiar').onclick=limpiar;
+btnVerClientes?.addEventListener('click',()=>{ renderTabla().then(()=>abrirPanelClientes()); });
+btnPanelClientesCerrar?.addEventListener('click',()=>cerrarPanelClientes());
+panelClientesOverlay?.addEventListener('click',()=>cerrarPanelClientes());
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && panelClientes?.classList.contains('is-open')) cerrarPanelClientes();
+});
 
 /* ===== EMAIL dropdown (principal) ===== */
 function rebuildEmailSuggestions(){
@@ -842,6 +868,7 @@ $('#btnGuardar').onclick = async ()=>{
   try{
     await db.saveOne(data); await renderTabla(); limpiar();
     toast(wasGuest && !currentUser ? 'Guardado local ✓  Accede para sincronizar' : 'Guardado ✓');
+    abrirPanelClientes();
   }catch(err){ toast(err?.message || 'No se pudo guardar.'); }
 };
 function editar(id){
