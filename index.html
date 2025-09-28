@@ -131,32 +131,42 @@
       <p>Guarda el nuevo cliente o limpia el formulario antes de continuar.</p>
       <div class="actions">
         <button class="btn primary" id="btnGuardar">Agregar</button>
+        <button class="btn ghost" id="btnVerClientes" type="button">Ver registrados</button>
         <button class="btn ghost" id="btnLimpiar">Limpiar</button>
       </div>
       <div class="small" id="msg"></div>
     </aside>
-
-    <!-- tabla -->
-    <section id="TablaClientes" class="table-section">
-      <div class="table-header">
-        <h2 id="clientesTitulo">Clientes registrados</h2>
-        <p>Consulta el listado completo y gestiona cada registro.</p>
-      </div>
-      <div class="table-card">
-        <div class="table-scroll" role="region" aria-labelledby="clientesTitulo" tabindex="0">
-          <table id="tabla">
-            <thead>
-              <tr>
-                <th>Nombre</th><th>Email</th><th>Servicio</th>
-                <th>Inicio</th><th>Vence</th><th>Estado</th><th>Días</th><th><span class="sr-only">Acciones</span></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
   </main>
+
+  <aside id="panelClientes" class="panel-clientes" aria-hidden="true">
+    <div class="panel-clientes__overlay" data-panel-close></div>
+    <div class="panel-clientes__sheet" role="dialog" aria-modal="true" aria-labelledby="clientesTitulo" tabindex="-1">
+      <div class="panel-clientes__content">
+        <section id="TablaClientes" class="table-section">
+          <div class="table-header">
+            <div class="table-header-info">
+              <h2 id="clientesTitulo">Clientes registrados</h2>
+              <p>Consulta el listado completo y gestiona cada registro.</p>
+            </div>
+            <button class="btn ghost panel-clientes-close" id="btnPanelClientesCerrar" type="button">Cerrar</button>
+          </div>
+          <div class="table-card">
+            <div class="table-scroll" role="region" aria-labelledby="clientesTitulo" tabindex="0">
+              <table id="tabla">
+                <thead>
+                  <tr>
+                    <th>Nombre</th><th>Email</th><th>Servicio</th>
+                    <th>Inicio</th><th>Vence</th><th>Estado</th><th>Días</th><th><span class="sr-only">Acciones</span></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </aside>
 
   <!-- ===== Modal Chat ChatGPT ===== -->
   <div id="chatModal" class="modal-backdrop" aria-hidden="true">
